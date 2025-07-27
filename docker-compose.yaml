@@ -1,0 +1,86 @@
+services:
+  server:
+    build:
+      context: .
+      dockerfile: dockerfiles/nginx.dockerfile
+    ports:
+      - '80:80'
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - default
+    depends_on:
+      - laravel
+      - bun
+  laravel:
+    build:
+      context: .
+      dockerfile: dockerfiles/php.dockerfile
+    entrypoint: ['/usr/bin/supervisord', '-n']
+    ports:
+      - '8000:8000'
+    volumes:
+      - ./api:/var/www/laravel
+      - ./php/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+    env_file:
+      - ./.env
+    networks:
+      - default
+    depends_on:
+      - admin
+  maria:
+    image: 'mariadb:latest'
+    env_file:
+      - ./env/maria.env
+    volumes:
+      - maria:/var/lib/maria
+  admin:
+    image: 'phpmyadmin:latest'
+    env_file:
+      - ./env/phpmyadmin.env
+    ports:
+      - '3300:80'
+    depends_on:
+      - maria
+  composer:
+    build:
+      context: .
+      dockerfile: dockerfiles/composer.dockerfile
+    volumes:
+      - ./api:/var/www/laravel
+  artisan:
+    build:
+      context: .
+      dockerfile: dockerfiles/php.dockerfile
+    volumes:
+      - ./api:/var/www/laravel
+    env_file:
+      - ./.env
+    entrypoint: ['php', '/var/www/laravel/artisan']
+    depends_on:
+      - maria
+  bun:
+    build:
+      context: .
+      dockerfile: dockerfiles/bun.dockerfile
+    stdin_open: true
+    tty: true
+    ports:
+      - '3000:3000'
+    command: sh -c 'bun dev'
+    volumes:
+      - ./client:/var/www/nuxt
+    env_file:
+      - ./.env
+    networks:
+      - default
+    depends_on:
+      - laravel
+networks:
+  default:
+    name: nitrooctane
+    driver: bridge
+volumes:
+  maria:
+    name: maria
+    external: true

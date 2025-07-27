@@ -1,0 +1,11 @@
+# Ignore dependencies and vendor files for linguist stats
+/vendor/* linguist-vendored
+/api/vendor/* linguist-vendored
+
+# Treat .vue files as Vue (not HTML)
+*.vue linguist-language=Vue
+
+# Optionally, ignore other build/output directories
+/node_modules/* linguist-vendored
+/dist/* linguist-vendored
+/build/* linguist-vendored

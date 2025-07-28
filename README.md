@@ -10,9 +10,10 @@ _A starter template for projects using a **Laravel Octane** backend and a **Nuxt
 
 - **Basic login page** and authentication with [_Laravel Fortify_](https://laravel.com/docs/12.x/fortify) and [_Sanctum_](https://laravel.com/docs/12.x/sanctum)
 - **Zod** for type and form validation on the Nitro Server
+- **[Sass integration](https://sass-lang.com/)** with a custom CSS reset for consistent frontend styling
 - **Custom [JSON API](https://jsonapi.org/) inspired responses** for consistent API output
 - **[Nuxt Nitro](https://nitro.unjs.io/)** as a lightweight backend-for-frontend (BFF)
-- **Dockerized architecture** with **Nginx reverse proxy** for routing
+- **[Dockerized architecture](https://docs.docker.com/)** with **[Nginx reverse proxy](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/) for routing**
 - **Comprehensive testing**:
   - **[Pest](https://pestphp.com/docs/introduction)** for backend (Laravel)
   - **[Vitest](https://vitest.dev/guide/)** for frontend (Nuxt)

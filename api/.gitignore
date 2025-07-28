@@ -18,7 +18,14 @@
 /public/storage
 /storage/*.key
 /storage/pail
+/storage/logs/*
 /vendor
 Homestead.json
 Homestead.yaml
 Thumbs.db
+supervisord.log
+supervisord.pid
+vite.config.js
+composer.lock
+.editorconfig
+.phpunit.result.cache

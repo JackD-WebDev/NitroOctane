@@ -24,11 +24,6 @@ _A starter template for projects using a **Laravel Octane** backend and a **Nuxt
 
 > **Note:** This section is planned for later and will include step-by-step instructions for setting up and running the project.
 
-## 📖 API Documentation
-
-- **Planned:** OpenAPI/Swagger docs for public API (coming soon)
-- **Current:** See `api/routes/api.php` for available endpoints
-
 ---
 
 ## 🗂️ Project Structure

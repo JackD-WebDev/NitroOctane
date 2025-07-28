@@ -1,4 +1,11 @@
 <script setup lang="ts">
+const pageTitle = 'REGISTER';
+definePageMeta({
+  title: pageTitle,
+  middleware: ['guest']
+});
+useAppTitle(pageTitle);
+
 const firstname = ref('');
 const middlename = ref('');
 const lastname = ref('');

@@ -1,4 +1,11 @@
 <script setup lang="ts">
+const pageTitle = 'ACCOUNT';
+definePageMeta({
+  middleware: ['auth'],
+  title: pageTitle
+});
+useAppTitle(pageTitle);
+
 const authStore = useAuthStore();
 const router = useRouter();
 

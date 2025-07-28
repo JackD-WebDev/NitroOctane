@@ -1,4 +1,11 @@
 <script setup lang="ts">
+const pageTitle = 'LOGIN';
+definePageMeta({
+  title: pageTitle,
+  middleware: ['guest']
+});
+useAppTitle(pageTitle);
+
 const authStore = useAuthStore();
 const router = useRouter();
 const email = ref('');

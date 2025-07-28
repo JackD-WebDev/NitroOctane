@@ -1,13 +1,13 @@
-const messageStore = useMessageStore();
-const { message } = storeToRefs(messageStore);
-
-watch(message, (val) => {
-  if (val) {
-    message.value = val.toUpperCase();
-  }
-});
-
 export const useAuthStore = defineStore('authStore', () => {
+  const messageStore = useMessageStore();
+  const { message } = storeToRefs(messageStore);
+
+  watch(message, (val) => {
+    if (val) {
+      message.value = val.toUpperCase();
+    }
+  });
+
   const isLoggedIn = ref(false);
   const authUser = ref<AuthUser | null>(null);
   const error = ref('');

@@ -12,6 +12,7 @@ client/dist
 client/assets/coverage.json
 client/coverage
 client/app/coverage/*
+client/app/assets/coverage/*
 api/node_modules
 api/public/hot
 api/public/storage

@@ -9,7 +9,7 @@ _A starter template for projects using a **Laravel Octane** backend and a **Nuxt
 ## ✨ Features
 
 - **Basic login page** and authentication with [_Laravel Fortify_](https://laravel.com/docs/12.x/fortify) and [_Sanctum_](https://laravel.com/docs/12.x/sanctum)
-- **Zod** for type and form validation on the Nitro Server
+- **[Zod](https://zod.dev/)** for type and form validation on the Nitro Server
 - **[Sass integration](https://sass-lang.com/)** with a custom CSS reset for consistent frontend styling
 - **Custom [JSON API](https://jsonapi.org/) inspired responses** for consistent API output
 - **[Nuxt Nitro](https://nitro.unjs.io/)** as a lightweight backend-for-frontend (BFF)
@@ -51,6 +51,6 @@ MIT — see [LICENSE](LICENSE)
 
 - 📊 Dashboard
 - 👥 Multi-login management
-- ✅ Formkit validation
+- ✅ [FormKit](https://formkit.com/) validation
 - 🛠️ Install script
 - 🌐 Public API with [OpenAPI](https://www.openapis.org/) (Swagger) and interactive docs

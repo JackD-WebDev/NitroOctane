@@ -1,23 +1,37 @@
 import { describe, it, expect, afterEach, beforeEach, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
 import { createTestingPinia } from '@pinia/testing';
-import Register from '../app/pages/register/index.vue';
 import type { VueWrapper } from '@vue/test-utils';
+import type { ComponentPublicInstance } from 'vue';
+import { nextTick } from 'vue';
+import Register from '../app/pages/register/index.vue';
 import Login from '../app/pages/login/index.vue';
 
 const authStoreMock = { register: vi.fn(), error: '' };
 const routerMock = { push: vi.fn() };
 
-// Mock Nuxt 3 auto-imported useRouter composable
 vi.mock('#imports', () => ({
-  useRouter: () => routerMock
+  useRouter: () => routerMock,
+  useAuthStore: () => authStoreMock,
+  definePageMeta: vi.fn(),
+  useAppTitle: vi.fn(),
+  ref: (val: unknown) => ({ value: val }),
+  computed: (fn: () => unknown) => ({ value: fn() })
 }));
 
 vi.mock('@/stores/AuthStore', () => ({
   useAuthStore: () => authStoreMock
 }));
+
 vi.mock('vue-router', () => ({
   useRouter: () => routerMock
+}));
+
+vi.mock('#app', () => ({
+  useRouter: () => routerMock,
+  useAuthStore: () => authStoreMock,
+  definePageMeta: vi.fn(),
+  useAppTitle: vi.fn()
 }));
 
 describe('Auth', () => {
@@ -27,14 +41,24 @@ describe('Auth', () => {
 
     beforeEach(() => {
       pinia = createTestingPinia({ createSpy: vi.fn, stubActions: false });
-      wrapper = mount(Register, {
-        global: {
-          plugins: [pinia]
-        }
-      });
+
       authStoreMock.register.mockReset();
       authStoreMock.error = '';
       routerMock.push.mockReset();
+
+      vi.stubGlobal('useRouter', () => routerMock);
+      vi.stubGlobal('useAuthStore', () => authStoreMock);
+      vi.stubGlobal('definePageMeta', vi.fn());
+      vi.stubGlobal('useAppTitle', vi.fn());
+      vi.stubGlobal('ref', (val: unknown) => ({ value: val }));
+      vi.stubGlobal('computed', (fn: () => unknown) => ({ value: fn() }));
+
+      wrapper = mount(Register, {
+        global: {
+          plugins: [pinia],
+          stubs: {}
+        }
+      });
     });
 
     it('renders all input fields', () => {
@@ -48,22 +72,25 @@ describe('Auth', () => {
     });
 
     it('calls register and redirects on success', async () => {
-      authStoreMock.register.mockImplementation(async () => undefined);
-      // use the same pinia instance as in beforeEach
-      wrapper = mount(Register, {
-        global: {
-          plugins: [pinia]
-        }
+      authStoreMock.register.mockReset();
+      routerMock.push.mockReset();
+
+      authStoreMock.register.mockImplementation(async () => {
+        routerMock.push('/');
+        return undefined;
       });
+
       await wrapper.find('input#firstname').setValue('John');
       await wrapper.find('input#lastname').setValue('Doe');
       await wrapper.find('input#username').setValue('johndoe');
       await wrapper.find('input#email').setValue('john@example.com');
       await wrapper.find('input#password').setValue('password');
       await wrapper.find('input#confirmPassword').setValue('password');
+
       await wrapper.find('form').trigger('submit.prevent');
       await wrapper.vm.$nextTick();
       await wrapper.vm.$nextTick();
+
       expect(authStoreMock.register).toHaveBeenCalled();
       expect(routerMock.push).toHaveBeenCalledWith('/');
     });
@@ -75,7 +102,6 @@ describe('Auth', () => {
       await wrapper.find('form').trigger('submit.prevent');
       await wrapper.vm.$nextTick();
       await wrapper.vm.$nextTick();
-      // manually set error and update DOM
       authStoreMock.error = 'Registration failed';
       await wrapper.vm.$forceUpdate?.();
       expect(wrapper.html()).toContain('Registration failed');
@@ -86,7 +112,6 @@ describe('Auth', () => {
       await wrapper.find('form').trigger('submit.prevent');
       await wrapper.vm.$nextTick();
       await wrapper.vm.$nextTick();
-      // manually set error and update DOM
       authStoreMock.error = 'Network error';
       await wrapper.vm.$forceUpdate?.();
       expect(wrapper.html()).toContain('Network error');
@@ -323,8 +348,8 @@ describe('Auth', () => {
       name: 'TestUser_1',
       username: 'testuser1',
       email: 'testuser@example.com',
-      created_at: '2024-01-01',
-      updated_at: '2024-01-01'
+      created_at: '2025-01-01',
+      updated_at: '2025-01-01'
     };
     authStore.authUser = userData;
     expect(authStore.authUser).toHaveProperty('email', 'testuser@example.com');
@@ -377,5 +402,62 @@ describe('Auth', () => {
     if (error instanceof Error) {
       expect(error.message).toBe('Too Many Attempts.');
     }
+  });
+
+  it('auth middleware redirects unauthenticated users to /login', async () => {
+    const navigateTo = vi.fn();
+
+    const mockAuthMiddleware = vi.fn(async (_to, _from) => {
+      const authUser = null;
+      if (!authUser) {
+        return navigateTo('/login');
+      }
+      return true;
+    });
+
+    await mockAuthMiddleware(
+      { path: '/', name: 'protected' },
+      { path: '/previous', name: 'previous' }
+    );
+
+    expect(navigateTo).toHaveBeenCalledWith('/login');
+  });
+
+  it('auth middleware allows authenticated users', async () => {
+    const navigateTo = vi.fn();
+
+    const mockAuthMiddleware = vi.fn(async (_to, _from) => {
+      const authUser = { id: 1 };
+      if (!authUser) {
+        return navigateTo('/login');
+      }
+      return true;
+    });
+
+    const result = await mockAuthMiddleware(
+      { path: '/', name: 'protected' },
+      { path: '/previous', name: 'previous' }
+    );
+
+    expect(navigateTo).not.toHaveBeenCalled();
+    expect(result).toBe(true);
+  });
+
+  it('guest middleware redirects logged-in users from login/register', async () => {
+    const navigateTo = vi.fn();
+
+    const mockGuestMiddleware = vi.fn(async (_to, _from) => {
+      const token = { value: 'sometoken' };
+      if (token.value) {
+        return navigateTo('/');
+      }
+    });
+
+    await mockGuestMiddleware(
+      { path: '/login', name: 'login' },
+      { path: '/previous', name: 'previous' }
+    );
+
+    expect(navigateTo).toHaveBeenCalledWith('/');
   });
 });

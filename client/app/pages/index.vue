@@ -1,13 +1,14 @@
 <script setup lang="ts">
-const pageTitle = 'HOME';
+const { t } = useI18n();
+
 definePageMeta({
-  title: pageTitle
+  title: 'Home'
 });
-useAppTitle(pageTitle);
+useAppTitle(t('navbar.home'));
 </script>
 
 <template>
   <div>
-    <h2>HOME</h2>
+    <h2>{{ t('navbar.home').toUpperCase() }}</h2>
   </div>
 </template>

@@ -1,0 +1,36 @@
+{
+  "navbar": {
+    "home": "Home",
+    "login": "Log In",
+    "register": "Register",
+    "account": "Account",
+    "logout": "Log Out"
+  },
+  "register": {
+    "firstname": "First Name",
+    "middlename": "Middle Name",
+    "lastname": "Last Name",
+    "username": "Username",
+    "email": "Email",
+    "password": "Password",
+    "confirm_password": "Confirm Password",
+    "submit": "Register"
+  },
+  "account": {
+    "username": "Username",
+    "email": "Email",
+    "loading": "Loading user information..."
+  },
+  "status": {
+    "title": "Status",
+    "health": {
+      "passed": "Health check passed.",
+      "failed": "Failed to retrieve health status.",
+      "loading": "Loading..."
+    }
+  },
+  "layout": {
+    "title": "Layout",
+    "copyright": "All rights reserved."
+  }
+}

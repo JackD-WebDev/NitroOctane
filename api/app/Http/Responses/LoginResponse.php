@@ -46,6 +46,7 @@ class LoginResponse implements LoginResponseContract
                         'id' => $user->id,
                         'name' => $user->name,
                         'username' => $username,
+                        'preferred_language' => $user->lang,
                         'email' => $user->email,
                         'created_at' => $user->created_at,
                         'updated_at' => $user->updated_at,

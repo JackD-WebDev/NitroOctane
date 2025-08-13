@@ -1,15 +1,20 @@
 <script setup lang="ts">
-const pageTitle = 'LOGIN';
+const { t, locale } = useI18n();
 definePageMeta({
-  title: pageTitle,
+  title: 'Login',
   middleware: ['guest']
 });
-useAppTitle(pageTitle);
+useAppTitle(t('navbar.login'));
 
 const authStore = useAuthStore();
-const router = useRouter();
+
 const email = ref('');
 const password = ref('');
+
+const fieldName = {
+  email: t('register.email'),
+  password: t('register.password')
+};
 
 const credentials = computed(() => ({
   email: email.value,
@@ -25,10 +30,11 @@ const login = async () => {
   authStore.error = '';
 
   try {
-    const user = await authStore.logIn(credentials.value);
+    const user = await authStore.logIn(credentials.value, locale.value);
     if (user) {
       clearForm();
-      await router.push('/account');
+      const localizedNavigate = useLocalizedNavigate();
+      await localizedNavigate('/account');
     }
   } catch (e: unknown) {
     if (e instanceof Error) {
@@ -42,20 +48,26 @@ const login = async () => {
 
 <template>
   <div>
+    <h2>{{ t('navbar.login').toUpperCase() }}</h2>
     <form @submit.prevent="login">
       <div v-if="authStore.error" class="error">
         {{ authStore.error }}
       </div>
-      <label for="email">EMAIL</label>
-      <input id="email" v-model="email" type="email" placeholder="Email" />
-      <label for="password">PASSWORD</label>
+      <label for="email">{{ fieldName.email }}</label>
+      <input
+        id="email"
+        v-model="email"
+        type="email"
+        :placeholder="fieldName.email"
+      />
+      <label for="password">{{ fieldName.password }}</label>
       <input
         id="password"
         v-model="password"
         type="password"
-        placeholder="Password"
+        :placeholder="fieldName.password"
       />
-      <button type="submit">Log In</button>
+      <button type="submit">{{ t('navbar.login') }}</button>
     </form>
   </div>
 </template>

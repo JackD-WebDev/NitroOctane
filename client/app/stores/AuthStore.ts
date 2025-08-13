@@ -1,99 +1,149 @@
-export const useAuthStore = defineStore('authStore', () => {
-  const messageStore = useMessageStore();
-  const { message } = storeToRefs(messageStore);
+export const useAuthStore = defineStore(
+  'authStore',
+  () => {
+    const user = ref<AuthUser | null>(null);
+    const isAuthenticated = ref(false);
+    const error = ref('');
 
-  watch(message, (val) => {
-    if (val) {
-      message.value = val.toUpperCase();
+    const getUser = computed(() => user.value);
+
+    function setUser(newUser: AuthUser | null) {
+      user.value = newUser;
+      isAuthenticated.value = !!newUser;
+      if (newUser) error.value = '';
     }
-  });
 
-  const isLoggedIn = ref(false);
-  const authUser = ref<AuthUser | null>(null);
-  const error = ref('');
-
-  const getAuth = computed(() => authUser.value) as Ref<AuthUser | null>;
-
-  const logIn = async (credentials: Credentials) => {
-    message.value = 'Logging in...';
-    error.value = '';
-    try {
-      const response = await useApi<LoggedInUserResponse>('login', {
-        method: 'POST',
-        body: JSON.stringify(credentials)
-      });
-
-      if (response && response.success) {
-        isLoggedIn.value = true;
-        authUser.value = response.user;
-        message.value = response.message || 'Login successful.';
-        return response.user;
-      } else {
-        message.value = response.message || 'Login failed.';
-        error.value = response.message || 'Login failed.';
+    async function fetchUser() {
+      if (user.value) return;
+      try {
+        const response = await useApi<UserResponse>('user');
+        if (response.success && response.user) {
+          setUser({
+            id: response.user.id,
+            username: response.user.username,
+            name: response.user.username,
+            email: '',
+            preferred_language: 'en_US'
+          });
+        } else {
+          setUser(null);
+        }
+      } catch (error) {
+        console.error('Failed to fetch user:', error);
+        setUser(null);
       }
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Login failed.';
-      message.value = msg;
-      error.value = msg;
-      throw err;
     }
-  };
 
-  const logOut = async () => {
-    message.value = 'Logging out...';
-    error.value = '';
-    try {
-      await useApi('logout', { method: 'POST' });
-      isLoggedIn.value = false;
-      authUser.value = null;
-      message.value = 'Logout successful.';
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Logout failed.';
-      message.value = msg;
-      error.value = msg;
-      throw err;
-    }
-  };
+    async function logIn(
+      credentials: { email: string; password: string },
+      language?: string
+    ) {
+      error.value = '';
+      try {
+        const response = await useApi<{
+          success: boolean;
+          user: AuthUser;
+          message?: string;
+        }>('login', {
+          method: 'POST',
+          body: JSON.stringify(credentials),
+          headers: language ? { 'Accept-Language': language } : undefined
+        });
 
-  const register = async (newUser: NewUser) => {
-    message.value = 'Registering...';
-    error.value = '';
-    try {
-      const response = await useApi<{
-        success: boolean;
-        message: string;
-        user: AuthUser;
-      }>('register', {
-        method: 'POST',
-        body: JSON.stringify(newUser)
-      });
-
-      if (response && response.user) {
-        authUser.value = response.user;
-        message.value = response.message || 'Registration successful';
-        isLoggedIn.value = true;
-        authUser.value = response.user;
-        return response.user;
-      } else {
-        message.value = 'Registration processed but user data not returned.';
-        error.value = 'Registration processed but user data not returned.';
+        if (response.success && response.user) {
+          setUser(response.user);
+          error.value = '';
+          return response.user;
+        } else {
+          throw new Error(response.message || 'Login failed');
+        }
+      } catch (err) {
+        const message = err instanceof Error ? err.message : 'Login failed';
+        error.value = message;
+        throw err;
       }
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Registration failed.';
-      message.value = msg;
-      error.value = msg;
-      throw err;
     }
-  };
 
-  return {
-    isLoggedIn,
-    authUser,
-    getAuth,
-    register,
-    logIn,
-    logOut,
-    error
-  };
-});
+    async function register(newUser: NewUser, language?: string) {
+      error.value = '';
+      try {
+        const response = await useApi<{
+          success: boolean;
+          user: AuthUser;
+          message?: string;
+        }>('register', {
+          method: 'POST',
+          body: JSON.stringify(newUser),
+          headers: language ? { 'Accept-Language': language } : undefined
+        });
+
+        if (response.success && response.user) {
+          setUser(response.user);
+          error.value = '';
+          return response.user;
+        } else {
+          throw new Error(response.message || 'Registration failed');
+        }
+      } catch (err) {
+        const message =
+          err instanceof Error ? err.message : 'Registration failed';
+        error.value = message;
+        throw err;
+      }
+    }
+
+    async function logOut() {
+      error.value = '';
+
+      if (!isAuthenticated.value || !user.value) {
+        setUser(null);
+        if (import.meta.client) {
+          const xsrfCookie = useCookie('XSRF-TOKEN');
+          const sessionCookie = useCookie('NitroOctane_session');
+          xsrfCookie.value = null;
+          sessionCookie.value = null;
+        }
+        return;
+      }
+
+      try {
+        await useApi('logout', { method: 'POST' });
+        setUser(null);
+
+        if (import.meta.client) {
+          const xsrfCookie = useCookie('XSRF-TOKEN');
+          const sessionCookie = useCookie('NitroOctane_session');
+          xsrfCookie.value = null;
+          sessionCookie.value = null;
+        }
+      } catch (err) {
+        const message = err instanceof Error ? err.message : 'Logout failed';
+        error.value = message;
+        setUser(null);
+        if (import.meta.client) {
+          const xsrfCookie = useCookie('XSRF-TOKEN');
+          const sessionCookie = useCookie('NitroOctane_session');
+          xsrfCookie.value = null;
+          sessionCookie.value = null;
+        }
+      }
+    }
+
+    return {
+      user,
+      isAuthenticated,
+      error,
+      getUser,
+      setUser,
+      fetchUser,
+      logIn,
+      register,
+      logOut
+    };
+  },
+  {
+    persist: {
+      storage: persistedState.localStorage
+    }
+  }
+);

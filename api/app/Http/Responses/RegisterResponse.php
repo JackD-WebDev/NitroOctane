@@ -31,7 +31,15 @@ class RegisterResponse implements RegisterResponseContract
         
         return $this->responseHelper->requestResponse(
             [
-                'user' => $user,
+                'user' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'username' => $user->username,
+                    'preferred_language' => $user->lang,
+                    'email' => $user->email,
+                    'created_at' => $user->created_at,
+                    'updated_at' => $user->updated_at,
+                ],
                 'redirect_url' => rtrim(config('app.frontend_url'), '/') . '/login',
             ],
             __('auth.register.success', ['username' => $username]),

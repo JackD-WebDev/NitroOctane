@@ -7,6 +7,67 @@ interface ApiRequestOptions {
 }
 
 export default defineEventHandler(async (event) => {
+  // Supported locales for backend. Keep in sync with nuxt.config.ts and locales/ files.
+  const SUPPORTED_LOCALES = ['en_US', 'es_US', 'fr_US', 'tl_US'] as const;
+
+  const normalizeLocale = (
+    code?: string | null
+  ): (typeof SUPPORTED_LOCALES)[number] | null => {
+    if (!code) return null;
+    let c = code.trim();
+    // Replace hyphen with underscore and ensure region is uppercase
+    c = c.replace('-', '_');
+    if (c.includes('_')) {
+      const [lang, region] = c.split('_');
+      const normalized = `${lang.toLowerCase()}_${(
+        region || 'US'
+      ).toUpperCase()}`;
+      return (SUPPORTED_LOCALES as readonly string[]).includes(normalized)
+        ? (normalized as (typeof SUPPORTED_LOCALES)[number])
+        : null;
+    }
+    // Short language only, map to *_US
+    const short = `${c.toLowerCase()}_US`;
+    return (SUPPORTED_LOCALES as readonly string[]).includes(short)
+      ? (short as (typeof SUPPORTED_LOCALES)[number])
+      : null;
+  };
+
+  const detectPreferredLocale = (): (typeof SUPPORTED_LOCALES)[number] => {
+    // 1) nuxt-i18n cookie (common names)
+    const cookieLang =
+      getCookie(event, 'i18n_redirected') ||
+      getCookie(event, 'locale') ||
+      getCookie(event, 'nuxt_i18n.locale') ||
+      null;
+    const fromCookie = normalizeLocale(cookieLang);
+    if (fromCookie) return fromCookie;
+
+    // 2) Referer path prefix (/es_US/..., /es/..., etc.)
+    const referer = getHeader(event, 'referer');
+    if (referer) {
+      try {
+        const url = new URL(referer);
+        const seg = url.pathname.split('/').filter(Boolean)[0] || '';
+        const fromRef = normalizeLocale(seg);
+        if (fromRef) return fromRef;
+      } catch {
+        // ignore invalid referer
+      }
+    }
+
+    // 3) Accept-Language header (e.g., en-US,en;q=0.9)
+    const accept = getHeader(event, 'accept-language');
+    if (accept) {
+      const primary = accept.split(',')[0]?.trim();
+      const fromHeader = normalizeLocale(primary);
+      if (fromHeader) return fromHeader;
+    }
+
+    // 4) Fallback
+    return 'en_US';
+  };
+
   const ensureCsrfToken = async (): Promise<string> => {
     const existingToken = getCookie(event, 'XSRF-TOKEN');
 
@@ -62,6 +123,7 @@ export default defineEventHandler(async (event) => {
     options: ApiRequestOptions = {}
   ) => {
     const csrfToken = await ensureCsrfToken();
+    const preferredLocale = detectPreferredLocale();
 
     const requestHeaders: Record<string, string> = {
       'Content-Type': 'application/json',
@@ -69,6 +131,11 @@ export default defineEventHandler(async (event) => {
       'X-XSRF-TOKEN': csrfToken,
       ...((options.headers as Record<string, string>) || {})
     };
+
+    // Ensure backend receives a normalized Accept-Language header
+    if (!('Accept-Language' in requestHeaders)) {
+      requestHeaders['Accept-Language'] = preferredLocale;
+    }
 
     const cookieHeader = getHeader(event, 'cookie');
     if (cookieHeader) {

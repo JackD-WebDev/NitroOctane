@@ -1,0 +1,37 @@
+{
+  "navbar": {
+    "home": "Inicio",
+    "login": "Iniciar Sesión",
+    "register": "Registrarse",
+    "account": "Cuenta",
+    "logout": "Cerrar Sesión"
+  },
+  "register": {
+    "title": "Registrarse",
+    "firstname": "Nombre",
+    "middlename": "Segundo Nombre",
+    "lastname": "Apellido",
+    "username": "Nombre de Usuario",
+    "email": "Correo Electrónico",
+    "password": "Contraseña",
+    "confirm_password": "Confirmar Contraseña",
+    "submit": "Registrarse"
+  },
+  "account": {
+    "username": "Nombre de Usuario",
+    "email": "Correo Electrónico",
+    "loading": "Cargando información del usuario..."
+  },
+  "status": {
+    "title": "Estado",
+    "health": {
+      "passed": "La verificación de salud pasó.",
+      "failed": "No se pudo recuperar el estado de salud.",
+      "loading": "Cargando..."
+    }
+  },
+  "layout": {
+    "title": "Diseño",
+    "copyright": "Todos los derechos reservados."
+  }
+}

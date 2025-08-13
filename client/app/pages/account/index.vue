@@ -1,30 +1,28 @@
 <script setup lang="ts">
-const pageTitle = 'ACCOUNT';
+const { t } = useI18n();
 definePageMeta({
   middleware: ['auth'],
-  title: pageTitle
+  title: 'Account'
 });
-useAppTitle(pageTitle);
+useAppTitle(t('navbar.account'));
 
 const authStore = useAuthStore();
-const router = useRouter();
-
-onMounted(() => {
-  if (!authStore.isLoggedIn || !authStore.getAuth) {
-    router.replace('/login');
-  }
-});
 </script>
 
 <template>
   <div>
-    <h2>ACCOUNT</h2>
-    <div v-if="authStore.getAuth">
-      <p><strong>Username:</strong> {{ authStore.getAuth.username }}</p>
-      <p><strong>Email:</strong> {{ authStore.getAuth.email }}</p>
+    <h2>{{ t('navbar.account').toUpperCase() }}</h2>
+    <div v-if="authStore.user">
+      <p>
+        <strong>{{ t('register.username') }}:</strong>
+        {{ authStore.user.username }}
+      </p>
+      <p>
+        <strong>{{ t('register.email') }}:</strong> {{ authStore.user.email }}
+      </p>
     </div>
     <div v-else>
-      <p>Loading user info...</p>
+      <p>{{ t('account.loading') }}</p>
     </div>
   </div>
 </template>

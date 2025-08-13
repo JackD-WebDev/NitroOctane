@@ -1,10 +1,12 @@
 <script setup lang="ts">
+const { t } = useI18n();
 const health = ref<HealthResponse | null>(null);
 const messageStore = useMessageStore();
 const { message } = storeToRefs(messageStore);
-if (!message.value) {
-  messageStore.setMessage('LOADING...');
-}
+if (!message.value) messageStore.setStatus('loading');
+const statusLetters = computed(() =>
+  Array.from(t('status.title').toUpperCase())
+);
 
 const fetchHealthStatus = async () => {
   try {
@@ -12,62 +14,76 @@ const fetchHealthStatus = async () => {
     const result = HealthResponseSchema.safeParse(data);
     if (!result.success) {
       health.value = null;
-      messageStore.setMessage('FAILED TO RETRIEVE HEALTH STATUS');
+      messageStore.setStatus('failed');
       return;
     }
     health.value = data;
     messageStore.setMessage(data.message);
-  } catch (error) {
-    console.error('Health check failed:', error);
+    messageStore.setStatus('passed');
+  } catch {
     health.value = null;
-    messageStore.setMessage('FAILED TO RETRIEVE HEALTH STATUS');
+    messageStore.setStatus('failed');
   }
 };
 
 onMounted(() => {
   fetchHealthStatus();
-  setInterval(fetchHealthStatus, 60000);
+  const id = setInterval(fetchHealthStatus, 60000);
+  onBeforeUnmount(() => clearInterval(id));
 });
 </script>
 
 <template>
-  <div>
+  <div class="connection-status">
     <label>
-      <span :style="{ '--index': 1 }">S</span>
-      <span :style="{ '--index': 2 }">T</span>
-      <span :style="{ '--index': 3 }">A</span>
-      <span :style="{ '--index': 4 }">T</span>
-      <span :style="{ '--index': 5 }">U</span>
-      <span :style="{ '--index': 6 }">S</span>
+      <ul>
+        <li
+          v-for="(letter, index) in statusLetters"
+          :key="index"
+          :style="{ '--index': index + 1 }"
+        >
+          {{ letter }}
+        </li>
+      </ul>
     </label>
     <div
       :class="{
         dot: true,
         reddot: !health,
-        orangedot: health && message !== 'HEALTH CHECK PASSED.',
-        greendot: health && message === 'HEALTH CHECK PASSED.'
+        orangedot: health && messageStore.status !== 'passed',
+        greendot: health && messageStore.status === 'passed'
       }"
     />
   </div>
 </template>
 
 <style lang="scss" scoped>
+.connection-status {
+  position: relative;
+}
+
 label {
   font-size: 0.8rem;
   display: block;
   text-align: center;
   font-weight: 900;
-  position: relative;
+  position: absolute;
   width: 100%;
   rotate: -104deg;
+  left: 0.45rem;
 }
 
-label span {
+label li {
   font-size: 0.75rem;
   position: absolute;
   top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) rotate(calc(180deg / 6 * var(--index)))
+  left: calc(50% + 0.3rem);
+  transform: translate(-50%, -50%)
+    rotate(
+      calc(
+        180deg / v-bind('statusLetters.length') * (var(--index) - 0.5) + 15deg
+      )
+    )
     translateY(calc(var(--radius, 3) * -1ch));
 }
 

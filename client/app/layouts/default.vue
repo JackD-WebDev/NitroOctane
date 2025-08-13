@@ -1,14 +1,17 @@
 <script setup lang="ts">
+const { t } = useI18n();
 const { fullAppTitle } = useRuntimeConfig().public;
 const { applicationName } = useRuntimeConfig().public;
 
-const copyright = `${new Date().getFullYear()} ${applicationName}. All rights reserved.`;
+const copyright = `${new Date().getFullYear()} ${applicationName}. ${t(
+  'layout.copyright'
+).toUpperCase()}`;
 </script>
 
 <template>
   <div>
     <NavBar />
-    <h1>LAYOUT</h1>
+    <h1>{{ t('layout.title').toUpperCase() }}</h1>
 
     <slot />
     <footer>

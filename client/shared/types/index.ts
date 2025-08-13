@@ -12,6 +12,13 @@ import type {
 
 declare module '@pinia/testing';
 
+export const SupportedLocaleSchema = z.enum([
+  'en_US',
+  'es_US',
+  'fr_US',
+  'tl_US'
+]);
+
 export const FetchMethodSchema = z.union([
   z.literal('DELETE'),
   z.literal('GET'),
@@ -47,6 +54,7 @@ export type UserResponse = z.infer<typeof UserResonseSchema>;
 export type ErrorResponse = z.infer<typeof ErrorResponseSchema>;
 export type LogoutResponse = z.infer<typeof LogoutResponseSchema>;
 export type HealthResponse = z.infer<typeof HealthResponseSchema>;
+export type SupportedLocale = z.infer<typeof SupportedLocaleSchema>;
 export type LoggedInUserResponse = z.infer<typeof LoggedInUserResponseSchema>;
 export type RegisteredUserResponse = z.infer<
   typeof RegisteredUserResponseSchema

@@ -1,0 +1,35 @@
+{
+  "navbar": {
+    "home": "Tahanan",
+    "login": "Mag-log In",
+    "register": "Magparehistro",
+    "account": "Aking Account",
+    "logout": "Mag-Log Out"
+  },
+  "register": {
+    "title": "Magparehistro",
+    "firstname": "Unang Pangalan",
+    "middlename": "Gitnang Pangalan",
+    "lastname": "Apelyido",
+    "username": "Pangalan ng Gumagamit",
+    "email": "Sulatroniko",
+    "password": "Hudyat",
+    "confirm_password": "Kumpirmahin ang Password",
+    "submit": "Magparehistro"
+  },
+  "account": {
+    "loading": "Naglo-load ng impormasyon ng user..."
+  },
+  "status": {
+    "title": "Katayuan",
+    "health": {
+      "passed": "Ang pagsusuri ng kalusugan ay pumasa.",
+      "failed": "Nabigo ang pagkuha ng katayuan ng kalusugan.",
+      "loading": "Naglo-load..."
+    }
+  },
+  "layout": {
+    "title": "Ayos",
+    "copyright": "Lahat ng karapatan ay nakalaan."
+  }
+}

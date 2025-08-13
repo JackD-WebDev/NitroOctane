@@ -20,6 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
             '10.0.0.0/8',
             '*', // Trust all proxies in Docker environment
         ]);
+        $middleware->append(\App\Http\Middleware\LocalizationResponse::class);
         $middleware->append(\App\Http\Middleware\ProfileJsonResponse::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

@@ -10,8 +10,8 @@ export default defineEventHandler(async (event) => {
       message: 'Failed to retrieve user',
       errors: {
         title: 'User Error',
-        details: [errorMessage],
-      },
+        details: [errorMessage]
+      }
     };
   }
 });

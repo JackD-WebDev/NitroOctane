@@ -13,6 +13,7 @@ export const AuthUserSchema = z.object({
   id: TUUID,
   name: z.string().optional(),
   username: z.string(),
+  preferred_language: z.string().default('en_US'),
   email: z.string().email(),
   created_at: TDate.optional(),
   updated_at: TDate.optional()

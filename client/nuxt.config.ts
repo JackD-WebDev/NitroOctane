@@ -8,7 +8,6 @@ export default defineNuxtConfig({
   modules: [
     '@pinia/nuxt',
     '@pinia-plugin-persistedstate/nuxt',
-    '@nuxtjs/i18n',
     '@vueuse/nuxt',
     '@nuxt/test-utils/module',
     '@nuxt/image',
@@ -19,12 +18,35 @@ export default defineNuxtConfig({
     '@formkit/nuxt',
     'nuxt-purgecss',
     '@nuxt/scripts',
-    'nuxt-zod-i18n'
+    '@nuxtjs/i18n'
   ],
   image: {},
   eslint: {},
   formkit: {
     autoImport: true
+  },
+  i18n: {
+    strategy: 'prefix_except_default',
+    defaultLocale: 'en_US',
+    langDir: 'locales',
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'i18n_redirected',
+      redirectOn: 'root',
+      alwaysRedirect: false
+    },
+    locales: [
+      { code: 'en_US', iso: 'en-US', name: 'English (US)', file: 'en_US.json' },
+      { code: 'es_US', iso: 'es-US', name: 'Español (US)', file: 'es_US.json' },
+      {
+        code: 'fr_US',
+        iso: 'fr-US',
+        name: 'Français (US)',
+        file: 'fr_US.json'
+      },
+      { code: 'tl_US', iso: 'tl-US', name: 'Tagalog (US)', file: 'tl_US.json' }
+    ],
+    vueI18n: './i18n.config.ts'
   },
   pwa: {
     manifest: {
@@ -34,10 +56,6 @@ export default defineNuxtConfig({
       theme_color: '#5f0',
       lang: 'en'
     }
-  },
-  i18n: {
-    locales: ['en', 'es'],
-    defaultLocale: 'en'
   },
   nitro: {
     externals: {
@@ -52,7 +70,7 @@ export default defineNuxtConfig({
     }
   },
   imports: {
-    dirs: ['~/types']
+    dirs: ['~/types', '~/shared/types']
   },
   experimental: {
     cookieStore: true

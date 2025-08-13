@@ -30,10 +30,12 @@ class UserResource extends JsonResource
                     'has2FA' => (bool)$this->two_factor_secret,
                 ]),
                 'attributes' => [
+                    'name' => $this->name,
                     'username' => $this->username,
                     $this->mergeWhen(auth()->check() && auth()->id() == $this->id, [
                         'email' => $this->email
                     ]),
+                    'preferred_language' => $this->lang,
                     'created_at_dates' => [
                         'created_at_human' => $this->created_at->diffForHumans(),
                         'created_at' => $this->created_at

@@ -15,8 +15,10 @@ it('returns the correct JSON structure after successful registration', function 
 
     $response = $this->post('/api/register', [
         'firstname' => 'Test',
+        'middlename' => 'Middle',
         'lastname' => 'User',
         'username' => 'testuser1',
+        'preferred_language' => 'en',
         'email' => 'testuser@example.com',
         'password' => 'Password123!',
         'password_confirmation' => 'Password123!',
@@ -34,6 +36,7 @@ it('returns the correct JSON structure after successful registration', function 
                 'id',
                 'name',
                 'username',
+                'preferred_language',
                 'email',
                 'created_at',
                 'updated_at',

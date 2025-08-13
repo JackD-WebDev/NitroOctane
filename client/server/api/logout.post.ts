@@ -13,7 +13,7 @@ export default defineEventHandler(
         maxAge: 0
       };
 
-      deleteCookie(event, 'laravel_session', cookieOptions);
+      deleteCookie(event, 'NitroOctane_session', cookieOptions);
       deleteCookie(event, 'XSRF-TOKEN', cookieOptions);
 
       return LogoutResponseSchema.parse(response);
@@ -26,7 +26,7 @@ export default defineEventHandler(
         maxAge: 0
       };
 
-      deleteCookie(event, 'laravel_session', cookieOptions);
+      deleteCookie(event, 'NitroOctane_session', cookieOptions);
       deleteCookie(event, 'XSRF-TOKEN', cookieOptions);
 
       throw error;

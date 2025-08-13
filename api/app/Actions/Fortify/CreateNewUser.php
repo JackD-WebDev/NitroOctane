@@ -26,6 +26,7 @@ class CreateNewUser implements CreatesNewUsers
             'username' => 'required|string|min:3|max:50|unique:users',
             'email' => 'required|string|email|min:5|max:320|unique:users',
             'password' => $this->passwordRules(),
+            'lang' => 'sometimes|string|in:en_US,es_US,fr_CA',
         ])->validate();
 
         $name = implode(' ', array_filter([
@@ -39,6 +40,7 @@ class CreateNewUser implements CreatesNewUsers
             'username' => $input['username'],
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
+            'lang' => $input['lang'] ?? 'en',
         ]);
     }
 }

@@ -121,6 +121,7 @@ describe('Auth', () => {
     id: number;
     name: string;
     username: string;
+    preferred_language: string;
     email: string;
     created_at: string;
     updated_at: string;
@@ -347,6 +348,7 @@ describe('Auth', () => {
       id: 1,
       name: 'TestUser_1',
       username: 'testuser1',
+      preferred_language: 'en',
       email: 'testuser@example.com',
       created_at: '2025-01-01',
       updated_at: '2025-01-01'

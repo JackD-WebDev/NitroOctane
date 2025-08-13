@@ -1,10 +1,11 @@
 <script setup lang="ts">
-const pageTitle = 'REGISTER';
+const { t, locale } = useI18n();
+
 definePageMeta({
-  title: pageTitle,
+  title: 'Register',
   middleware: ['guest']
 });
-useAppTitle(pageTitle);
+useAppTitle(t('navbar.register'));
 
 const firstname = ref('');
 const middlename = ref('');
@@ -13,8 +14,8 @@ const email = ref('');
 const username = ref('');
 const password = ref('');
 const confirmPassword = ref('');
+
 const authStore = useAuthStore();
-const router = useRouter();
 
 const newUser = computed(() => ({
   email: email.value,
@@ -22,19 +23,21 @@ const newUser = computed(() => ({
   middlename: middlename.value,
   lastname: lastname.value,
   username: username.value,
+  lang: locale.value,
   password: password.value,
   password_confirmation: confirmPassword.value
 }));
 
 const register = async () => {
   try {
-    await authStore.register(newUser.value);
-    router.push('/');
+    await authStore.register(newUser.value, locale.value);
+    const localizedNavigate = useLocalizedNavigate();
+    await localizedNavigate('/account');
   } catch (e: unknown) {
     if (e instanceof Error) {
       authStore.error = e.message;
     } else {
-      authStore.error = 'Network error';
+      authStore.error = t('register.network_error');
     }
   }
 };
@@ -42,23 +45,23 @@ const register = async () => {
 
 <template>
   <div>
-    <h2>REGISTER</h2>
+    <h2>{{ t('navbar.register').toUpperCase() }}</h2>
     <form @submit.prevent="register">
-      <label for="firstname">FIRST NAME</label>
+      <label for="firstname">{{ t('register.firstname') }}</label>
       <input id="firstname" v-model="firstname" type="text" />
-      <label for="middlename">MIDDLE NAME</label>
+      <label for="middlename">{{ t('register.middlename') }}</label>
       <input id="middlename" v-model="middlename" type="text" />
-      <label for="lastname">LAST NAME</label>
+      <label for="lastname">{{ t('register.lastname') }}</label>
       <input id="lastname" v-model="lastname" type="text" />
-      <label for="username">USERNAME</label>
+      <label for="username">{{ t('register.username') }}</label>
       <input id="username" v-model="username" type="text" />
-      <label for="email">EMAIL</label>
+      <label for="email">{{ t('register.email') }}</label>
       <input id="email" v-model="email" type="email" />
-      <label for="password">PASSWORD</label>
+      <label for="password">{{ t('register.password') }}</label>
       <input id="password" v-model="password" type="password" />
-      <label for="confirmPassword">CONFIRM PASSWORD</label>
+      <label for="confirmPassword">{{ t('register.confirm_password') }}</label>
       <input id="confirmPassword" v-model="confirmPassword" type="password" />
-      <button type="submit">REGISTER</button>
+      <button type="submit">{{ t('register.submit') }}</button>
       <div v-if="authStore.error" style="color: red; margin-top: 1rem">
         {{ authStore.error }}
       </div>

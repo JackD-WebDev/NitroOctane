@@ -12,11 +12,11 @@ import type {
 
 declare module '@pinia/testing';
 
-export const SupportedLocaleSchema = z.enum([
-  'en_US',
-  'es_US',
-  'fr_US',
-  'tl_US'
+export const SupportedLocaleSchema = z.union([
+  z.literal('en_US'),
+  z.literal('es_US'),
+  z.literal('fr_US'),
+  z.literal('tl_US')
 ]);
 
 export const FetchMethodSchema = z.union([

@@ -7,15 +7,18 @@ interface ApiRequestOptions {
 }
 
 export default defineEventHandler(async (event) => {
-  // Supported locales for backend. Keep in sync with nuxt.config.ts and locales/ files.
-  const SUPPORTED_LOCALES = ['en_US', 'es_US', 'fr_US', 'tl_US'] as const;
+  const SUPPORTED_LOCALES: SupportedLocale[] = [
+    'en_US',
+    'es_US',
+    'fr_US',
+    'tl_US'
+  ] as const;
 
   const normalizeLocale = (
     code?: string | null
   ): (typeof SUPPORTED_LOCALES)[number] | null => {
     if (!code) return null;
     let c = code.trim();
-    // Replace hyphen with underscore and ensure region is uppercase
     c = c.replace('-', '_');
     if (c.includes('_')) {
       const [lang, region] = c.split('_');
@@ -26,7 +29,6 @@ export default defineEventHandler(async (event) => {
         ? (normalized as (typeof SUPPORTED_LOCALES)[number])
         : null;
     }
-    // Short language only, map to *_US
     const short = `${c.toLowerCase()}_US`;
     return (SUPPORTED_LOCALES as readonly string[]).includes(short)
       ? (short as (typeof SUPPORTED_LOCALES)[number])
@@ -34,7 +36,6 @@ export default defineEventHandler(async (event) => {
   };
 
   const detectPreferredLocale = (): (typeof SUPPORTED_LOCALES)[number] => {
-    // 1) nuxt-i18n cookie (common names)
     const cookieLang =
       getCookie(event, 'i18n_redirected') ||
       getCookie(event, 'locale') ||
@@ -43,7 +44,6 @@ export default defineEventHandler(async (event) => {
     const fromCookie = normalizeLocale(cookieLang);
     if (fromCookie) return fromCookie;
 
-    // 2) Referer path prefix (/es_US/..., /es/..., etc.)
     const referer = getHeader(event, 'referer');
     if (referer) {
       try {
@@ -52,11 +52,13 @@ export default defineEventHandler(async (event) => {
         const fromRef = normalizeLocale(seg);
         if (fromRef) return fromRef;
       } catch {
-        // ignore invalid referer
+        const { pathname } = getRequestURL(event);
+        const firstSeg = pathname.split('/').filter(Boolean)[0] || '';
+        const fromPath = normalizeLocale(firstSeg);
+        if (fromPath) return fromPath;
       }
     }
 
-    // 3) Accept-Language header (e.g., en-US,en;q=0.9)
     const accept = getHeader(event, 'accept-language');
     if (accept) {
       const primary = accept.split(',')[0]?.trim();
@@ -64,7 +66,6 @@ export default defineEventHandler(async (event) => {
       if (fromHeader) return fromHeader;
     }
 
-    // 4) Fallback
     return 'en_US';
   };
 
@@ -132,7 +133,6 @@ export default defineEventHandler(async (event) => {
       ...((options.headers as Record<string, string>) || {})
     };
 
-    // Ensure backend receives a normalized Accept-Language header
     if (!('Accept-Language' in requestHeaders)) {
       requestHeaders['Accept-Language'] = preferredLocale;
     }

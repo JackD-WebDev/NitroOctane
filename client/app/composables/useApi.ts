@@ -31,12 +31,12 @@ export function useApi<T = unknown>(
     };
 
     try {
-      return await $fetch<T>(apiEndpoint, {
+      return (await $fetch<T>(apiEndpoint, {
         method: method as FetchMethod,
         headers: { ...defaults.headers, ...headers },
         body,
         ...restOptions
-      }) as T;
+      })) as T;
     } catch (error: unknown) {
       const errorObj = error as { status?: number; statusText?: string };
       if (

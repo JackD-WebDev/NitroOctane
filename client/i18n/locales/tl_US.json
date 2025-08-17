@@ -4,7 +4,8 @@
     "login": "Mag-log In",
     "register": "Magparehistro",
     "account": "Aking Account",
-    "logout": "Mag-Log Out"
+    "logout": "Mag-Log Out",
+    "logout_failed": "Nabigo ang pag-logout, subukan muli."
   },
   "register": {
     "title": "Magparehistro",

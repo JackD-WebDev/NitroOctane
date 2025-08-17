@@ -4,7 +4,8 @@
     "login": "Log In",
     "register": "Register",
     "account": "Account",
-    "logout": "Log Out"
+    "logout": "Log Out",
+    "logout_failed": "Failed to log out, please try again."
   },
   "register": {
     "firstname": "First Name",

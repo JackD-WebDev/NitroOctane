@@ -38,8 +38,9 @@ const BASE_LINKS = computed<NavLink[]>(() => [
         await authStore.logOut();
         const localizedNavigate = useLocalizedNavigate();
         await localizedNavigate('/');
-      } catch (error) {
-        console.error('Logout failed:', error);
+      } catch {
+        const messageStore = useMessageStore();
+        messageStore.setMessage($t('navbar.logout_failed'));
       }
     },
     path: '',

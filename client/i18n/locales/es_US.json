@@ -4,7 +4,8 @@
     "login": "Iniciar Sesión",
     "register": "Registrarse",
     "account": "Cuenta",
-    "logout": "Cerrar Sesión"
+    "logout": "Cerrar Sesión",
+    "logout_failed": "Error al cerrar sesión, inténtalo de nuevo."
   },
   "register": {
     "title": "Registrarse",

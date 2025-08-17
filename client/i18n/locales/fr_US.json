@@ -4,7 +4,8 @@
     "login": "Se connecter",
     "register": "S'inscrire",
     "account": "Mon compte",
-    "logout": "Se déconnecter"
+    "logout": "Se déconnecter",
+    "logout_failed": "Échec de la déconnexion, veuillez réessayer."
   },
   "register": {
     "title": "S'inscrire",

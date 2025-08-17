@@ -1,4 +1,4 @@
-export const useMessageStore = defineStore('message', () => {
+export const useMessageStore = defineStore('MessageStore', () => {
   const { t, locale } = useI18n();
 
   const status = ref<'loading' | 'failed' | 'passed' | null>('loading');

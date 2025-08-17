@@ -1,5 +1,5 @@
 export const useAuthStore = defineStore(
-  'authStore',
+  'AuthStore',
   () => {
     const user = ref<AuthUser | null>(null);
     const isAuthenticated = ref(false);

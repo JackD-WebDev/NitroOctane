@@ -9,6 +9,7 @@ import type {
   LoggedInUserResponseSchema,
   RegisteredUserResponseSchema
 } from './user';
+import type { createRegisterSchema } from './forms';
 
 declare module '@pinia/testing';
 
@@ -55,6 +56,7 @@ export type ErrorResponse = z.infer<typeof ErrorResponseSchema>;
 export type LogoutResponse = z.infer<typeof LogoutResponseSchema>;
 export type HealthResponse = z.infer<typeof HealthResponseSchema>;
 export type SupportedLocale = z.infer<typeof SupportedLocaleSchema>;
+export type Register = z.infer<ReturnType<typeof createRegisterSchema>>;
 export type LoggedInUserResponse = z.infer<typeof LoggedInUserResponseSchema>;
 export type RegisteredUserResponse = z.infer<
   typeof RegisteredUserResponseSchema

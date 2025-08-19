@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { createZodPlugin } from '@formkit/zod';
+
 const { t, locale } = useI18n();
 definePageMeta({
   title: 'Login',
@@ -8,77 +10,63 @@ useAppTitle(t('navbar.login'));
 
 const authStore = useAuthStore();
 
-const email = ref('');
-const password = ref('');
+const loginSchema = createLoginSchema();
 
-const fieldName = {
-  email: t('register.email'),
-  password: t('register.password')
-};
+const [zodPlugin, submitHandler] = createZodPlugin(
+  loginSchema,
+  async (formData) => {
+    authStore.error = '';
 
-const credentials = computed(() => ({
-  email: email.value,
-  password: password.value
-}));
-
-const clearForm = () => {
-  email.value = '';
-  password.value = '';
-};
-
-const login = async () => {
-  authStore.error = '';
-
-  try {
-    const user = await authStore.logIn(credentials.value, locale.value);
-    if (user) {
-      clearForm();
-      const localizedNavigate = useLocalizedNavigate();
-      await localizedNavigate('/account');
-    }
-  } catch (e: unknown) {
-    if (e instanceof Error) {
-      authStore.error = e.message;
-    } else {
-      authStore.error = 'Network error';
+    try {
+      const user = await authStore.logIn(formData, locale.value);
+      if (user) {
+        const localizedNavigate = useLocalizedNavigate();
+        await localizedNavigate('/account');
+      }
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        authStore.error = e.message;
+      } else {
+        authStore.error = t('login.network_error');
+      }
     }
   }
-};
+);
 </script>
 
 <template>
   <div>
     <h2>{{ t('navbar.login').toUpperCase() }}</h2>
-    <form @submit.prevent="login">
+    <FormKit
+      type="form"
+      :plugins="[zodPlugin]"
+      :actions="false"
+      @submit="submitHandler"
+    >
       <div v-if="authStore.error" class="error">
         {{ authStore.error }}
       </div>
-      <label for="email">{{ fieldName.email }}</label>
-      <input
-        id="email"
-        v-model="email"
+      <FormKit
         type="email"
-        :placeholder="fieldName.email"
+        name="email"
+        :label="t('register.email').toUpperCase()"
+        validation="required|email"
+        :placeholder="t('register.email')"
       />
-      <label for="password">{{ fieldName.password }}</label>
-      <input
-        id="password"
-        v-model="password"
+      <FormKit
         type="password"
-        :placeholder="fieldName.password"
+        name="password"
+        :label="t('register.password').toUpperCase()"
+        validation="required|length:6"
+        :placeholder="t('register.password')"
+        style="margin-bottom: 2rem"
       />
-      <button type="submit">{{ t('navbar.login') }}</button>
-    </form>
+      <FormKit type="submit">{{ t('navbar.login').toUpperCase() }}</FormKit>
+    </FormKit>
   </div>
 </template>
 
 <style scoped>
-form {
-  display: flex;
-  flex-direction: column;
-  max-width: 400px;
-}
-
 .error {
   color: red;
   background-color: #ffe6e6;
@@ -88,27 +76,7 @@ form {
   margin-bottom: 1rem;
 }
 
-label {
-  margin-top: 1.2rem;
-}
-
-input {
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 0.4rem;
-}
-
-button {
-  margin-top: 3.8rem;
-  padding: 8px;
-  background-color: #00ff08b8;
-  color: white;
-  border: 1px solid #ddffdeb8;
-  border-radius: 0.4rem;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #009c06;
+form {
+  max-width: 400px;
 }
 </style>

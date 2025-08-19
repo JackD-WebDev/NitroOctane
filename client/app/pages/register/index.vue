@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { createZodPlugin } from '@formkit/zod';
+
 const { t, locale } = useI18n();
+const authStore = useAuthStore();
 
 definePageMeta({
   title: 'Register',
@@ -7,96 +10,108 @@ definePageMeta({
 });
 useAppTitle(t('navbar.register'));
 
-const firstname = ref('');
-const middlename = ref('');
-const lastname = ref('');
-const email = ref('');
-const username = ref('');
-const password = ref('');
-const confirmPassword = ref('');
+const registerSchema = createRegisterSchema();
+const registerSchemaWithConfirm = registerSchema.refine(
+  (data) => data.password === data.confirmPassword,
+  {
+    message: t('register.validation.passwords_must_match'),
+    path: ['confirmPassword']
+  }
+);
 
-const authStore = useAuthStore();
-
-const newUser = computed(() => ({
-  email: email.value,
-  firstname: firstname.value,
-  middlename: middlename.value,
-  lastname: lastname.value,
-  username: username.value,
-  lang: locale.value,
-  password: password.value,
-  password_confirmation: confirmPassword.value
-}));
-
-const register = async () => {
-  try {
-    await authStore.register(newUser.value, locale.value);
-    const localizedNavigate = useLocalizedNavigate();
-    await localizedNavigate('/account');
-  } catch (e: unknown) {
-    if (e instanceof Error) {
-      authStore.error = e.message;
-    } else {
-      authStore.error = t('register.network_error');
+const [zodPlugin, submitHandler] = createZodPlugin(
+  registerSchemaWithConfirm,
+  async (formData) => {
+    try {
+      await authStore.register(
+        {
+          ...formData,
+          password_confirmation: formData.confirmPassword
+        },
+        locale.value
+      );
+      const localizedNavigate = useLocalizedNavigate();
+      await localizedNavigate('/account');
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        authStore.error = e.message;
+      } else {
+        authStore.error = t('register.network_error');
+      }
     }
   }
-};
+);
 </script>
 
 <template>
   <div>
     <h2>{{ t('navbar.register').toUpperCase() }}</h2>
-    <form @submit.prevent="register">
-      <label for="firstname">{{ t('register.firstname') }}</label>
-      <input id="firstname" v-model="firstname" type="text" />
-      <label for="middlename">{{ t('register.middlename') }}</label>
-      <input id="middlename" v-model="middlename" type="text" />
-      <label for="lastname">{{ t('register.lastname') }}</label>
-      <input id="lastname" v-model="lastname" type="text" />
-      <label for="username">{{ t('register.username') }}</label>
-      <input id="username" v-model="username" type="text" />
-      <label for="email">{{ t('register.email') }}</label>
-      <input id="email" v-model="email" type="email" />
-      <label for="password">{{ t('register.password') }}</label>
-      <input id="password" v-model="password" type="password" />
-      <label for="confirmPassword">{{ t('register.confirm_password') }}</label>
-      <input id="confirmPassword" v-model="confirmPassword" type="password" />
-      <button type="submit">{{ t('register.submit') }}</button>
+    <FormKit
+      type="form"
+      :plugins="[zodPlugin]"
+      :actions="false"
+      @submit="submitHandler"
+    >
+      <FormKit
+        type="text"
+        name="firstname"
+        :label="t('register.firstname').toUpperCase()"
+        validation="required"
+        :placeholder="t('register.firstname')"
+      />
+      <FormKit
+        type="text"
+        name="middlename"
+        :label="t('register.middlename').toUpperCase()"
+        :placeholder="t('register.middlename')"
+      />
+      <FormKit
+        type="text"
+        name="lastname"
+        :label="t('register.lastname').toUpperCase()"
+        validation="required"
+        :placeholder="t('register.lastname')"
+      />
+      <FormKit
+        type="text"
+        name="username"
+        :label="t('register.username').toUpperCase()"
+        validation="required|length:3"
+        :placeholder="t('register.username')"
+      />
+      <FormKit
+        type="email"
+        name="email"
+        :label="t('register.email').toUpperCase()"
+        validation="required|email"
+        :placeholder="t('register.email')"
+      />
+      <FormKit
+        type="password"
+        name="password"
+        :label="t('register.password').toUpperCase()"
+        validation="required|length:6"
+        :placeholder="t('register.password')"
+      />
+      <FormKit
+        type="password"
+        name="confirmPassword"
+        :label="t('register.confirm_password').toUpperCase()"
+        validation="required"
+        :placeholder="t('register.confirm_password')"
+      />
+      <FormKit type="submit" style="margin-top: 2rem">{{
+        t('register.submit').toUpperCase()
+      }}</FormKit>
       <div v-if="authStore.error" style="color: red; margin-top: 1rem">
         {{ authStore.error }}
       </div>
-    </form>
+    </FormKit>
   </div>
 </template>
 
 <style scoped>
 form {
-  display: flex;
-  flex-direction: column;
   max-width: 400px;
-}
-
-label {
-  margin-top: 1.2rem;
-}
-
-input {
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 0.4rem;
-}
-
-button {
-  margin-top: 3.8rem;
-  padding: 8px;
-  background-color: #00ff08b8;
-  color: white;
-  border: 1px solid #ddffdeb8;
-  border-radius: 0.4rem;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #009c06;
 }
 </style>

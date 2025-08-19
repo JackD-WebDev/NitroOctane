@@ -1,7 +1,7 @@
 button,
 .btn {
 	color: var(--primary-color);
-	background-color: black;
+	background-color: var(--button-bg);
 	border: solid 5px;
 	padding: (0.8rem) (1rem);
 	text-align: center;
@@ -14,5 +14,27 @@ button,
 
 button:hover,
 .btn:hover {
-	color: white;
+	color: var(--button-text);
+}
+
+.btn-nav {
+	color: var(--primary-color);
+	background-color: var(--button-bg);
+	border: 5px solid var(--form-border);
+	border-radius: 0.4rem;
+	padding: 8px 16px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	margin: 4px 2px;
+	cursor: pointer;
+	font-weight: 600;
+	font-size: 1.6rem;
+	transition: background-color 0.2s, border-color 0.2s;
+}
+
+.btn-nav:hover {
+	background-color: var(--form-hover-bg);
+	border-color: var(--form-border);
+	color: var(--button-text);
 }

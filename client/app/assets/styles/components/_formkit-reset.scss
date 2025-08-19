@@ -1,0 +1,104 @@
+.formkit-outer {
+	padding: 0;
+	margin-bottom: 1.5rem;
+}
+
+.formkit-wrapper {
+	margin: 0;
+	padding: 0;
+}
+
+.formkit-label {
+	display: block;
+	color: var(--primary-color);
+	font-weight: 600;
+	margin-bottom: 0.5rem;
+	font-size: 1.1rem;
+}
+
+.formkit-inner {
+	position: relative;
+	margin: 0;
+	padding: 0;
+}
+
+.formkit-input {
+	width: 100%;
+	padding: 12px;
+	border: 5px solid var(--form-border);
+	border-radius: 0.4rem;
+	background: var(--form-input-bg);
+	color: var(--primary-color);
+	box-sizing: border-box;
+	transition: border-color 0.2s, background-color 0.2s;
+	margin: 0;
+	font-family: inherit;
+	font-size: 1.1rem;
+}
+
+.formkit-input:focus {
+	outline: 2px solid var(--form-border);
+	border-color: var(--form-border);
+	background-color: var(--form-hover-bg);
+	box-shadow: none;
+}
+
+.formkit-input::placeholder {
+	color: var(--placeholder-text);
+	opacity: 1;
+	font-style: italic;
+}
+
+.formkit-input[type="submit"] {
+	background-color: var(--button-bg);
+	color: var(--primary-color);
+	border: 5px solid var(--form-border);
+	border-radius: 0.4rem;
+	padding: 12px 24px;
+	cursor: pointer;
+	font-weight: 600;
+	font-size: 1.2rem;
+	transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+	width: 100%;
+}
+
+.formkit-input[type="submit"]:hover {
+	background-color: var(--form-hover-bg);
+	border-color: var(--form-border);
+	color: var(--button-text);
+}
+
+.formkit-messages {
+	margin-bottom: 0;
+}
+
+.formkit-message {
+	color: var(--error-text);
+	font-size: 0.875rem;
+	margin: 0;
+	padding: 0;
+}
+
+.formkit-actions {
+	margin: 0;
+	padding: 0;
+}
+
+.formkit-actions button {
+	background-color: var(--button-bg);
+	color: var(--primary-color);
+	border: 5px solid var(--form-border);
+	border-radius: 0.4rem;
+	padding: 12px 24px;
+	cursor: pointer;
+	font-weight: 600;
+	font-size: 1.6rem;
+	transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+	width: 100%;
+}
+
+.formkit-actions button:hover {
+	background-color: var(--form-hover-bg);
+	border-color: var(--form-border);
+	color: var(--button-text);
+}

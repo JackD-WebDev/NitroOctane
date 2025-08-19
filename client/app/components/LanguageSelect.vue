@@ -108,15 +108,27 @@ watch(selectedLang, async (newLang) => {
 }
 
 .language-dropdown {
-  border: 1px solid var(--primary-border, #ccc);
+  background-color: var(--button-bg);
   color: var(--primary-color);
+  border: 5px solid var(--form-border);
   border-radius: 0.4rem;
-  padding: 0.5rem 1rem 0.4rem 0.5rem;
+  padding: 12px 24px;
+  cursor: pointer;
+  font-weight: 600;
   font-size: 1.6rem;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+  font-family: inherit;
 
   &:hover {
-    color: var(--primary-hover-text);
-    cursor: pointer;
+    background-color: var(--form-hover-bg);
+    border-color: var(--form-border);
+    color: var(--button-text);
+  }
+
+  &:focus {
+    outline: 2px solid var(--form-border);
+    background-color: var(--form-hover-bg);
+    box-shadow: none;
   }
 }
 </style>

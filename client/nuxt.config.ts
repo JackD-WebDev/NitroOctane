@@ -23,7 +23,8 @@ export default defineNuxtConfig({
   image: {},
   eslint: {},
   formkit: {
-    autoImport: true
+    autoImport: true,
+    configFile: '~/formkit.config.mts'
   },
   i18n: {
     strategy: 'prefix_except_default',

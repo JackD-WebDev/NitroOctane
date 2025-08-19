@@ -27,11 +27,11 @@ const tl = {
     required: 'Kinakailangan ang {label}.',
     starts_with: 'Ang {label} ay dapat magsimula sa {value}.',
     url: 'Ang {label} ay hindi isang wastong URL.',
+    // Add more as needed
   },
 };
 
 export default defineFormKitConfig({
-  // rules: {},
   locales: {
     en: en,
     es: es,

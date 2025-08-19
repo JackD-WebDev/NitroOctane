@@ -84,10 +84,10 @@ const filteredLinks = computed(() => {
       </li>
       <ClientOnly>
         <li v-for="page in filteredLinks" :key="page.id">
-          <button v-if="page.onClick" class="nav-button" @click="page.onClick">
+          <button v-if="page.onClick" class="btn-nav" @click="page.onClick">
             {{ t(page.nameKey).toUpperCase() }}
           </button>
-          <NuxtLink v-else :to="page.path">{{
+          <NuxtLink v-else :to="page.path" class="btn-nav">{{
             t(page.nameKey).toUpperCase()
           }}</NuxtLink>
         </li>
@@ -97,20 +97,6 @@ const filteredLinks = computed(() => {
 </template>
 
 <style scoped>
-.nav-button {
-  background: none;
-  border: none;
-  color: inherit;
-  font: inherit;
-  cursor: pointer;
-  text-decoration: none;
-  padding: 0;
-}
-
-.nav-button:hover {
-  text-decoration: underline;
-}
-
 nav ul {
   display: flex;
   align-items: center;

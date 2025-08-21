@@ -74,13 +74,18 @@ const filteredLinks = computed(() => {
   <nav>
     <ul>
       <li>
-        <LazyLanguageSelect />
+        <NuxtLink to="/">
+          <LazyNitroOctaneLogo />
+        </NuxtLink>
       </li>
       <li>
         <LazyStatusMessage />
       </li>
       <li>
         <LazyConnectionStatus />
+      </li>
+      <li>
+        <LazyLanguageSelect />
       </li>
       <ClientOnly>
         <li v-for="page in filteredLinks" :key="page.id">

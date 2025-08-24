@@ -8,7 +8,6 @@
     "logout_failed": "Error al cerrar sesión, inténtalo de nuevo."
   },
   "register": {
-    "title": "Registrarse",
     "firstname": "Nombre",
     "middlename": "Segundo Nombre",
     "lastname": "Apellido",
@@ -16,12 +15,30 @@
     "email": "Correo Electrónico",
     "password": "Contraseña",
     "confirm_password": "Confirmar Contraseña",
-    "submit": "Registrarse"
+    "submit": "Registrarse",
+    "validation": {
+      "firstname_required": "El nombre es obligatorio.",
+      "lastname_required": "El apellido es obligatorio.",
+      "username_min": "El nombre de usuario debe tener al menos 3 caracteres.",
+      "email_invalid": "Por favor, introduce una dirección de correo electrónico válida.",
+      "password_min": "La contraseña debe tener al menos 6 caracteres.",
+      "passwords_must_match": "Las contraseñas deben coincidir."
+    }
   },
   "account": {
     "username": "Nombre de Usuario",
     "email": "Correo Electrónico",
-    "loading": "Cargando información del usuario..."
+    "loading": "Cargando información del usuario...",
+    "sessions": "Otras sesiones del navegador",
+    "last_active": "Última actividad",
+    "no_other_sessions": "No se encontraron otras sesiones del navegador.",
+    "session_fetch_error": "No se pudieron recuperar las sesiones.",
+    "delete_other_sessions": "Eliminar otras sesiones",
+    "deleting": "Eliminando...",
+    "sessions_deleted": "Otras sesiones del navegador cerradas correctamente.",
+    "delete_failed": "No se pudo cerrar la sesión de otras sesiones.",
+    "password": "Contraseña",
+    "confirm_password_helper": "Ingrese su contraseña para cerrar sesión en otros navegadores."
   },
   "status": {
     "title": "Estado",
@@ -34,5 +51,12 @@
   "layout": {
     "title": "Diseño",
     "copyright": "Todos los derechos reservados."
+  },
+  "login": {
+    "validation": {
+      "email_invalid": "Por favor, introduce una dirección de correo electrónico válida.",
+      "password_min": "La contraseña debe tener al menos 8 caracteres."
+    },
+    "network_error": "Ocurrió un error de red. Por favor, inténtalo de nuevo."
   }
 }

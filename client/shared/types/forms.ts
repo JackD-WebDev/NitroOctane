@@ -27,6 +27,6 @@ export const createLoginSchema = () => {
   const { t } = useI18n();
   return z.object({
     email: z.string().email({ message: t('login.validation.email_invalid') }),
-    password: z.string().min(6, { message: t('login.validation.password_min') })
+    password: z.string().min(8, { message: t('login.validation.password_min') })
   });
 };

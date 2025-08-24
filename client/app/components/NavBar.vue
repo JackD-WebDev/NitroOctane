@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const authStore = useAuthStore();
 const { isAuthenticated } = storeToRefs(authStore);
+const { handleLogout } = useLogout();
 const localePath = useLocalePath();
 const { t, locale } = useI18n();
 
@@ -13,7 +14,6 @@ type NavLink = {
 };
 
 const BASE_LINKS = computed<NavLink[]>(() => [
-  { nameKey: 'navbar.home', path: '' },
   {
     nameKey: 'navbar.login',
     path: 'login',
@@ -33,16 +33,7 @@ const BASE_LINKS = computed<NavLink[]>(() => [
   },
   {
     nameKey: 'navbar.logout',
-    onClick: async () => {
-      try {
-        await authStore.logOut();
-        const localizedNavigate = useLocalizedNavigate();
-        await localizedNavigate('/');
-      } catch {
-        const messageStore = useMessageStore();
-        messageStore.setMessage($t('navbar.logout_failed'));
-      }
-    },
+    onClick: handleLogout,
     path: '',
     showWhenLoggedIn: true,
     showWhenLoggedOut: false
@@ -70,6 +61,7 @@ const filteredLinks = computed(() => {
   );
 });
 </script>
+
 <template>
   <nav>
     <ul>

@@ -62,3 +62,23 @@ export const LogoutResponseSchema = z.object({
   message: z.string().default('LOGGED OUT SUCCESSFULLY'),
   redirect_url: z.string().optional()
 });
+
+export const SessionResponseSchema = z.object({
+  success: z.boolean().default(true),
+  message: z.string(),
+  data: z.array(
+    z.object({
+      user_agent: z.string(),
+      browser: z.string(),
+      platform: z.string(),
+      ip: z.string(),
+      isCurrentDevice: z.boolean(),
+      lastActive: z.string()
+    })
+  )
+});
+
+export const LogoutOtherSessionsResponseSchema = z.object({
+  success: z.literal(true),
+  message: z.literal('OTHER BROWSER SESSIONS LOGGED OUT SUCCESSFULLY')
+});

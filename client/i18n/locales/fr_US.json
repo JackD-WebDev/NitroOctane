@@ -8,7 +8,6 @@
     "logout_failed": "Échec de la déconnexion, veuillez réessayer."
   },
   "register": {
-    "title": "S'inscrire",
     "firstname": "Prénom",
     "middlename": "Deuxième prénom",
     "lastname": "Nom de famille",
@@ -16,12 +15,30 @@
     "email": "Courriel",
     "password": "Mot de passe",
     "confirm_password": "Confirmer le mot de passe",
-    "submit": "S'inscrire"
+    "submit": "S'inscrire",
+    "validation": {
+      "firstname_required": "Le prénom est requis.",
+      "lastname_required": "Le nom de famille est requis.",
+      "username_min": "Le nom d'utilisateur doit comporter au moins 3 caractères.",
+      "email_invalid": "Veuillez entrer une adresse courriel valide.",
+      "password_min": "Le mot de passe doit comporter au moins 6 caractères.",
+      "passwords_must_match": "Les mots de passe doivent correspondre."
+    }
   },
   "account": {
     "username": "Nom d'utilisateur",
     "email": "Courriel",
-    "loading": "Chargement des informations de l'utilisateur..."
+    "loading": "Chargement des informations de l'utilisateur...",
+    "sessions": "Autres sessions navigateur",
+    "last_active": "Dernière activité",
+    "no_other_sessions": "Aucune autre session navigateur trouvée.",
+    "session_fetch_error": "Échec de la récupération des sessions.",
+    "delete_other_sessions": "Supprimer les autres sessions",
+    "deleting": "Suppression...",
+    "sessions_deleted": "Autres sessions navigateur déconnectées avec succès.",
+    "delete_failed": "Échec de la déconnexion des autres sessions.",
+    "password": "Mot de passe",
+    "confirm_password_helper": "Entrez votre mot de passe pour déconnecter les autres navigateurs."
   },
   "status": {
     "title": "Statut",
@@ -34,5 +51,12 @@
   "layout": {
     "title": "Mise en page",
     "copyright": "Tous droits réservés."
+  },
+  "login": {
+    "validation": {
+      "email_invalid": "Veuillez entrer une adresse courriel valide.",
+      "password_min": "Le mot de passe doit comporter au moins 8 caractères."
+    },
+    "network_error": "Une erreur réseau s'est produite. Veuillez réessayer."
   }
 }

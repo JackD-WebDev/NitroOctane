@@ -4,12 +4,12 @@ export default defineEventHandler(async (event) => {
     return UserSchema.parse(user);
   } catch (error) {
     event.context.error = error;
-    const errorMessage = 'An unknown error occurred';
+    const errorMessage = 'AN UNKNOWN ERROR OCCURRED';
     return {
       success: false,
-      message: 'Failed to retrieve user',
+      message: 'FAILED TO RETRIEVE USER',
       errors: {
-        title: 'User Error',
+        title: 'USER ERROR',
         details: [errorMessage]
       }
     };

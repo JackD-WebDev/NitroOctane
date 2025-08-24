@@ -8,7 +8,6 @@
     "logout_failed": "Nabigo ang pag-logout, subukan muli."
   },
   "register": {
-    "title": "Magparehistro",
     "firstname": "Unang Pangalan",
     "middlename": "Gitnang Pangalan",
     "lastname": "Apelyido",
@@ -16,10 +15,30 @@
     "email": "Sulatroniko",
     "password": "Hudyat",
     "confirm_password": "Kumpirmahin ang Password",
-    "submit": "Magparehistro"
+    "submit": "Magparehistro",
+    "validation": {
+      "firstname_required": "Kinakailangan ang unang pangalan.",
+      "lastname_required": "Kinakailangan ang apelyido.",
+      "username_min": "Ang pangalan ng gumagamit ay dapat hindi bababa sa 3 na karakter.",
+      "email_invalid": "Mangyaring maglagay ng wastong email address.",
+      "password_min": "Ang hudyat ay dapat hindi bababa sa 6 na karakter.",
+      "passwords_must_match": "Dapat magkatugma ang mga hudyat."
+    }
   },
   "account": {
-    "loading": "Naglo-load ng impormasyon ng user..."
+    "username": "Pangalan ng Gumagamit",
+    "email": "Sulatroniko",
+    "loading": "Naglo-load ng impormasyon ng user...",
+    "sessions": "Ibang Mga Sesi sa Browser",
+    "last_active": "Huling aktibo",
+    "no_other_sessions": "Walang ibang mga sesi sa browser na natagpuan.",
+    "session_fetch_error": "Nabigo ang pagkuha ng mga sesi.",
+    "delete_other_sessions": "Tanggalin ang Ibang Mga Sesi",
+    "deleting": "Tinatanggal...",
+    "sessions_deleted": "Matagumpay na na-log out ang ibang mga sesi sa browser.",
+    "delete_failed": "Nabigo ang pag-log out ng ibang mga sesi.",
+    "password": "Hudyat",
+    "confirm_password_helper": "Ilagay ang iyong hudyat upang mag-log out sa ibang mga browser."
   },
   "status": {
     "title": "Katayuan",
@@ -32,5 +51,12 @@
   "layout": {
     "title": "Ayos",
     "copyright": "Lahat ng karapatan ay nakalaan."
+  },
+  "login": {
+    "validation": {
+      "email_invalid": "Mangyaring maglagay ng wastong email address.",
+      "password_min": "Ang hudyat ay dapat hindi bababa sa 8 na karakter."
+    },
+    "network_error": "Nagkaroon ng network error. Pakisubukang muli."
   }
 }

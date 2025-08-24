@@ -8,11 +8,13 @@ use Carbon;
 use AgentHelper;
 use HttpResponse;
 use ResponseHelper;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
-use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Http\{Request, Response, JsonResponse};
 
 /*
 |----------------------------------------------------------------------
@@ -34,7 +36,7 @@ class OtherBrowserSessionsController extends Controller
     /**
      * Create an instance of the response helper.
      *
-     * @param ResponseHelper $responseHelper The response helper.
+     * @param  ResponseHelper  $responseHelper  The response helper.
      */
     public function __construct(
         protected ResponseHelper $responseHelper
@@ -42,9 +44,6 @@ class OtherBrowserSessionsController extends Controller
 
     /**
      * Retrieves the active browser sessions for the authenticated user.
-     *
-     * @param Request $request
-     * @return JsonResponse
      */
     public function getSessions(Request $request): JsonResponse
     {
@@ -66,6 +65,7 @@ class OtherBrowserSessionsController extends Controller
             function ($session) use ($request) {
                 $userAgent = $session->user_agent;
                 $parsed = AgentHelper::parseUserAgent($userAgent);
+
                 return [
                     'user_agent' => $userAgent,
                     'browser' => $parsed['browser'] ?? 'Unknown',
@@ -80,7 +80,7 @@ class OtherBrowserSessionsController extends Controller
         );
 
         return $this->responseHelper->requestResponse(
-            ['data' => $data[0] ?? []],
+            ['data' => $data],
             __('auth.browser_sessions.retrieved'),
             true,
             HttpResponse::HTTP_OK
@@ -90,9 +90,6 @@ class OtherBrowserSessionsController extends Controller
     /**
      * Logs out other browser sessions for the authenticated user.
      *
-     * @param Request $request
-     * @param StatefulGuard $guard
-     * @return JsonResponse
      * @throws AuthenticationException
      */
     public function logoutOtherBrowserSessions(Request $request, StatefulGuard $guard): JsonResponse
@@ -114,17 +111,6 @@ class OtherBrowserSessionsController extends Controller
             )->errorBag('logoutOtherBrowserSessions');
         }
 
-        try {
-            $guard->logoutOtherDevices($request->password);
-        } catch (\Exception $e) {
-            return $this->responseHelper->errorResponse(
-                __('auth.browser_sessions.logout.error.title'),
-                __('auth.browser_sessions.logout.error.message'),
-                [],
-                HttpResponse::HTTP_INTERNAL_SERVER_ERROR
-            );
-        }
-
         $this->deleteOtherSessionRecords($request);
 
         return $this->responseHelper->requestResponse(
@@ -137,30 +123,16 @@ class OtherBrowserSessionsController extends Controller
 
     /**
      * Deletes other session records from the database.
-     *
-     * @param Request $request
-     * @return JsonResponse
      */
-    private function deleteOtherSessionRecords(Request $request): JsonResponse
+    private function deleteOtherSessionRecords(Request $request): void
     {
         if (config('session.driver') !== 'database') {
-            return $this->responseHelper->errorResponse(
-                __('auth.browser_sessions.session_error.not_configured'),
-                __('auth.browser_sessions.session_error.title'),
-                [],
-                HttpResponse::HTTP_UNPROCESSABLE_ENTITY
-            );
+            return;
         }
 
         DB::table(config('session.table', 'sessions'))
             ->where('user_id', $request->user()->getAuthIdentifier())
             ->where('id', '!=', $request->session()->getId())
             ->delete();
-        return $this->responseHelper->requestResponse(
-            [],
-            __('auth.browser_sessions.logout.success'),
-            true,
-            HttpResponse::HTTP_OK
-        );
     }
 }

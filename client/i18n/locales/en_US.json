@@ -15,12 +15,31 @@
     "email": "Email",
     "password": "Password",
     "confirm_password": "Confirm Password",
-    "submit": "Register"
+    "submit": "Register",
+    "validation": {
+      "firstname_required": "First name is required.",
+      "lastname_required": "Last name is required.",
+      "username_min": "Username must be at least 3 characters.",
+      "email_invalid": "Please enter a valid email address.",
+      "password_min": "Password must be at least 6 characters.",
+      "passwords_must_match": "Passwords must match."
+    },
+    "network_error": "Network error occurred. Please try again."
   },
   "account": {
     "username": "Username",
     "email": "Email",
-    "loading": "Loading user information..."
+    "loading": "Loading user information...",
+    "sessions": "Other Browser Sessions",
+    "last_active": "Last active",
+    "no_other_sessions": "No other browser sessions found.",
+    "session_fetch_error": "Failed to retrieve sessions.",
+    "delete_other_sessions": "Delete Other Sessions",
+    "deleting": "Deleting...",
+    "sessions_deleted": "Other browser sessions logged out successfully.",
+    "delete_failed": "Failed to log out other sessions.",
+    "password": "Password",
+    "confirm_password_helper": "Enter your password to logout other browsers."
   },
   "status": {
     "title": "Status",
@@ -33,5 +52,12 @@
   "layout": {
     "title": "Layout",
     "copyright": "All rights reserved."
+  },
+  "login": {
+    "validation": {
+      "email_invalid": "Please enter a valid email address.",
+      "password_min": "Password must be at least 8 characters."
+    },
+    "network_error": "Network error occurred. Please try again."
   }
 }

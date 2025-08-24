@@ -57,7 +57,7 @@ const [zodPlugin, submitHandler] = createZodPlugin(
         type="password"
         name="password"
         :label="t('register.password').toUpperCase()"
-        validation="required|length:6"
+        validation="required|length:8"
         :placeholder="t('register.password')"
         style="margin-bottom: 2rem"
       />

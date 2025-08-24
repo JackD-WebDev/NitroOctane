@@ -18,7 +18,8 @@ export default defineNuxtConfig({
     '@formkit/nuxt',
     'nuxt-purgecss',
     '@nuxt/scripts',
-    '@nuxtjs/i18n'
+    '@nuxtjs/i18n',
+    'nuxt-laravel-echo'
   ],
   image: {},
   eslint: {},
@@ -58,12 +59,25 @@ export default defineNuxtConfig({
       lang: 'en'
     }
   },
+  echo: {
+    broadcaster: 'reverb',
+    key: process.env.NUXT_PUBLIC_REVERB_APP_KEY,
+    port: 80,
+    scheme: 'http',
+    authentication: {
+      baseUrl: 'http://localhost:8000/api',
+      mode: 'cookie'
+    }
+  },
   nitro: {
     externals: {
       inline: ['uuid']
     }
   },
   vite: {
+    optimizeDeps: {
+      include: ['pusher-js']
+    },
     css: {
       preprocessorOptions: {
         scss: {}

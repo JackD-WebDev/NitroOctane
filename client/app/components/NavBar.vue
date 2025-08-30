@@ -66,7 +66,7 @@ const filteredLinks = computed(() => {
   <nav>
     <ul>
       <li>
-        <NuxtLink to="/">
+        <NuxtLink :to="localePath('/')">
           <LazyNitroOctaneLogo />
         </NuxtLink>
       </li>

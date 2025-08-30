@@ -11,7 +11,7 @@ const statusLetters = computed(() =>
 const fetchHealthStatus = async () => {
   try {
     const data = await useApi<HealthResponse>('/api/health');
-    const result = HealthResponseSchema.safeParse(data);
+    const result = await HealthResponseSchema.safeParseAsync(data);
     if (!result.success) {
       health.value = null;
       messageStore.setStatus('failed');

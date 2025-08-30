@@ -44,6 +44,8 @@ class OtherBrowserSessionsController extends Controller
 
     /**
      * Retrieves the active browser sessions for the authenticated user.
+     *
+     * @param  Request  $request  The incoming request.
      */
     public function getSessions(Request $request): JsonResponse
     {
@@ -123,6 +125,8 @@ class OtherBrowserSessionsController extends Controller
 
     /**
      * Deletes other session records from the database.
+     *
+     * @param  Request  $request  The incoming request.
      */
     private function deleteOtherSessionRecords(Request $request): void
     {

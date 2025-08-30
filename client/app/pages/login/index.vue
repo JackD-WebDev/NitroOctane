@@ -23,9 +23,9 @@ const [zodPlugin, submitHandler] = createZodPlugin(
         const localizedNavigate = useLocalizedNavigate();
         await localizedNavigate('/account');
       }
-    } catch (e: unknown) {
-      if (e instanceof Error) {
-        authStore.error = e.message;
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        authStore.error = error.message;
       } else {
         authStore.error = t('login.network_error');
       }

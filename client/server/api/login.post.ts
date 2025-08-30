@@ -14,6 +14,6 @@ export default defineEventHandler(
       body,
       headers
     });
-    return LoggedInUserResponseSchema.parse(response);
+    return LoggedInUserResponseSchema.parseAsync(response);
   }
 );

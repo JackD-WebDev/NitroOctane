@@ -7,13 +7,13 @@ export const useAuthStore = defineStore(
 
     const getUser = computed(() => user.value);
 
-    function setUser(newUser: AuthUser | null) {
+    const setUser = (newUser: AuthUser | null) => {
       user.value = newUser;
       isAuthenticated.value = !!newUser;
       if (newUser) error.value = '';
-    }
+    };
 
-    async function fetchUser() {
+    const fetchUser = async () => {
       if (user.value) return;
       try {
         const response = await useApi<UserResponse>('user');
@@ -32,12 +32,12 @@ export const useAuthStore = defineStore(
         console.error('Failed to fetch user:', error);
         setUser(null);
       }
-    }
+    };
 
-    async function logIn(
+    const logIn = async (
       credentials: { email: string; password: string },
       language?: string
-    ) {
+    ) => {
       error.value = '';
       try {
         const response = await useApi<{
@@ -62,9 +62,9 @@ export const useAuthStore = defineStore(
         error.value = message;
         throw err;
       }
-    }
+    };
 
-    async function register(newUser: NewUser, language?: string) {
+    const register = async (newUser: NewUser, language?: string) => {
       error.value = '';
       try {
         const response = await useApi<{
@@ -90,9 +90,9 @@ export const useAuthStore = defineStore(
         error.value = message;
         throw err;
       }
-    }
+    };
 
-    async function logOut() {
+    const logOut = async () => {
       error.value = '';
 
       if (!isAuthenticated.value || !user.value) {
@@ -127,7 +127,7 @@ export const useAuthStore = defineStore(
           sessionCookie.value = null;
         }
       }
-    }
+    };
 
     return {
       user,
@@ -141,9 +141,5 @@ export const useAuthStore = defineStore(
       logOut
     };
   },
-  {
-    persist: {
-      storage: persistedState.localStorage
-    }
-  }
+  {}
 );

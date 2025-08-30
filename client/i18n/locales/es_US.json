@@ -1,62 +1,78 @@
 {
-  "navbar": {
-    "home": "Inicio",
-    "login": "Iniciar Sesión",
-    "register": "Registrarse",
-    "account": "Cuenta",
-    "logout": "Cerrar Sesión",
-    "logout_failed": "Error al cerrar sesión, inténtalo de nuevo."
-  },
-  "register": {
-    "firstname": "Nombre",
-    "middlename": "Segundo Nombre",
-    "lastname": "Apellido",
-    "username": "Nombre de Usuario",
-    "email": "Correo Electrónico",
-    "password": "Contraseña",
-    "confirm_password": "Confirmar Contraseña",
-    "submit": "Registrarse",
-    "validation": {
-      "firstname_required": "El nombre es obligatorio.",
-      "lastname_required": "El apellido es obligatorio.",
-      "username_min": "El nombre de usuario debe tener al menos 3 caracteres.",
-      "email_invalid": "Por favor, introduce una dirección de correo electrónico válida.",
-      "password_min": "La contraseña debe tener al menos 6 caracteres.",
-      "passwords_must_match": "Las contraseñas deben coincidir."
-    }
-  },
   "account": {
-    "username": "Nombre de Usuario",
-    "email": "Correo Electrónico",
-    "loading": "Cargando información del usuario...",
-    "sessions": "Otras sesiones del navegador",
-    "last_active": "Última actividad",
-    "no_other_sessions": "No se encontraron otras sesiones del navegador.",
-    "session_fetch_error": "No se pudieron recuperar las sesiones.",
-    "delete_other_sessions": "Eliminar otras sesiones",
+    "confirm_password_helper": "Ingrese su contraseña para cerrar sesión en otros navegadores.",
     "deleting": "Eliminando...",
-    "sessions_deleted": "Otras sesiones del navegador cerradas correctamente.",
     "delete_failed": "No se pudo cerrar la sesión de otras sesiones.",
+    "delete_other_sessions": "Eliminar otras sesiones",
+    "email": "Correo Electrónico",
+    "last_active": "Última actividad",
+    "loading": "Cargando información del usuario...",
+    "no_other_sessions": "No se encontraron otras sesiones del navegador.",
     "password": "Contraseña",
-    "confirm_password_helper": "Ingrese su contraseña para cerrar sesión en otros navegadores."
+    "sessions": "Otras sesiones del navegador",
+    "session_fetch_error": "No se pudieron recuperar las sesiones.",
+    "sessions_deleted": "Otras sesiones del navegador cerradas correctamente.",
+    "username": "Nombre de Usuario"
   },
-  "status": {
-    "title": "Estado",
-    "health": {
-      "passed": "La verificación de salud pasó.",
-      "failed": "No se pudo recuperar el estado de salud.",
-      "loading": "Cargando..."
-    }
-  },
+  "checking": "Comprobando",
   "layout": {
-    "title": "Diseño",
-    "copyright": "Todos los derechos reservados."
+    "copyright": "Todos los derechos reservados.",
+    "title": "Diseño"
   },
   "login": {
+    "network_error": "Ocurrió un error de red. Por favor, inténtalo de nuevo.",
     "validation": {
       "email_invalid": "Por favor, introduce una dirección de correo electrónico válida.",
-      "password_min": "La contraseña debe tener al menos 8 caracteres."
+      "password_min": "La contraseña debe tener al menos 12 caracteres."
+    }
+  },
+  "navbar": {
+    "account": "Cuenta",
+    "home": "Inicio",
+    "login": "Iniciar Sesión",
+    "logout": "Cerrar Sesión",
+    "logout_failed": "Error al cerrar sesión, inténtalo de nuevo.",
+    "register": "Registrarse"
+  },
+  "register": {
+    "confirm_password": "Confirmar Contraseña",
+    "email": "Correo Electrónico",
+    "firstname": "Nombre",
+    "lastname": "Apellido",
+    "middlename": "Segundo Nombre",
+    "name": "Name",
+    "password": "Contraseña",
+    "submit": "Registrarse",
+    "username": "Nombre de Usuario",
+    "validation": {
+      "email_invalid": "Por favor, introduce una dirección de correo electrónico válida.",
+
+      "email_min": "El correo electrónico debe tener al menos 5 caracteres.",
+      "email_taken": "Este correo electrónico ya está registrado.",
+      "firstname_alpha_dash": "El nombre solo puede contener letras, números, guiones y guiones bajos.",
+      "firstname_max": "El nombre no puede exceder los 50 caracteres.",
+      "firstname_min": "El nombre debe tener al menos 2 caracteres.",
+      "lastname_alpha_dash": "El apellido solo puede contener letras, números, guiones y guiones bajos.",
+      "lastname_max": "El apellido no puede exceder los 50 caracteres.",
+      "lastname_min": "El apellido debe tener al menos 2 caracteres.",
+      "middlename_alpha_dash": "El segundo nombre solo puede contener letras, números, guiones y guiones bajos.",
+      "middlename_max": "El segundo nombre no puede exceder los 50 caracteres.",
+      "password_complexity": "La contraseña debe contener mayúsculas, minúsculas, números y símbolos.",
+      "password_min": "La contraseña debe tener al menos 12 caracteres.",
+      "passwords_must_match": "Las contraseñas deben coincidir.",
+      "username_available": "El nombre de usuario está disponible.",
+
+      "username_min": "El nombre de usuario debe tener al menos 3 caracteres.",
+      "username_taken": "Este nombre de usuario ya está en uso."
     },
     "network_error": "Ocurrió un error de red. Por favor, inténtalo de nuevo."
+  },
+  "status": {
+    "health": {
+      "failed": "No se pudo recuperar el estado de salud.",
+      "loading": "Cargando...",
+      "passed": "La verificación de salud pasó."
+    },
+    "title": "Estado"
   }
 }

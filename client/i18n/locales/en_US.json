@@ -1,63 +1,85 @@
 {
-  "navbar": {
-    "home": "Home",
-    "login": "Log In",
-    "register": "Register",
-    "account": "Account",
-    "logout": "Log Out",
-    "logout_failed": "Failed to log out, please try again."
-  },
-  "register": {
-    "firstname": "First Name",
-    "middlename": "Middle Name",
-    "lastname": "Last Name",
-    "username": "Username",
-    "email": "Email",
-    "password": "Password",
-    "confirm_password": "Confirm Password",
-    "submit": "Register",
-    "validation": {
-      "firstname_required": "First name is required.",
-      "lastname_required": "Last name is required.",
-      "username_min": "Username must be at least 3 characters.",
-      "email_invalid": "Please enter a valid email address.",
-      "password_min": "Password must be at least 6 characters.",
-      "passwords_must_match": "Passwords must match."
-    },
-    "network_error": "Network error occurred. Please try again."
-  },
   "account": {
-    "username": "Username",
-    "email": "Email",
-    "loading": "Loading user information...",
-    "sessions": "Other Browser Sessions",
-    "last_active": "Last active",
-    "no_other_sessions": "No other browser sessions found.",
-    "session_fetch_error": "Failed to retrieve sessions.",
-    "delete_other_sessions": "Delete Other Sessions",
+    "confirm_new_password": "Confirm New Password",
+    "confirm_password_helper": "Enter your password to logout other browsers.",
+    "current_password": "Current Password",
     "deleting": "Deleting...",
-    "sessions_deleted": "Other browser sessions logged out successfully.",
     "delete_failed": "Failed to log out other sessions.",
+    "delete_other_sessions": "Delete Other Sessions",
+    "email": "Email",
+    "last_active": "Last active",
+    "loading": "Loading user information...",
+    "new_password": "New Password",
+    "no_other_sessions": "No other browser sessions found.",
     "password": "Password",
-    "confirm_password_helper": "Enter your password to logout other browsers."
+    "password_update_failed": "Failed to update password.",
+    "password_update_success": "Password updated successfully.",
+    "sessions": "Other Browser Sessions",
+    "session_fetch_error": "Failed to retrieve sessions.",
+    "sessions_deleted": "Other browser sessions logged out successfully.",
+    "updating": "Updating...",
+    "update_password": "Update Password",
+    "username": "Username"
   },
-  "status": {
-    "title": "Status",
-    "health": {
-      "passed": "Health check passed.",
-      "failed": "Failed to retrieve health status.",
-      "loading": "Loading..."
-    }
-  },
+  "checking": "Checking",
   "layout": {
-    "title": "Layout",
-    "copyright": "All rights reserved."
+    "copyright": "All rights reserved.",
+    "title": "Layout"
   },
   "login": {
+    "network_error": "Network error occurred. Please try again.",
     "validation": {
       "email_invalid": "Please enter a valid email address.",
-      "password_min": "Password must be at least 8 characters."
+      "password_min": "Password must be at least 12 characters."
+    }
+  },
+  "navbar": {
+    "account": "Account",
+    "home": "Home",
+    "login": "Log In",
+    "logout": "Log Out",
+    "logout_failed": "Failed to log out, please try again.",
+    "register": "Register"
+  },
+  "register": {
+    "confirm_password": "Confirm Password",
+    "email": "Email",
+    "firstname": "First Name",
+    "lastname": "Last Name",
+    "middlename": "Middle Name",
+    "name": "Name",
+    "password": "Password",
+    "submit": "Register",
+    "username": "Username",
+    "validation": {
+      "email_invalid": "Please enter a valid email address.",
+      "email_max": "Email cannot exceed 320 characters.",
+      "email_min": "Email must be at least 5 characters.",
+      "email_taken": "This email is already registered.",
+      "firstname_alpha_dash": "First name can only contain letters, numbers, dashes, and underscores.",
+      "firstname_max": "First name cannot exceed 50 characters.",
+      "firstname_min": "First name must be at least 2 characters.",
+      "lastname_alpha_dash": "Last name can only contain letters, numbers, dashes, and underscores.",
+      "lastname_max": "Last name cannot exceed 50 characters.",
+      "lastname_min": "Last name must be at least 2 characters.",
+      "middlename_alpha_dash": "Middle name can only contain letters, numbers, dashes, and underscores.",
+      "middlename_max": "Middle name cannot exceed 50 characters.",
+      "password_complexity": "Password must contain uppercase, lowercase, numbers, and symbols.",
+      "password_min": "Password must be at least 12 characters.",
+      "passwords_must_match": "Passwords must match.",
+      "username_available": "Username: { username } is available.",
+      "username_max": "Username cannot exceed 50 characters.",
+      "username_min": "Username must be at least 3 characters.",
+      "username_taken": "This username is already taken."
     },
     "network_error": "Network error occurred. Please try again."
+  },
+  "status": {
+    "health": {
+      "failed": "Failed to retrieve health status.",
+      "loading": "Loading...",
+      "passed": "Health check passed."
+    },
+    "title": "Status"
   }
 }

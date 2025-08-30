@@ -8,7 +8,7 @@ export default defineEventHandler(
           password
         }
       });
-      return LogoutOtherSessionsResponseSchema.parse(response);
+      return LogoutOtherSessionsResponseSchema.parseAsync(response);
     } catch (error) {
       event.context.error = error;
       const errorMessage = 'AN UNKNOWN ERROR OCCURRED';

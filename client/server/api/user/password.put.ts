@@ -1,5 +1,5 @@
 export default defineEventHandler(
-  async (event): Promise<UserResponse | ErrorResponse> => {
+  async (event): Promise<PasswordUpdateResponse | ErrorResponse> => {
     const body = await readBody(event);
 
     const acceptLanguage = getHeader(event, 'accept-language');
@@ -9,11 +9,11 @@ export default defineEventHandler(
       headers['Accept-Language'] = acceptLanguage;
     }
 
-    const response = await event.context.apiRequest('register', {
-      method: 'POST',
+    const response = await event.context.apiRequest('user/password', {
+      method: 'PUT',
       body,
       headers
     });
-    return RegisteredUserResponseSchema.parseAsync(response);
+    return PasswordUpdateResponseSchema.parseAsync(response);
   }
 );

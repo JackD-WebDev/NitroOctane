@@ -16,7 +16,7 @@ export default defineEventHandler(
       deleteCookie(event, 'NitroOctane_session', cookieOptions);
       deleteCookie(event, 'XSRF-TOKEN', cookieOptions);
 
-      return LogoutResponseSchema.parse(response);
+      return LogoutResponseSchema.parseAsync(response);
     } catch (error) {
       const cookieOptions = {
         httpOnly: false,

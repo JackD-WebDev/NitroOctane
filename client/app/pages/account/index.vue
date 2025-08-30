@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { createZodPlugin } from '@formkit/zod';
+
 const { t } = useI18n();
 definePageMeta({
   middleware: ['auth'],
@@ -10,11 +12,42 @@ const authStore = useAuthStore();
 const sessions = ref<SessionResponse['data']>([]);
 const loadingSessions = ref(true);
 const errorSessions = ref('');
+
 const password = ref('');
 const deleteStatus = ref('');
 const deleting = ref(false);
 
-async function fetchSessions() {
+const passwordUpdateStatus = ref('');
+const passwordUpdating = ref(false);
+const passwordUpdateError = ref('');
+
+const passwordUpdateSchema = createPasswordUpdateSchema();
+const [passwordZodPlugin, passwordSubmitHandler] = createZodPlugin(
+  passwordUpdateSchema,
+  async (formData) => {
+    passwordUpdating.value = true;
+    passwordUpdateStatus.value = '';
+    passwordUpdateError.value = '';
+    try {
+      const response: PasswordUpdateResponse = await useApi('user/password', {
+        method: 'PUT',
+        body: JSON.stringify(formData)
+      });
+      if (response.success) {
+        passwordUpdateStatus.value = t('account.password_update_success');
+      } else {
+        passwordUpdateError.value =
+          response.message || t('account.password_update_failed');
+      }
+    } catch {
+      passwordUpdateError.value = t('account.password_update_failed');
+    } finally {
+      passwordUpdating.value = false;
+    }
+  }
+);
+
+const fetchSessions = async () => {
   loadingSessions.value = true;
   errorSessions.value = '';
   try {
@@ -30,9 +63,9 @@ async function fetchSessions() {
   } finally {
     loadingSessions.value = false;
   }
-}
+};
 
-async function deleteOtherSessions() {
+const deleteOtherSessions = async () => {
   if (!password.value) return;
   deleting.value = true;
   deleteStatus.value = '';
@@ -57,10 +90,9 @@ async function deleteOtherSessions() {
   } finally {
     deleting.value = false;
   }
-}
+};
 
 onMounted(() => {
-  // Only fetch sessions if user is authenticated
   if (authStore.user) {
     fetchSessions();
   }
@@ -72,6 +104,10 @@ onMounted(() => {
     <h2>{{ t('navbar.account').toUpperCase() }}</h2>
     <div v-if="authStore.user">
       <p>
+        <strong>{{ t('register.name').toUpperCase() }}:</strong>
+        {{ authStore.user.name }}
+      </p>
+      <p>
         <strong>{{ t('register.username').toUpperCase() }}:</strong>
         {{ authStore.user.username }}
       </p>
@@ -81,6 +117,93 @@ onMounted(() => {
       </p>
 
       <section class="sessions-section">
+        <h3>
+          {{
+            t('account.update_password')
+              ? t('account.update_password').toUpperCase()
+              : t('register.password').toUpperCase()
+          }}
+        </h3>
+        <FormKit
+          type="form"
+          :plugins="[passwordZodPlugin]"
+          :actions="false"
+          :classes="{ form: 'password-update-form styled-form' }"
+          @submit="passwordSubmitHandler"
+        >
+          <div class="formkit-outer">
+            <div class="formkit-wrapper">
+              <FormKit
+                type="password"
+                name="current_password"
+                :label="
+                  t('account.current_password')
+                    ? t('account.current_password').toUpperCase()
+                    : t('register.password').toUpperCase()
+                "
+                validation="required"
+                :placeholder="
+                  t('account.current_password')
+                    ? t('account.current_password')
+                    : t('register.password')
+                "
+              />
+            </div>
+            <div class="formkit-wrapper">
+              <FormKit
+                type="password"
+                name="password"
+                :label="
+                  t('account.new_password')
+                    ? t('account.new_password').toUpperCase()
+                    : t('register.password').toUpperCase()
+                "
+                validation="required|length:12"
+                :placeholder="
+                  t('account.new_password')
+                    ? t('account.new_password')
+                    : t('register.password')
+                "
+              />
+            </div>
+            <div class="formkit-wrapper">
+              <FormKit
+                type="password"
+                name="password_confirmation"
+                :label="
+                  t('account.confirm_new_password')
+                    ? t('account.confirm_new_password').toUpperCase()
+                    : t('register.confirm_password').toUpperCase()
+                "
+                validation="required"
+                :placeholder="
+                  t('account.confirm_new_password')
+                    ? t('account.confirm_new_password')
+                    : t('register.confirm_password')
+                "
+              />
+            </div>
+            <div class="formkit-actions">
+              <FormKit type="submit" :disabled="passwordUpdating">
+                {{
+                  passwordUpdating
+                    ? t('account.updating')
+                      ? t('account.updating').toUpperCase()
+                      : t('account.deleting').toUpperCase()
+                    : t('account.update_password')
+                    ? t('account.update_password').toUpperCase()
+                    : t('register.password').toUpperCase()
+                }}
+              </FormKit>
+            </div>
+            <div v-if="passwordUpdateStatus">
+              {{ passwordUpdateStatus }}
+            </div>
+            <div v-if="passwordUpdateError">
+              {{ passwordUpdateError }}
+            </div>
+          </div>
+        </FormKit>
         <h3>{{ t('account.sessions').toUpperCase() }}</h3>
         <div v-if="loadingSessions">
           {{ t('account.loading').toUpperCase() }}
@@ -132,7 +255,6 @@ onMounted(() => {
                 type="submit"
                 :disabled="deleting || !password"
                 class="formkit-input"
-                style="margin-top: 1rem"
               >
                 {{
                   deleting
@@ -167,5 +289,12 @@ onMounted(() => {
 }
 .formkit-message.delete-status {
   margin-top: 0.5rem;
+}
+</style>
+<style lang="scss" scoped>
+.password-update-form {
+  margin-top: 2rem;
+  max-width: 400px;
+  width: 100%;
 }
 </style>

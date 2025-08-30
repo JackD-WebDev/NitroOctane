@@ -1,62 +1,77 @@
 {
-  "navbar": {
-    "home": "Tahanan",
-    "login": "Mag-log In",
-    "register": "Magparehistro",
-    "account": "Aking Account",
-    "logout": "Mag-Log Out",
-    "logout_failed": "Nabigo ang pag-logout, subukan muli."
-  },
-  "register": {
-    "firstname": "Unang Pangalan",
-    "middlename": "Gitnang Pangalan",
-    "lastname": "Apelyido",
-    "username": "Pangalan ng Gumagamit",
-    "email": "Sulatroniko",
-    "password": "Hudyat",
-    "confirm_password": "Kumpirmahin ang Password",
-    "submit": "Magparehistro",
-    "validation": {
-      "firstname_required": "Kinakailangan ang unang pangalan.",
-      "lastname_required": "Kinakailangan ang apelyido.",
-      "username_min": "Ang pangalan ng gumagamit ay dapat hindi bababa sa 3 na karakter.",
-      "email_invalid": "Mangyaring maglagay ng wastong email address.",
-      "password_min": "Ang hudyat ay dapat hindi bababa sa 6 na karakter.",
-      "passwords_must_match": "Dapat magkatugma ang mga hudyat."
-    }
-  },
   "account": {
-    "username": "Pangalan ng Gumagamit",
-    "email": "Sulatroniko",
-    "loading": "Naglo-load ng impormasyon ng user...",
-    "sessions": "Ibang Mga Sesi sa Browser",
-    "last_active": "Huling aktibo",
-    "no_other_sessions": "Walang ibang mga sesi sa browser na natagpuan.",
-    "session_fetch_error": "Nabigo ang pagkuha ng mga sesi.",
-    "delete_other_sessions": "Tanggalin ang Ibang Mga Sesi",
+    "confirm_password_helper": "Ilagay ang iyong hudyat upang mag-log out sa ibang mga browser.",
     "deleting": "Tinatanggal...",
-    "sessions_deleted": "Matagumpay na na-log out ang ibang mga sesi sa browser.",
     "delete_failed": "Nabigo ang pag-log out ng ibang mga sesi.",
+    "delete_other_sessions": "Tanggalin ang Ibang Mga Sesi",
+    "email": "Sulatroniko",
+    "last_active": "Huling aktibo",
+    "loading": "Naglo-load ng impormasyon ng user...",
+    "no_other_sessions": "Walang ibang mga sesi sa browser na natagpuan.",
     "password": "Hudyat",
-    "confirm_password_helper": "Ilagay ang iyong hudyat upang mag-log out sa ibang mga browser."
+    "sessions": "Ibang Mga Sesi sa Browser",
+    "session_fetch_error": "Nabigo ang pagkuha ng mga sesi.",
+    "sessions_deleted": "Matagumpay na na-log out ang ibang mga sesi sa browser.",
+    "username": "Pangalan ng Gumagamit"
   },
-  "status": {
-    "title": "Katayuan",
-    "health": {
-      "passed": "Ang pagsusuri ng kalusugan ay pumasa.",
-      "failed": "Nabigo ang pagkuha ng katayuan ng kalusugan.",
-      "loading": "Naglo-load..."
-    }
-  },
+  "checking": "Tini-tsek",
   "layout": {
-    "title": "Ayos",
-    "copyright": "Lahat ng karapatan ay nakalaan."
+    "copyright": "Lahat ng karapatan ay nakalaan.",
+    "title": "Ayos"
   },
   "login": {
+    "network_error": "Nagkaroon ng network error. Pakisubukang muli.",
     "validation": {
       "email_invalid": "Mangyaring maglagay ng wastong email address.",
-      "password_min": "Ang hudyat ay dapat hindi bababa sa 8 na karakter."
+      "password_min": "Ang hudyat ay dapat hindi bababa sa 12 na karakter."
+    }
+  },
+  "navbar": {
+    "account": "Aking Account",
+    "home": "Tahanan",
+    "login": "Mag-log In",
+    "logout": "Mag-Log Out",
+    "logout_failed": "Nabigo ang pag-logout, subukan muli.",
+    "register": "Magparehistro"
+  },
+  "register": {
+    "confirm_password": "Kumpirmahin ang Password",
+    "email": "Sulatroniko",
+    "firstname": "Unang Pangalan",
+    "lastname": "Apelyido",
+    "middlename": "Gitnang Pangalan",
+    "name": "Pangalan",
+    "password": "Hudyat",
+    "submit": "Magparehistro",
+    "username": "Pangalan ng Gumagamit",
+    "validation": {
+      "email_invalid": "Mangyaring maglagay ng wastong email address.",
+
+      "email_min": "Ang email ay dapat hindi bababa sa 5 na karakter.",
+      "email_taken": "Ang email na ito ay nakarehistro na.",
+      "firstname_alpha_dash": "Ang unang pangalan ay maaaring maglaman lamang ng mga titik, numero, gitling at underscore.",
+      "firstname_max": "Ang unang pangalan ay hindi dapat lumalagpas sa 50 na karakter.",
+      "firstname_min": "Ang unang pangalan ay dapat hindi bababa sa 2 na karakter.",
+      "lastname_alpha_dash": "Ang apelyido ay maaaring maglaman lamang ng mga titik, numero, gitling at underscore.",
+      "lastname_max": "Ang apelyido ay hindi dapat lumalagpas sa 50 na karakter.",
+      "lastname_min": "Ang apelyido ay dapat hindi bababa sa 2 na karakter.",
+      "middlename_alpha_dash": "Ang gitnang pangalan ay maaaring maglaman lamang ng mga titik, numero, gitling at underscore.",
+      "middlename_max": "Ang gitnang pangalan ay hindi dapat lumalagpas sa 50 na karakter.",
+      "password_complexity": "Ang hudyat ay dapat maglaman ng malalaki at maliliit na titik, numero at mga simbolo.",
+      "password_min": "Ang hudyat ay dapat hindi bababa sa 12 na karakter.",
+      "passwords_must_match": "Dapat magkatugma ang mga hudyat.",
+      "username_available": "Magagamit ang username.",
+
+      "username_min": "Ang pangalan ng gumagamit ay dapat hindi bababa sa 3 na karakter.",
+      "username_taken": "Ang pangalan ng gumagamit ay ginagamit na."
+    }
+  },
+  "status": {
+    "health": {
+      "failed": "Nabigo ang pagkuha ng katayuan ng kalusugan.",
+      "loading": "Naglo-load...",
+      "passed": "Ang pagsusuri ng kalusugan ay pumasa."
     },
-    "network_error": "Nagkaroon ng network error. Pakisubukang muli."
+    "title": "Katayuan"
   }
 }

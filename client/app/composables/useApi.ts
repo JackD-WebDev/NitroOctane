@@ -1,7 +1,7 @@
-export function useApi<T = unknown>(
+export const useApi = <T = unknown>(
   endpoint: string,
   options: Partial<RequestInit> = {}
-) {
+) => {
   const apiEndpoint = endpoint.startsWith('/api/')
     ? endpoint
     : `/api/${endpoint.startsWith('/') ? endpoint.slice(1) : endpoint}`;
@@ -65,9 +65,9 @@ export function useApi<T = unknown>(
   };
 
   return makeRequest();
-}
+};
 
-export async function useCsrfToken() {
+export const useCsrfToken = async () => {
   try {
     await $fetch('/api/sanctum/csrf-cookie', {
       credentials: 'include',
@@ -84,12 +84,12 @@ export async function useCsrfToken() {
     console.error('Failed to get CSRF token:', error);
     throw error;
   }
-}
+};
 
-export async function useAuthenticatedApi<T = unknown>(
+export const useAuthenticatedApi = async <T = unknown>(
   endpoint: string,
   options: Partial<RequestInit> = {}
-) {
+) => {
   if (
     ['POST', 'PUT', 'PATCH', 'DELETE'].includes(
       (options.method || 'GET').toUpperCase()
@@ -107,9 +107,9 @@ export async function useAuthenticatedApi<T = unknown>(
   }
 
   return useApi<T>(endpoint, options);
-}
+};
 
-export function clearSessionCookies() {
+export const clearSessionCookies = () => {
   const xsrfCookie = useCookie('XSRF-TOKEN');
   const sessionCookie = useCookie('NitroOctane_session');
 
@@ -117,4 +117,4 @@ export function clearSessionCookies() {
   sessionCookie.value = null;
 
   console.log('Session cookies cleared');
-}
+};

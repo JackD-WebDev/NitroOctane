@@ -82,3 +82,9 @@ export const LogoutOtherSessionsResponseSchema = z.object({
   success: z.literal(true),
   message: z.literal('OTHER BROWSER SESSIONS LOGGED OUT SUCCESSFULLY')
 });
+
+export const PasswordUpdateResponseSchema = z.object({
+  success: z.boolean(),
+  message: z.string(),
+  errors: z.record(z.any()).optional()
+});

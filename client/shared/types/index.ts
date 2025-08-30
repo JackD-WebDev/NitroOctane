@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import z from 'zod';
 import type {
   UserSchema,
   NewUserSchema,
@@ -9,11 +9,17 @@ import type {
   SessionResponseSchema,
   LoggedInUserResponseSchema,
   RegisteredUserResponseSchema,
+  PasswordUpdateResponseSchema,
   LogoutOtherSessionsResponseSchema
 } from './user';
-import type { createRegisterSchema } from './forms';
+import type { createRegisterSchema, createPasswordUpdateSchema } from './forms';
 
 declare module '@pinia/testing';
+
+export const UniqueCheckResponseSchema = z.object({
+  unique: z.boolean(),
+  error: z.string().optional()
+});
 
 export const SupportedLocaleSchema = z.union([
   z.literal('en_US'),
@@ -56,11 +62,20 @@ export type FetchMethod = z.infer<typeof FetchMethodSchema>;
 export type UserResponse = z.infer<typeof UserResonseSchema>;
 export type ErrorResponse = z.infer<typeof ErrorResponseSchema>;
 export type LogoutResponse = z.infer<typeof LogoutResponseSchema>;
-export type SessionResponse = z.infer<typeof SessionResponseSchema>;
 export type HealthResponse = z.infer<typeof HealthResponseSchema>;
+export type SessionResponse = z.infer<typeof SessionResponseSchema>;
 export type SupportedLocale = z.infer<typeof SupportedLocaleSchema>;
-export type Register = z.infer<ReturnType<typeof createRegisterSchema>>;
+export type UniqueCheckResponse = z.infer<typeof UniqueCheckResponseSchema>;
 export type LoggedInUserResponse = z.infer<typeof LoggedInUserResponseSchema>;
+export type Register = z.infer<
+  Awaited<ReturnType<typeof createRegisterSchema>>
+>;
+export type PasswordUpdate = z.infer<
+  ReturnType<typeof createPasswordUpdateSchema>
+>;
+export type PasswordUpdateResponse = z.infer<
+  typeof PasswordUpdateResponseSchema
+>;
 export type RegisteredUserResponse = z.infer<
   typeof RegisteredUserResponseSchema
 >;

@@ -162,3 +162,15 @@ button,
 :where(ul) {
 	list-style-type: none;
 }
+
+.text-small-uppercase-error {
+	color: #b00020;
+	font-size: 1rem;
+	text-transform: uppercase;
+}
+
+.text-small-uppercase-success {
+	color: #1b7a1b;
+	font-size: 1rem;
+	text-transform: uppercase;
+}

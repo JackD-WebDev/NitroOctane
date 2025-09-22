@@ -1,38 +1,56 @@
 {
   "account": {
-    "confirm_password_helper": "Ilagay ang iyong hudyat upang mag-log out sa ibang mga browser.",
-    "deleting": "Tinatanggal...",
-    "delete_failed": "Nabigo ang pag-log out ng ibang mga sesi.",
-    "delete_other_sessions": "Tanggalin ang Ibang Mga Sesi",
+    "confirm_new_password": "Kumpirmahin ang Bagong Password",
+    "confirm_password_helper": "Ilagay ang iyong password upang mag-logout sa ibang browser.",
+    "current_password": "Kasalukuyang Password",
+    "deleting": "Binubura...",
+    "delete_failed": "Nabigong mag-logout sa ibang session.",
+    "delete_other_sessions": "Burahin ang Ibang Session",
     "email": "Sulatroniko",
     "last_active": "Huling aktibo",
-    "loading": "Naglo-load ng impormasyon ng user...",
-    "no_other_sessions": "Walang ibang mga sesi sa browser na natagpuan.",
-    "password": "Hudyat",
-    "sessions": "Ibang Mga Sesi sa Browser",
-    "session_fetch_error": "Nabigo ang pagkuha ng mga sesi.",
-    "sessions_deleted": "Matagumpay na na-log out ang ibang mga sesi sa browser.",
+    "loading": "Ikinakarga ang impormasyon ng user...",
+    "new_password": "Bagong Password",
+    "no_other_sessions": "Walang ibang session ng browser na natagpuan.",
+    "password": "Password",
+    "password_update_failed": "Nabigong i-update ang password.",
+    "password_update_success": "Matagumpay na na-update ang password.",
+    "sessions": "Ibang Session ng Browser",
+    "session_fetch_error": "Nabigong kunin ang mga session.",
+    "sessions_deleted": "Matagumpay na na-logout ang ibang session ng browser.",
+    "updating": "Ina-update...",
+    "update_password": "I-update ang Password",
+    "update_user_info": "I-update ang Impormasyon ng User",
+    "user_info_update_failed": "Nabigong i-update ang impormasyon ng user.",
+    "user_info_update_success": "Matagumpay na na-update ang impormasyon ng user.",
     "username": "Pangalan ng Gumagamit"
   },
-  "checking": "Tini-tsek",
+  "checking": "Sinusuri",
   "layout": {
     "copyright": "Lahat ng karapatan ay nakalaan.",
-    "title": "Ayos"
+    "title": "Layout"
   },
   "login": {
-    "network_error": "Nagkaroon ng network error. Pakisubukang muli.",
+    "remember_me": "Tandaan mo ako",
+    "network_error": "Nagkaroon ng error sa network. Pakisubukang muli.",
+    "forgot_password_hint": "Ilagay ang iyong email address at padadalhan ka namin ng link para i-reset ang iyong password.",
+    "send_reset_link": "Ipadala ang Reset Link",
+    "back_to_login": "← Bumalik sa login",
+    "forgot_password_submitted": "Kung ang iyong email ay nakarehistro, makakatanggap ka ng link para i-reset ang password sa lalong madaling panahon.",
+    "reset_password": "I-reset ang Password",
+    "reset_warn": "Ang iyong password ay nabago na. Kung hindi ikaw iyon, mangyaring makipag-ugnayan agad sa suporta.",
+    "password_reset_success": "Na-reset na ang iyong password. Mangyaring mag-login gamit ang iyong bagong password.",
     "validation": {
-      "email_invalid": "Mangyaring maglagay ng wastong email address.",
-      "password_min": "Ang hudyat ay dapat hindi bababa sa 12 na karakter."
+      "email_invalid": "Pakilagay ang wastong address de sulatroniko.",
+      "password_min": "Ang password ay dapat hindi bababa sa 12 na karakter."
     }
   },
   "navbar": {
-    "account": "Aking Account",
-    "home": "Tahanan",
-    "login": "Mag-log In",
+    "account": "Account",
+    "home": "Pangunahing Pahina",
+    "login": "Mag-Log In",
     "logout": "Mag-Log Out",
-    "logout_failed": "Nabigo ang pag-logout, subukan muli.",
-    "register": "Magparehistro"
+    "logout_failed": "Nabigong mag-logout, pakisubukang muli.",
+    "register": "Magrehistro"
   },
   "register": {
     "confirm_password": "Kumpirmahin ang Password",
@@ -41,37 +59,56 @@
     "lastname": "Apelyido",
     "middlename": "Gitnang Pangalan",
     "name": "Pangalan",
-    "password": "Hudyat",
-    "submit": "Magparehistro",
+    "password": "Password",
+    "submit": "Magrehistro",
     "username": "Pangalan ng Gumagamit",
     "validation": {
-      "email_invalid": "Mangyaring maglagay ng wastong email address.",
-
-      "email_min": "Ang email ay dapat hindi bababa sa 5 na karakter.",
-      "email_taken": "Ang email na ito ay nakarehistro na.",
-      "firstname_alpha_dash": "Ang unang pangalan ay maaaring maglaman lamang ng mga titik, numero, gitling at underscore.",
-      "firstname_max": "Ang unang pangalan ay hindi dapat lumalagpas sa 50 na karakter.",
-      "firstname_min": "Ang unang pangalan ay dapat hindi bababa sa 2 na karakter.",
-      "lastname_alpha_dash": "Ang apelyido ay maaaring maglaman lamang ng mga titik, numero, gitling at underscore.",
-      "lastname_max": "Ang apelyido ay hindi dapat lumalagpas sa 50 na karakter.",
-      "lastname_min": "Ang apelyido ay dapat hindi bababa sa 2 na karakter.",
-      "middlename_alpha_dash": "Ang gitnang pangalan ay maaaring maglaman lamang ng mga titik, numero, gitling at underscore.",
-      "middlename_max": "Ang gitnang pangalan ay hindi dapat lumalagpas sa 50 na karakter.",
-      "password_complexity": "Ang hudyat ay dapat maglaman ng malalaki at maliliit na titik, numero at mga simbolo.",
-      "password_min": "Ang hudyat ay dapat hindi bababa sa 12 na karakter.",
-      "passwords_must_match": "Dapat magkatugma ang mga hudyat.",
-      "username_available": "Magagamit ang username.",
-
+      "email_invalid": "Pakilagay ang wastong address de sulatroniko.",
+      "email_max": "Ang sulatroniko ay hindi dapat lumampas sa 320 na karakter.",
+      "email_min": "Ang sulatroniko ay dapat hindi bababa sa 5 na karakter.",
+      "email_taken": "Ang sulatroniko na ito ay nakarehistro na.",
+      "email_available": "Sulatroniko: { email } ay magagamit.",
+      "firstname_alpha_dash": "Ang Unang Pangalan ay maaaring maglaman lamang ng mga letra, numero, gitling, at underscore.",
+      "firstname_max": "Ang Unang Pangalan ay hindi dapat lumampas sa 50 na karakter.",
+      "firstname_min": "Ang Unang Pangalan ay dapat hindi bababa sa 2 na karakter.",
+      "lastname_alpha_dash": "Ang Apelyido ay maaaring maglaman lamang ng mga letra, numero, gitling, at underscore.",
+      "lastname_max": "Ang Apelyido ay hindi dapat lumampas sa 50 na karakter.",
+      "lastname_min": "Ang Apelyido ay dapat hindi bababa sa 2 na karakter.",
+      "middlename_alpha_dash": "Ang Gitnang Pangalan ay maaaring maglaman lamang ng mga letra, numero, gitling, at underscore.",
+      "middlename_max": "Ang Gitnang Pangalan ay hindi dapat lumampas sa 50 na karakter.",
+      "password_complexity": "Ang password ay dapat may malaking titik, maliit na titik, numero, at simbolo.",
+      "password_min": "Ang password ay dapat hindi bababa sa 12 na karakter.",
+      "passwords_must_match": "Ang mga password ay dapat magkatugma.",
+      "username_available": "Pangalan ng gumagamit: { username } ay magagamit.",
+      "username_max": "Ang pangalan ng gumagamit ay hindi dapat lumampas sa 50 na karakter.",
       "username_min": "Ang pangalan ng gumagamit ay dapat hindi bababa sa 3 na karakter.",
-      "username_taken": "Ang pangalan ng gumagamit ay ginagamit na."
-    }
+      "username_taken": "Ang pangalan ng gumagamit na ito ay ginagamit na."
+    },
+    "network_error": "Nagkaroon ng error sa network. Pakisubukang muli."
   },
   "status": {
     "health": {
-      "failed": "Nabigo ang pagkuha ng katayuan ng kalusugan.",
-      "loading": "Naglo-load...",
-      "passed": "Ang pagsusuri ng kalusugan ay pumasa."
+      "failed": "Nabigong kunin ang status ng kalusugan.",
+      "loading": "Ikinakarga...",
+      "passed": "Matagumpay ang health check."
     },
-    "title": "Katayuan"
+    "title": "Status"
+  },
+  "two_factor": {
+    "title": "Dalawang Hakbang na Pagpapatotoo",
+    "description": "I-enable ang dalawang hakbang na pagpapatotoo upang dagdagan ang seguridad ng iyong account.",
+    "activating": "Ine-enable ang 2FA, pakihintay...",
+    "enabled_message": "Ang dalawang hakbang na pagpapatotoo ay naka-enable sa iyong account.",
+    "view_recovery_codes": "Tingnan ang mga Recovery Code",
+    "hide": "Itago",
+    "save_recovery_complete": "Naitabi ko na ang aking mga Recovery Code",
+    "disable_2fa": "I-disable ang 2FA",
+    "disable_confirm_title": "I-disable ang Dalawang Hakbang na Pagpapatotoo",
+    "disable_confirm_text": "Sigurado ka bang gusto mong i-disable ang 2FA? Mababawasan ang seguridad ng iyong account.",
+    "confirm_password_prompt": "Pakikumpirma ang iyong hudyat upang magpatuloy:",
+    "disable_button": "Oo, I-disable ang 2FA",
+    "disable_cancel": "Kanselahin",
+    "disabling": "Ine-disable...",
+    "recoveries_title": "Mga Recovery Code"
   }
 }

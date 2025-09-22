@@ -10,10 +10,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (app()->environment('testing')) {
+        $driver = DB::getDriverName();
+        if (app()->environment('testing') || ! in_array($driver, ['mysql', 'mariadb'])) {
             return;
         }
-    
+
         DB::unprepared('DROP FUNCTION IF EXISTS `f_new_uuid`;');
         DB::unprepared("
             CREATE DEFINER=`root`@`%` FUNCTION `f_new_uuid`() RETURNS char(36)
@@ -46,6 +47,11 @@ return new class extends Migration
      */
     public function down(): void
     {
+        $driver = DB::getDriverName();
+        if (! in_array($driver, ['mysql', 'mariadb'])) {
+            return;
+        }
+
         DB::unprepared('drop function if exists f_new_uuid;');
     }
 };

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Concerns\InteractsWithBroadcasting;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +16,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 pest()->extend(Tests\TestCase::class)
     ->use(RefreshDatabase::class)
+    ->use(InteractsWithBroadcasting::class)
     ->in('Feature');
 
 /*

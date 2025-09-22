@@ -116,6 +116,7 @@ watch(selectedLang, async (newLang) => {
   cursor: pointer;
   font-weight: 600;
   font-size: 1.6rem;
+  text-transform: uppercase;
   transition: background-color 0.2s, border-color 0.2s, color 0.2s;
   font-family: inherit;
 

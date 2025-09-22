@@ -99,6 +99,16 @@ class UserController extends Controller
     public function findByUsername(Request $request): JsonResponse
     {
         $user = User::where('username', $request->username)->first();
+        
+        if (!$user) {
+            return response()->json([
+                'success' => true,
+                'message' => __('user.found.username', ['username' => $request->username]),
+                'data' => null,
+                'version' => config('app.full_name', 'Laravel Application')
+            ], HttpResponse::HTTP_OK);
+        }
+        
         return $this->responseHelper->resourceResponse(
             new UserResource($user),
             __('user.found.username', ['username' => $request->username]),
@@ -116,6 +126,16 @@ class UserController extends Controller
     public function findByEmail(Request $request): JsonResponse
     {
         $user = User::where('email', $request->email)->first();
+        
+        if (!$user) {
+            return response()->json([
+                'success' => true,
+                'message' => __('user.found.email', ['email' => $request->email]),
+                'data' => null,
+                'version' => config('app.full_name', 'Laravel Application')
+            ], HttpResponse::HTTP_OK);
+        }
+        
         return $this->responseHelper->resourceResponse(
             new UserResource($user),
             __('user.found.email', ['email' => $request->email]),

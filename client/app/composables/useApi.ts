@@ -38,6 +38,15 @@ export const useApi = <T = unknown>(
         ...restOptions
       })) as T;
     } catch (error: unknown) {
+      // Sometimes the server may return an HTML page (e.g., dev server not ready)
+      // which $fetch may surface as a string. Detect common HTML starts and
+      // convert to a clear error so callers don't attempt object operations.
+      if (typeof error === 'string') {
+        const t = error.trim();
+        if (t.startsWith('<!DOCTYPE') || t.startsWith('<html')) {
+          throw new Error('Server returned HTML (dev server may be starting). Try again shortly.');
+        }
+      }
       const errorObj = error as { status?: number; statusText?: string };
       if (
         retryOnCsrfError &&

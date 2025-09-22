@@ -15,6 +15,8 @@ export const AuthUserSchema = z.object({
   username: z.string(),
   preferred_language: z.string().default('en_US'),
   email: z.string().email(),
+  two_factor_enabled: z.boolean().optional().default(false),
+  email_verified_at: TDate.optional(),
   created_at: TDate.optional(),
   updated_at: TDate.optional()
 });
@@ -28,7 +30,8 @@ export const NewUserSchema = z.object({
   username: z.string(),
   email: z.string().email(),
   password: z.string(),
-  password_confirmation: z.string()
+  password_confirmation: z.string(),
+  lang: z.string().optional()
 });
 
 export const CredentialsSchema = z.object({
@@ -88,3 +91,66 @@ export const PasswordUpdateResponseSchema = z.object({
   message: z.string(),
   errors: z.record(z.any()).optional()
 });
+
+export const TwoFactorActivateResponseSchema = z.object({
+  success: z.boolean().default(true),
+  message: z.string().optional(),
+  svg: z.string().optional(),
+  qr: z.string().optional(),
+  secret: z.string().optional(),
+  recovery_codes: z.array(z.string()).optional()
+});
+
+export const TwoFactorQRCodeSchema = z.object({
+  svg: z.string(),
+  url: z.string().optional()
+});
+
+export const TwoFactorRecoveryCodesSchema = z.object({
+  recovery_codes: z.array(z.string())
+});
+
+export const TwoFactorConfirmResponseSchema = z.object({
+  success: z.boolean().default(true),
+  message: z.string().optional()
+});
+
+export const PasswordConfirmResponseSchema = z.object({
+  success: z.boolean().default(false),
+  message: z.string().optional()
+});
+
+export const TwoFactorDisableResponseSchema = z.object({
+  success: z.boolean().default(true),
+  message: z.string().optional()
+});
+
+export const TwoFactorChallengeResponseSchema = z.object({
+  success: z.boolean().default(true),
+  message: z.string().optional(),
+  two_factor_challenge: z.boolean().default(true)
+});
+
+export const TwoFactorLoginResponseSchema = z.object({
+  success: z.boolean().default(true),
+  message: z.string(),
+  user: AuthUserSchema,
+  redirect_url: z.string().optional()
+});
+
+export const TwoFactorLoginRequestSchema = z.object({
+  code: z.string().min(6).max(8),
+  recovery_code: z.string().optional()
+});
+
+export const TwoFactorPendingResponseSchema = z.object({
+  success: z.boolean().default(true),
+  message: z.string().optional(),
+  two_factor: z.literal(true)
+});
+
+export const LoginResponseSchema = z.union([
+  LoggedInUserResponseSchema,
+  TwoFactorChallengeResponseSchema,
+  TwoFactorPendingResponseSchema
+]);

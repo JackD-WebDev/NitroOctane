@@ -4,8 +4,10 @@ namespace App\Http\Responses;
 
 use HttpResponse;
 use ResponseHelper;
+use Illuminate\Http\Request;
 use Laravel\Fortify\Fortify;
-use Illuminate\Http\{Request, Response, JsonResponse};
+use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
 use Laravel\Fortify\Contracts\TwoFactorDisabledResponse as TwoFactorDisabledResponseContract;
 
 class TwoFactorDisabledResponse implements TwoFactorDisabledResponseContract
@@ -13,7 +15,7 @@ class TwoFactorDisabledResponse implements TwoFactorDisabledResponseContract
     /**
      * Create an instance of the response helper.
      *
-     * @param ResponseHelper $responseHelper The response helper.
+     * @param  ResponseHelper  $responseHelper  The response helper.
      */
     public function __construct(
         protected ResponseHelper $responseHelper
@@ -23,14 +25,13 @@ class TwoFactorDisabledResponse implements TwoFactorDisabledResponseContract
      * Create an HTTP response that represents the object.
      *
      * @param  Request  $request
-     * @return JsonResponse|Response
      */
     public function toResponse($request): JsonResponse|Response
     {
         return $request->wantsJson()
             ? $this->responseHelper->requestResponse(
                 [],
-                __('auth.2fa.disabled'),
+                __('auth.login.2fa.disabled'),
                 true,
                 HttpResponse::HTTP_OK
             )

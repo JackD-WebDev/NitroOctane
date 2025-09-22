@@ -85,7 +85,7 @@ export default defineNuxtConfig({
     }
   },
   imports: {
-    dirs: ['~/types', '~/shared/types']
+    dirs: ['~/shared/types']
   },
   experimental: {
     cookieStore: true
@@ -105,7 +105,19 @@ export default defineNuxtConfig({
       appVersion: process.env.APP_VERSION || '0.0.0',
       fullAppTitle: process.env.NUXT_PUBLIC_FULL_APP_NAME || 'NitroOctane',
       clientUrl: process.env.NUXT_CLIENT_URL || 'http://localhost',
-      appDomain: process.env.NUXT_PUBLIC_DOMAIN || 'localhost'
+      appDomain: process.env.NUXT_PUBLIC_DOMAIN || 'localhost',
+      // Reverb / Echo runtime public settings
+      reverbKey:
+        process.env.NUXT_PUBLIC_REVERB_APP_KEY ||
+        process.env.NUXT_PUBLIC_REVERB_KEY ||
+        '',
+      reverbHost: process.env.NUXT_PUBLIC_REVERB_HOST || 'localhost',
+      reverbAuthEndpoint:
+        process.env.NUXT_PUBLIC_REVERB_AUTH_ENDPOINT || '/broadcasting/auth',
+      reverbPort: process.env.NUXT_PUBLIC_REVERB_PORT
+        ? Number(process.env.NUXT_PUBLIC_REVERB_PORT)
+        : 80,
+      reverbScheme: process.env.NUXT_PUBLIC_REVERB_SCHEME || 'http'
     }
   }
 });

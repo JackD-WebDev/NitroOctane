@@ -11,7 +11,7 @@ export default defineEventHandler(
         message: 'FAILED TO RETRIEVE HEALTH STATUS',
         errors: {
           title: 'HEALTH CHECK ERROR',
-          details: [errorMessage]
+          details: [errorMessage, error]
         }
       };
     }

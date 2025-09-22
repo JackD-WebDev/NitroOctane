@@ -106,6 +106,44 @@ export const createLoginSchema = () => {
     email: z.string().email({ message: t('login.validation.email_invalid') }),
     password: z
       .string()
-      .min(12, { message: t('login.validation.password_min') })
+      .min(12, { message: t('login.validation.password_min') }),
+    remember: z.boolean().optional()
   });
+};
+
+export const createForgotPasswordSchema = () => {
+  const { t } = useI18n();
+  return z.object({
+    email: z
+      .string()
+      .min(5, { message: t('register.validation.email_min') })
+      .max(320, { message: t('register.validation.email_max') })
+      .email({ message: t('register.validation.email_invalid') })
+  });
+};
+
+export const createResetPasswordSchema = () => {
+  const { t } = useI18n();
+  const passwordRegex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/;
+  return z
+    .object({
+      token: z.string().min(10),
+      email: z
+        .string()
+        .min(5, { message: t('register.validation.email_min') })
+        .max(320, { message: t('register.validation.email_max') })
+        .email({ message: t('register.validation.email_invalid') }),
+      password: z
+        .string()
+        .min(12, { message: t('register.validation.password_min') })
+        .regex(passwordRegex, {
+          message: t('register.validation.password_complexity')
+        }),
+      password_confirmation: z.string()
+    })
+    .refine((data) => data.password === data.password_confirmation, {
+      message: t('register.validation.passwords_must_match'),
+      path: ['password_confirmation']
+    });
 };

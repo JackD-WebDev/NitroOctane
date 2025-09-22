@@ -39,6 +39,17 @@ class LoginResponse implements LoginResponseContract
         $username = $user->username ?? $user->name ?? 'user';
         $has2FA = ($user && isset($user->two_factor_secret) && $user->two_factor_secret) ? true : false;
 
+        // Debug remember token functionality
+        $remember = $request->boolean('remember');
+        if ($remember) {
+            \Illuminate\Support\Facades\Log::info('LoginResponse: Remember token requested', [
+                'user_id' => $user->id,
+                'remember' => $remember,
+                'remember_token' => $user->remember_token,
+                'guard' => auth()->getDefaultDriver(),
+            ]);
+        }
+
         if ($user && $request->wantsJson()) {
             return $this->responseHelper->requestResponse(
                 [
@@ -48,6 +59,7 @@ class LoginResponse implements LoginResponseContract
                         'username' => $username,
                         'preferred_language' => $user->lang,
                         'email' => $user->email,
+                        'email_verified_at' => $user->email_verified_at,
                         'created_at' => $user->created_at,
                         'updated_at' => $user->updated_at,
                     ],

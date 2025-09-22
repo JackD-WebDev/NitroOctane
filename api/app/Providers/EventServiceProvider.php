@@ -23,6 +23,9 @@ class EventServiceProvider extends ServiceProvider
         OtherDeviceLogout::class => [
             BroadcastSessionLoggedOut::class,
         ],
+        \Illuminate\Auth\Events\Verified::class => [
+            \App\Listeners\BroadcastEmailVerified::class,
+        ],
     ];
 
     /**

@@ -19,6 +19,9 @@
     "sessions_deleted": "Other browser sessions logged out successfully.",
     "updating": "Updating...",
     "update_password": "Update Password",
+    "update_user_info": "Update User Information",
+    "user_info_update_failed": "Failed to update user information.",
+    "user_info_update_success": "User information updated successfully.",
     "username": "Username"
   },
   "checking": "Checking",
@@ -27,7 +30,16 @@
     "title": "Layout"
   },
   "login": {
+    "remember_me": "Remember me",
     "network_error": "Network error occurred. Please try again.",
+    "forgot_password": "Forgot Password?",
+    "forgot_password_hint": "Enter your email address and we'll send you a link to reset your password.",
+    "forgot_password_submitted": "If your email is registered, you will receive a password reset link shortly.",
+    "send_reset_link": "Send Reset Link",
+    "back_to_login": "← Back to login",
+    "reset_password": "Reset Password",
+    "reset_warn": "Your password has been changed. If this was not you, please contact support immediately.",
+    "password_reset_success": "Your password has been reset. Please log in with your new password.",
     "validation": {
       "email_invalid": "Please enter a valid email address.",
       "password_min": "Password must be at least 12 characters."
@@ -56,6 +68,7 @@
       "email_max": "Email cannot exceed 320 characters.",
       "email_min": "Email must be at least 5 characters.",
       "email_taken": "This email is already registered.",
+      "email_available": "Email: { email } is available.",
       "firstname_alpha_dash": "First name can only contain letters, numbers, dashes, and underscores.",
       "firstname_max": "First name cannot exceed 50 characters.",
       "firstname_min": "First name must be at least 2 characters.",
@@ -81,5 +94,40 @@
       "passed": "Health check passed."
     },
     "title": "Status"
+  },
+  "two_factor": {
+    "title": "Two-Factor Authentication",
+    "description": "Enable two-factor authentication to add an extra layer of security to your account.",
+    "activating": "Enabling 2FA, please wait...",
+    "enabled_message": "Two-factor authentication is currently enabled for your account.",
+    "view_recovery_codes": "View Recovery Codes",
+    "hide": "Hide",
+    "save_recovery_complete": "I've Saved My Recovery Codes",
+    "disable_2fa": "Disable 2FA",
+    "disable_confirm_title": "Disable Two-Factor Authentication",
+    "disable_confirm_text": "Are you sure you want to disable 2FA? This will make your account less secure.",
+    "confirm_password_prompt": "Please confirm your password to continue:",
+    "disable_button": "Yes, Disable 2FA",
+    "disable_cancel": "Cancel",
+    "disabling": "Disabling...",
+    "recoveries_title": "Recovery Codes"
+  },
+  "verify": {
+    "title": "Verify Email",
+    "verifying": "Verifying your email address...",
+    "success_title": "Email Verified!",
+    "success_message": "Your email address has been successfully verified. You will be redirected to your account shortly.",
+    "error": "Verification failed",
+    "error_title": "Verification Failed",
+    "error_help": "The verification link may have expired or is invalid. Please try requesting a new verification email.",
+    "no_params_title": "Email Verification",
+    "no_params_message": "Please click the verification link in your email to verify your account.",
+    "back_to_login": "Back to Login",
+    "resend_title": "Resend Verification Email",
+    "resend_message": "Didn't receive the verification email? We can send you another one.",
+    "resend_button": "Resend Verification Email",
+    "resend_success": "Verification email sent! Please check your inbox.",
+    "check_email_title": "Check Your Email",
+    "check_email_message": "We've sent a verification link to your email address. Please click the link to verify your account."
   }
 }

@@ -1,0 +1,105 @@
+  .remember-row {
+    --switch-width: 56px;
+    --switch-height: 32px;
+    --knob-size: 28px;
+    --track-bg: #2b2b35;
+    --track-border: rgba(0,0,0,0.12);
+    --knob-bg: #ececec;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .remember-row .formkit-wrapper,
+  .remember-row .formkit-inner {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+            user-select: none;
+  }
+
+  .remember-row input[type="checkbox"].formkit-input {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(1px, 1px, 1px, 1px);
+    white-space: nowrap;
+    border: 0;
+    padding: 0;
+    margin: -1px;
+  }
+
+  .remember-row .formkit-label {
+    display: inline-block;
+    padding-left: calc(var(--switch-width) + 0.75rem);
+    color: var(--primary-hover-text, #bcefbc);
+    font-size: 1.6rem;
+  }
+
+  .remember-row input[type="checkbox"] + .formkit-decorator::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    display: block;
+    width: var(--switch-width);
+    height: var(--switch-height);
+    border-radius: var(--switch-height);
+    background: var(--track-bg);
+    border: 2px solid var(--track-border);
+    transition: background 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.06) inset;
+  }
+
+  .remember-row input[type="checkbox"] + .formkit-decorator::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 4px;
+    transform: translateY(-50%);
+    width: var(--knob-size);
+    height: var(--knob-size);
+    border-radius: 50%;
+    background: var(--knob-bg);
+    transition: left 200ms cubic-bezier(.25,.8,.25,1), background 180ms ease, box-shadow 180ms ease;
+    box-shadow: 0 4px 12px rgba(2,6,23,0.18);
+    border: 1px solid rgba(0,0,0,0.08);
+  }
+
+  .remember-row input[type="checkbox"]:checked + .formkit-decorator::before {
+    background-color: var(--primary-color);
+    border-color: rgba(50, 220, 80, 0.12);
+    box-shadow: 0 2px 0 rgba(30, 180, 40, 0.08) inset;
+  }
+
+  .remember-row input[type="checkbox"]:checked + .formkit-decorator::after {
+    left: calc(var(--switch-width) - var(--knob-size) - 4px);
+    background: #f0f6f0;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+  }
+
+  .remember-row input[type="checkbox"]:focus + .formkit-decorator::before {
+    outline: none;
+    box-shadow: 0 0 0 6px rgba(90, 255, 110, 0.14);
+  }
+
+  .remember-row input[type="checkbox"] + .formkit-decorator::before {
+    --icon-size: 14px;
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: 14px 14px;
+  }
+
+  @media (max-width: 480px) {
+    .remember-row {
+      --switch-width: 46px;
+      --switch-height: 26px;
+      --knob-size: 22px;
+    }
+  }

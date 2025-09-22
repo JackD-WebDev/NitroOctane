@@ -3,13 +3,43 @@ import { ZodError } from 'zod';
 
 const { t, locale } = useI18n();
 const authStore = useAuthStore();
-const registerSchema = await createRegisterSchema();
 
 definePageMeta({
   title: 'Register',
   middleware: ['guest']
 });
 useAppTitle(t('navbar.register'));
+
+const fieldErrors = reactive<Record<string, string>>({
+  firstname: '',
+  middlename: '',
+  lastname: '',
+  username: '',
+  email: '',
+  password: '',
+  confirmPassword: ''
+});
+
+const formState = reactive<Register & { lang?: string }>({
+  firstname: '',
+  middlename: '',
+  lastname: '',
+  username: '',
+  email: '',
+  password: '',
+  confirmPassword: '',
+  lang: locale.value
+});
+
+const {
+  uniqueChecks,
+  focused,
+  onFieldInput,
+  onFieldFocus,
+  onFieldBlur,
+  resetFieldState
+} = useUniqueFieldCheck();
+const registerSchema = await createRegisterSchema();
 
 const registerSchemaWithConfirm = registerSchema.refine(
   (data) => data.password === data.confirmPassword,
@@ -54,7 +84,7 @@ const submitHandler = async (formData: Register) => {
       locale.value
     );
     const localizedNavigate = useLocalizedNavigate();
-    await localizedNavigate('/account');
+    await localizedNavigate('/verify-email');
   } catch (error: unknown) {
     if (error instanceof Error) {
       authStore.error = error.message;
@@ -64,97 +94,14 @@ const submitHandler = async (formData: Register) => {
   }
 };
 
-type UniqueField = 'username' | 'email';
-
-const uniqueChecks = reactive({
-  username: { loading: false, unique: null as boolean | null, message: '' },
-  email: { loading: false, unique: null as boolean | null, message: '' }
-});
-
-const fieldErrors = reactive<Record<string, string>>({
-  firstname: '',
-  middlename: '',
-  lastname: '',
-  username: '',
-  email: '',
-  password: '',
-  confirmPassword: ''
-});
-
-const formState = reactive<Register>({
-  firstname: '',
-  middlename: '',
-  lastname: '',
-  username: '',
-  email: '',
-  password: '',
-  confirmPassword: ''
-});
-
-const timers: Record<UniqueField, number | null> = {
-  username: null,
-  email: null
-};
-
-const runUniquenessCheck = async (field: UniqueField, value: string) => {
-  if (!value) {
-    uniqueChecks[field].unique = null;
-    uniqueChecks[field].message = '';
-    return;
-  }
-
-  uniqueChecks[field].loading = true;
-  try {
-    const response = await useApi<UniqueCheckResponse>(
-      `check-unique?field=${field}&value=${encodeURIComponent(value)}`
-    );
-    if (response && typeof response.unique === 'boolean') {
-      uniqueChecks[field].unique = response.unique;
-      uniqueChecks[field].message = response.unique
-        ? ''
-        : t(`register.validation.${field}_taken`);
-    } else {
-      uniqueChecks[field].unique = null;
-      uniqueChecks[field].message = '';
-    }
-  } catch {
-    uniqueChecks[field].message = t('register.network_error');
-  } finally {
-    uniqueChecks[field].loading = false;
-  }
-};
-
-const scheduleUniquenessCheck = (field: UniqueField, value: string) => {
-  if (timers[field]) {
-    clearTimeout(timers[field]!);
-  }
-  timers[field] = window.setTimeout(
-    () => runUniquenessCheck(field, value),
-    800
-  );
-};
-
-const onFieldInput = (field: UniqueField, val: unknown) => {
-  if (fieldErrors[field]) fieldErrors[field] = '';
-  scheduleUniquenessCheck(field, String(val || ''));
-};
-
-const onFieldBlur = (field: UniqueField, val: unknown) => {
-  if (timers[field]) {
-    clearTimeout(timers[field]!);
-    timers[field] = null;
-  }
-  runUniquenessCheck(field, String(val || ''));
-};
-
-const handleUsernameInput = (val: unknown) => onFieldInput('username', val);
-const handleUsernameBlur = (val: unknown) => onFieldBlur('username', val);
-const handleEmailInput = (val: unknown) => onFieldInput('email', val);
-const handleEmailBlur = (val: unknown) => onFieldBlur('email', val);
-
 const clearFieldError = (field: keyof typeof fieldErrors) => {
   fieldErrors[field] = '';
 };
+
+onUnmounted(() => {
+  resetFieldState('username');
+  resetFieldState('email');
+});
 </script>
 
 <template>
@@ -193,20 +140,37 @@ const clearFieldError = (field: keyof typeof fieldErrors) => {
         name="username"
         :label="t('register.username').toUpperCase()"
         :placeholder="t('register.username')"
-        @input="handleUsernameInput"
-        @blur="handleUsernameBlur"
+        :class="{
+          'input-error': uniqueChecks.username.value.unique === false
+        }"
+        @input="(val: unknown) => onFieldInput('username', val)"
+        @focus="() => onFieldFocus('username')"
+        @blur="() => onFieldBlur('username')"
       />
       <div class="field-feedback">
-        <small v-if="uniqueChecks.username.loading"
+        <small
+          v-if="
+            uniqueChecks.username.value.unique === false &&
+            formState.username.length > 3
+          "
+          class="text-small-uppercase-error"
+        >
+          {{ uniqueChecks.username.value.message }}
+        </small>
+        <small
+          v-if="
+            focused.username &&
+            formState.username.length > 3 &&
+            uniqueChecks.username.value.loading
+          "
           >{{ t('checking') }}...</small
         >
         <small
-          v-else-if="uniqueChecks.username.unique === false"
-          class="text-small-uppercase-error"
-          >{{ uniqueChecks.username.message }}</small
-        >
-        <small
-          v-else-if="uniqueChecks.username.unique === true"
+          v-if="
+            focused.username &&
+            formState.username.length > 3 &&
+            uniqueChecks.username.value.unique === true
+          "
           class="text-small-uppercase-success"
           >{{
             t('register.validation.username_available', {
@@ -221,20 +185,41 @@ const clearFieldError = (field: keyof typeof fieldErrors) => {
         name="email"
         :label="t('register.email').toUpperCase()"
         :placeholder="t('register.email')"
-        @input="handleEmailInput"
-        @blur="handleEmailBlur"
+        :class="{
+          'input-error': uniqueChecks.email.value.unique === false
+        }"
+        @input="(val: unknown) => onFieldInput('email', val)"
+        @focus="() => onFieldFocus('email')"
+        @blur="() => onFieldBlur('email')"
       />
       <div class="field-feedback">
-        <small v-if="uniqueChecks.email.loading">{{ t('checking') }}...</small>
         <small
-          v-else-if="uniqueChecks.email.unique === false"
+          v-if="
+            uniqueChecks.email.value.unique === false &&
+            formState.email.length > 3
+          "
           class="text-small-uppercase-error"
-          >{{ uniqueChecks.email.message }}</small
+        >
+          {{ uniqueChecks.email.value.message }}
+        </small>
+        <small
+          v-if="
+            focused.email &&
+            formState.email.length > 3 &&
+            uniqueChecks.email.value.loading
+          "
+          >{{ t('checking') }}...</small
         >
         <small
-          v-else-if="uniqueChecks.email.unique === true"
+          v-if="
+            focused.email &&
+            formState.email.length > 3 &&
+            uniqueChecks.email.value.unique === true
+          "
           class="text-small-uppercase-success"
-          >{{ t('register.email_available') }}</small
+          >{{
+            t('register.validation.email_available', { email: formState.email })
+          }}</small
         >
       </div>
       <FormKit
@@ -263,19 +248,27 @@ const clearFieldError = (field: keyof typeof fieldErrors) => {
       <FormKit type="submit" style="margin-top: 2rem">{{
         t('register.submit').toUpperCase()
       }}</FormKit>
-      <div v-if="authStore.error" style="color: red; margin-top: 1rem">
+      <FormKit v-model="formState.lang" type="hidden" name="lang" />
+      <div v-if="authStore.error" class="form-error">
         {{ authStore.error }}
       </div>
     </FormKit>
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 form {
   max-width: 40rem;
+}
+.form-error {
+  color: red;
+  margin-top: 1rem;
 }
 .field-feedback {
   margin-top: 0.25rem;
   margin-bottom: 0.5rem;
+}
+.field-feedback small {
+  transition: visibility 0.2s, opacity 0.2s;
 }
 </style>

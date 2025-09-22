@@ -12,8 +12,7 @@ export default defineEventHandler(async (event) => {
     'es_US',
     'fr_US',
     'tl_US'
-  ] as const;
-
+  ];
   const normalizeLocale = (
     code?: string | null
   ): (typeof SUPPORTED_LOCALES)[number] | null => {

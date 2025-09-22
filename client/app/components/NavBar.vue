@@ -5,6 +5,10 @@ const { handleLogout } = useLogout();
 const localePath = useLocalePath();
 const { t, locale } = useI18n();
 
+onMounted(() => {
+  usePasswordPush();
+});
+
 type NavLink = {
   nameKey: string;
   path?: string;

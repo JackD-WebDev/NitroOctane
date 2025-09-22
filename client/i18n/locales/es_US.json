@@ -1,17 +1,27 @@
 {
   "account": {
+    "confirm_new_password": "Confirmar nueva contraseña",
     "confirm_password_helper": "Ingrese su contraseña para cerrar sesión en otros navegadores.",
+    "current_password": "Contraseña actual",
     "deleting": "Eliminando...",
     "delete_failed": "No se pudo cerrar la sesión de otras sesiones.",
     "delete_other_sessions": "Eliminar otras sesiones",
     "email": "Correo Electrónico",
     "last_active": "Última actividad",
     "loading": "Cargando información del usuario...",
+    "new_password": "Nueva contraseña",
     "no_other_sessions": "No se encontraron otras sesiones del navegador.",
     "password": "Contraseña",
+    "password_update_failed": "No se pudo actualizar la contraseña.",
+    "password_update_success": "Contraseña actualizada correctamente.",
     "sessions": "Otras sesiones del navegador",
     "session_fetch_error": "No se pudieron recuperar las sesiones.",
     "sessions_deleted": "Otras sesiones del navegador cerradas correctamente.",
+    "updating": "Actualizando...",
+    "update_password": "Actualizar contraseña",
+    "update_user_info": "Actualizar información del usuario",
+    "user_info_update_failed": "No se pudo actualizar la información del usuario.",
+    "user_info_update_success": "Información del usuario actualizada correctamente.",
     "username": "Nombre de Usuario"
   },
   "checking": "Comprobando",
@@ -20,7 +30,15 @@
     "title": "Diseño"
   },
   "login": {
+    "remember_me": "Recordarme",
     "network_error": "Ocurrió un error de red. Por favor, inténtalo de nuevo.",
+    "forgot_password_hint": "Introduce tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña.",
+    "send_reset_link": "Enviar enlace de restablecimiento",
+    "back_to_login": "← Volver al inicio de sesión",
+    "forgot_password_submitted": "Si tu correo electrónico está registrado, recibirás un enlace para restablecer la contraseña en breve.",
+    "reset_password": "Restablecer contraseña",
+    "reset_warn": "Tu contraseña ha sido cambiada. Si no fuiste tú, por favor contacta al soporte inmediatamente.",
+    "password_reset_success": "Tu contraseña ha sido restablecida. Por favor, inicia sesión con tu nueva contraseña.",
     "validation": {
       "email_invalid": "Por favor, introduce una dirección de correo electrónico válida.",
       "password_min": "La contraseña debe tener al menos 12 caracteres."
@@ -40,15 +58,16 @@
     "firstname": "Nombre",
     "lastname": "Apellido",
     "middlename": "Segundo Nombre",
-    "name": "Name",
+    "name": "Nombre",
     "password": "Contraseña",
     "submit": "Registrarse",
     "username": "Nombre de Usuario",
     "validation": {
       "email_invalid": "Por favor, introduce una dirección de correo electrónico válida.",
-
+      "email_max": "El correo electrónico no puede exceder los 320 caracteres.",
       "email_min": "El correo electrónico debe tener al menos 5 caracteres.",
       "email_taken": "Este correo electrónico ya está registrado.",
+      "email_available": "Correo electrónico: { email } está disponible.",
       "firstname_alpha_dash": "El nombre solo puede contener letras, números, guiones y guiones bajos.",
       "firstname_max": "El nombre no puede exceder los 50 caracteres.",
       "firstname_min": "El nombre debe tener al menos 2 caracteres.",
@@ -60,8 +79,8 @@
       "password_complexity": "La contraseña debe contener mayúsculas, minúsculas, números y símbolos.",
       "password_min": "La contraseña debe tener al menos 12 caracteres.",
       "passwords_must_match": "Las contraseñas deben coincidir.",
-      "username_available": "El nombre de usuario está disponible.",
-
+      "username_available": "Nombre de usuario: { username } está disponible.",
+      "username_max": "El nombre de usuario no puede exceder los 50 caracteres.",
       "username_min": "El nombre de usuario debe tener al menos 3 caracteres.",
       "username_taken": "Este nombre de usuario ya está en uso."
     },
@@ -74,5 +93,22 @@
       "passed": "La verificación de salud pasó."
     },
     "title": "Estado"
+  },
+  "two_factor": {
+    "title": "Autenticación de dos factores",
+    "description": "Active la autenticación de dos factores para agregar una capa adicional de seguridad a su cuenta.",
+    "activating": "Habilitando 2FA, por favor espere...",
+    "enabled_message": "La autenticación de dos factores está habilitada para su cuenta.",
+    "view_recovery_codes": "Ver códigos de recuperación",
+    "hide": "Ocultar",
+    "save_recovery_complete": "He guardado mis códigos de recuperación",
+    "disable_2fa": "Desactivar 2FA",
+    "disable_confirm_title": "Desactivar autenticación de dos factores",
+    "disable_confirm_text": "¿Está seguro de que desea desactivar 2FA? Esto hará que su cuenta sea menos segura.",
+    "confirm_password_prompt": "Por favor confirme su contraseña para continuar:",
+    "disable_button": "Sí, desactivar 2FA",
+    "disable_cancel": "Cancelar",
+    "disabling": "Desactivando...",
+    "recoveries_title": "Códigos de recuperación"
   }
 }

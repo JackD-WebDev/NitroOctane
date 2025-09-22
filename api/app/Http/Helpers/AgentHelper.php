@@ -25,7 +25,7 @@ class AgentHelper
      */
     public static function parseUserAgent(?string $userAgent): array
     {
-        if (!$userAgent) {
+        if ($userAgent === null) {
             return [
                 'browser' => 'Unknown',
                 'platform' => 'Unknown',
@@ -33,22 +33,34 @@ class AgentHelper
             ];
         }
 
+        if ($userAgent === '') {
+            return [
+                'browser' => 'Unknown',
+                'platform' => 'Unknown',
+                'original' => '',
+            ];
+        }
+
         $browser = 'Unknown';
         $platform = 'Unknown';
 
-        if (stripos($userAgent, 'Windows') !== false) {
+        // Platform detection - check specific platforms before generic ones
+        if (stripos($userAgent, 'Android') !== false) {
+            $platform = 'Android';
+        } elseif (stripos($userAgent, 'iPhone') !== false || stripos($userAgent, 'iPad') !== false) {
+            $platform = 'iOS';
+        } elseif (stripos($userAgent, 'Windows') !== false) {
             $platform = 'Windows';
         } elseif (stripos($userAgent, 'Macintosh') !== false) {
             $platform = 'Mac';
         } elseif (stripos($userAgent, 'Linux') !== false) {
             $platform = 'Linux';
-        } elseif (stripos($userAgent, 'Android') !== false) {
-            $platform = 'Android';
-        } elseif (stripos($userAgent, 'iPhone') !== false || stripos($userAgent, 'iPad') !== false) {
-            $platform = 'iOS';
         }
 
-        if (stripos($userAgent, 'Chrome') !== false) {
+        // Browser detection - check specific browsers before generic ones
+        if (stripos($userAgent, 'Edge') !== false || stripos($userAgent, 'Edg/') !== false) {
+            $browser = 'Edge';
+        } elseif (stripos($userAgent, 'Chrome') !== false) {
             $browser = 'Chrome';
         } elseif (stripos($userAgent, 'Firefox') !== false) {
             $browser = 'Firefox';
@@ -56,8 +68,6 @@ class AgentHelper
             $browser = 'Safari';
         } elseif (stripos($userAgent, 'MSIE') !== false || stripos($userAgent, 'Trident') !== false) {
             $browser = 'Internet Explorer';
-        } elseif (stripos($userAgent, 'Edge') !== false) {
-            $browser = 'Edge';
         }
 
         return [

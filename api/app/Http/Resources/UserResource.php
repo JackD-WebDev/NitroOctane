@@ -32,6 +32,7 @@ class UserResource extends JsonResource
                 'attributes' => [
                     'name' => $this->name,
                     'username' => $this->username,
+                    'email_verified_at' => $this->email_verified_at,
                     $this->mergeWhen(auth()->check() && auth()->id() == $this->id, [
                         'email' => $this->email
                     ]),

@@ -39,9 +39,14 @@ RUN apk update && \
     igbinary \
     ldap \
     imagick \
+    xdebug \
     swoole && \
     docker-php-source delete && \
     rm -rf /var/cache/apk/* /tmp/* /var/tmp/*
+
+RUN apk add --no-cache php-xdebug
+
+RUN docker-php-ext-enable xdebug 
 
 COPY --from=composer:latest \
     /usr/bin/composer \

@@ -2,6 +2,7 @@
 
 <template>
   <div>
+    <NitroOctaneLogo />
     <slot />
   </div>
 </template>

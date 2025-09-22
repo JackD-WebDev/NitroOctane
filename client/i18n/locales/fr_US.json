@@ -1,38 +1,56 @@
 {
   "account": {
-    "confirm_password_helper": "Entrez votre mot de passe pour déconnecter les autres navigateurs.",
+    "confirm_new_password": "Confirmer le nouveau mot de passe",
+    "confirm_password_helper": "Entrez votre mot de passe pour vous déconnecter des autres navigateurs.",
+    "current_password": "Mot de passe actuel",
     "deleting": "Suppression...",
     "delete_failed": "Échec de la déconnexion des autres sessions.",
     "delete_other_sessions": "Supprimer les autres sessions",
     "email": "Courriel",
     "last_active": "Dernière activité",
-    "loading": "Chargement des informations de l'utilisateur...",
-    "no_other_sessions": "Aucune autre session navigateur trouvée.",
+    "loading": "Chargement des informations utilisateur...",
+    "new_password": "Nouveau mot de passe",
+    "no_other_sessions": "Aucune autre session de navigateur trouvée.",
     "password": "Mot de passe",
-    "sessions": "Autres sessions navigateur",
+    "password_update_failed": "Échec de la mise à jour du mot de passe.",
+    "password_update_success": "Mot de passe mis à jour avec succès.",
+    "sessions": "Autres sessions de navigateur",
     "session_fetch_error": "Échec de la récupération des sessions.",
-    "sessions_deleted": "Autres sessions navigateur déconnectées avec succès.",
+    "sessions_deleted": "Autres sessions de navigateur déconnectées avec succès.",
+    "updating": "Mise à jour...",
+    "update_password": "Mettre à jour le mot de passe",
+    "update_user_info": "Mettre à jour les informations utilisateur",
+    "user_info_update_failed": "Échec de la mise à jour des informations utilisateur.",
+    "user_info_update_success": "Informations utilisateur mises à jour avec succès.",
     "username": "Nom d'utilisateur"
   },
   "checking": "Vérification",
   "layout": {
     "copyright": "Tous droits réservés.",
-    "title": "Mise en page"
+    "title": "Disposition"
   },
   "login": {
+    "remember_me": "Se souvenir de moi",
     "network_error": "Une erreur réseau s'est produite. Veuillez réessayer.",
+    "forgot_password_hint": "Entrez votre adresse courriel et nous vous enverrons un lien pour réinitialiser votre mot de passe.",
+    "send_reset_link": "Envoyer le lien de réinitialisation",
+    "back_to_login": "← Retour à la connexion",
+    "forgot_password_submitted": "Si votre courriel est enregistré, vous recevrez bientôt un lien de réinitialisation du mot de passe.",
+    "reset_password": "Réinitialiser le mot de passe",
+    "reset_warn": "Votre mot de passe a été changé. Si ce n'était pas vous, veuillez contacter immédiatement le support.",
+    "password_reset_success": "Votre mot de passe a été réinitialisé. Veuillez vous connecter avec votre nouveau mot de passe.",
     "validation": {
       "email_invalid": "Veuillez entrer une adresse courriel valide.",
       "password_min": "Le mot de passe doit comporter au moins 12 caractères."
     }
   },
   "navbar": {
-    "account": "Mon compte",
+    "account": "Compte",
     "home": "Accueil",
-    "login": "Se connecter",
-    "logout": "Se déconnecter",
+    "login": "Connexion",
+    "logout": "Déconnexion",
     "logout_failed": "Échec de la déconnexion, veuillez réessayer.",
-    "register": "S'inscrire"
+    "register": "Inscription"
   },
   "register": {
     "confirm_password": "Confirmer le mot de passe",
@@ -46,32 +64,51 @@
     "username": "Nom d'utilisateur",
     "validation": {
       "email_invalid": "Veuillez entrer une adresse courriel valide.",
-
+      "email_max": "Le courriel ne peut pas dépasser 320 caractères.",
       "email_min": "Le courriel doit comporter au moins 5 caractères.",
-      "email_taken": "Cet e-mail est déjà enregistré.",
-      "firstname_alpha_dash": "Le prénom ne peut contenir que des lettres, des chiffres, des tirets et des traits de soulignement.",
+      "email_taken": "Ce courriel est déjà enregistré.",
+      "email_available": "Courriel : { email } est disponible.",
+      "firstname_alpha_dash": "Le prénom ne peut contenir que des lettres, chiffres, tirets et underscores.",
       "firstname_max": "Le prénom ne peut pas dépasser 50 caractères.",
       "firstname_min": "Le prénom doit comporter au moins 2 caractères.",
-      "lastname_alpha_dash": "Le nom de famille ne peut contenir que des lettres, des chiffres, des tirets et des traits de soulignement.",
+      "lastname_alpha_dash": "Le nom de famille ne peut contenir que des lettres, chiffres, tirets et underscores.",
       "lastname_max": "Le nom de famille ne peut pas dépasser 50 caractères.",
       "lastname_min": "Le nom de famille doit comporter au moins 2 caractères.",
-      "middlename_alpha_dash": "Le deuxième prénom ne peut contenir que des lettres, des chiffres, des tirets et des traits de soulignement.",
+      "middlename_alpha_dash": "Le deuxième prénom ne peut contenir que des lettres, chiffres, tirets et underscores.",
       "middlename_max": "Le deuxième prénom ne peut pas dépasser 50 caractères.",
-      "password_complexity": "Le mot de passe doit contenir des majuscules, des minuscules, des chiffres et des symboles.",
+      "password_complexity": "Le mot de passe doit contenir des majuscules, minuscules, chiffres et symboles.",
       "password_min": "Le mot de passe doit comporter au moins 12 caractères.",
       "passwords_must_match": "Les mots de passe doivent correspondre.",
-      "username_available": "Le nom d'utilisateur est disponible.",
-
+      "username_available": "Nom d'utilisateur : { username } est disponible.",
+      "username_max": "Le nom d'utilisateur ne peut pas dépasser 50 caractères.",
       "username_min": "Le nom d'utilisateur doit comporter au moins 3 caractères.",
       "username_taken": "Ce nom d'utilisateur est déjà pris."
-    }
+    },
+    "network_error": "Une erreur réseau s'est produite. Veuillez réessayer."
   },
   "status": {
     "health": {
-      "failed": "Échec de la récupération de l'état de santé.",
+      "failed": "Échec de la récupération du statut de santé.",
       "loading": "Chargement...",
-      "passed": "La vérification de santé a réussi."
+      "passed": "Vérification de santé réussie."
     },
     "title": "Statut"
+  },
+  "two_factor": {
+    "title": "Authentification à deux facteurs",
+    "description": "Activez l'authentification à deux facteurs pour ajouter une couche de sécurité supplémentaire à votre compte.",
+    "activating": "Activation de l'A2F, veuillez patienter...",
+    "enabled_message": "L'authentification à deux facteurs est actuellement activée pour votre compte.",
+    "view_recovery_codes": "Voir les codes de récupération",
+    "hide": "Masquer",
+    "save_recovery_complete": "J'ai sauvegardé mes codes de récupération",
+    "disable_2fa": "Désactiver l'A2F",
+    "disable_confirm_title": "Désactiver l'authentification à deux facteurs",
+    "disable_confirm_text": "Êtes-vous sûr de vouloir désactiver l'A2F ? Cela rendra votre compte moins sécurisé.",
+    "confirm_password_prompt": "Veuillez confirmer votre mot de passe pour continuer :",
+    "disable_button": "Oui, désactiver l'A2F",
+    "disable_cancel": "Annuler",
+    "disabling": "Désactivation...",
+    "recoveries_title": "Codes de récupération"
   }
 }

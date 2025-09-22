@@ -17,6 +17,20 @@ return [
 		'title' => 'Internal Server Error',
 		'message' => 'Something went wrong. Please try again later.'
 	],
+	'model' => [
+		'not_found' => [
+			'title' => 'RESOURCE NOT FOUND',
+			'message' => 'The requested resource was not found.'
+		],
+		'not_defined' => [
+			'title' => 'MODEL NOT DEFINED',
+			'message' => 'The specified model is not properly defined.'
+		]
+	],
+	'authorization' => [
+		'title' => 'UNAUTHORIZED',
+		'message' => 'You are not authorized to perform this action.'
+	],
 	'malformed_resource_response' => 'The data array must contain "data", "links", and "meta" keys.',
 	'forbidden' => 'Forbidden',
 	'unauthorized' => 'You are not authorized to access this resource.',

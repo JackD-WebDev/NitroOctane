@@ -12,6 +12,7 @@ services:
     depends_on:
       - laravel
       - bun
+      - admin
   laravel:
     build:
       context: .
@@ -27,13 +28,21 @@ services:
     networks:
       - default
     depends_on:
-      - admin
+      maria:
+        condition: service_healthy
   maria:
     image: 'mariadb:latest'
     env_file:
       - ./env/maria.env
     volumes:
       - maria:/var/lib/maria
+    restart: unless-stopped
+    healthcheck:
+      test: ['CMD-SHELL', 'test -S /run/mysqld/mysqld.sock']
+      timeout: 5s
+      interval: 5s
+      retries: 5
+      start_period: 10s
   admin:
     image: 'phpmyadmin:latest'
     env_file:
@@ -41,7 +50,8 @@ services:
     ports:
       - '3300:80'
     depends_on:
-      - maria
+      laravel:
+        condition: service_started
   composer:
     build:
       context: .
@@ -56,6 +66,8 @@ services:
       - ./api:/var/www/laravel
     env_file:
       - ./.env
+    environment:
+      - XDEBUG_MODE=coverage
     entrypoint: ['php', '/var/www/laravel/artisan']
     depends_on:
       - maria

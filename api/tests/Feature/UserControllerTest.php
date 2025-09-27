@@ -4,14 +4,11 @@ use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 
 beforeEach(function () {
-    Mail::fake(); // Prevent emails during user creation
 });
 
-it('index returns all users with correct structure', function () {
-    // Create authenticated user first
+it('returns all users with the correct structure for the index endpoint', function () {
     $user = User::factory()->create();
     
-    // Create additional users
     User::factory()->count(2)->create();
     
     $response = $this->actingAs($user)->getJson('/api/users');
@@ -25,7 +22,6 @@ it('index returns all users with correct structure', function () {
                     'data' => [
                         'type',
                         'user_id',
-                        // Note: has2FA is only included for some users (like authenticated user)
                         'attributes' => [
                             'name',
                             'username',
@@ -33,7 +29,6 @@ it('index returns all users with correct structure', function () {
                             'preferred_language',
                             'created_at_dates',
                             'updated_at_dates'
-                            // Note: email only included for own user profile
                         ]
                     ],
                     'links',
@@ -45,12 +40,11 @@ it('index returns all users with correct structure', function () {
             'version'
         ]);
     
-    // Verify we get all users (3 total: authenticated user + 2 created)
     $data = $response->json('data');
     expect(count($data))->toBe(3);
 });
 
-it('get me returns authenticated user information', function () {
+it('returns the authenticated user information for the get-me endpoint', function () {
     $user = User::factory()->create([
         'name' => 'Test User',
         'username' => 'testuser',
@@ -86,7 +80,7 @@ it('get me returns authenticated user information', function () {
     expect($response->json('data.attributes.email'))->toBe('test@example.com');
 });
 
-it('get me returns unauthorized for unauthenticated user', function () {
+it('returns unauthorized for unauthenticated requests to the get-me endpoint', function () {
     $response = $this->getJson('/api/user');
     
     $response->assertStatus(401)
@@ -95,9 +89,8 @@ it('get me returns unauthorized for unauthenticated user', function () {
         ]);
 });
 
-it('find by id returns user when found', function () {
-    $authUser = User::factory()->create(); // Create authenticated user
-    
+it('returns the user when finding by id and the user exists', function () {
+    $authUser = User::factory()->create();
     $user = User::factory()->create([
         'username' => 'founduser',
         'email' => 'found@example.com'
@@ -119,7 +112,6 @@ it('find by id returns user when found', function () {
                     'preferred_language',
                     'created_at_dates',
                     'updated_at_dates'
-                    // Note: has2FA and email not included when viewing other users
                 ]
             ],
             'links',
@@ -131,8 +123,8 @@ it('find by id returns user when found', function () {
     expect($response->json('data.attributes.username'))->toBe('founduser');
 });
 
-it('find by id returns 404 for non-existent user', function () {
-    $authUser = User::factory()->create(); // Create authenticated user
+it('returns 404 when finding by id for a non-existent user', function () {
+    $authUser = User::factory()->create();
     $nonExistentId = '99999999-9999-9999-9999-999999999999';
     
     $response = $this->actingAs($authUser)->getJson("/api/user/{$nonExistentId}");
@@ -140,15 +132,14 @@ it('find by id returns 404 for non-existent user', function () {
     $response->assertStatus(404);
 });
 
-it('find by username returns user when found', function () {
-    $authUser = User::factory()->create(); // Create authenticated user
+it('returns the user when finding by username and the user exists', function () {
+    $authUser = User::factory()->create(); 
     
     $user = User::factory()->create([
         'username' => 'uniqueuser',
         'email' => 'unique@example.com'
     ]);
     
-    // This should be a POST request according to the routes
     $response = $this->actingAs($authUser)->postJson('/api/user/username', [
         'username' => $user->username
     ]);
@@ -178,7 +169,7 @@ it('find by username returns user when found', function () {
     expect($response->json('data.attributes.username'))->toBe('uniqueuser');
 });
 
-it('find by username returns success with null data for non-existent user', function () {
+it('returns success with null data when finding by username for a non-existent user', function () {
     $authUser = User::factory()->create();
     
     $response = $this->actingAs($authUser)->postJson('/api/user/username', [
@@ -192,8 +183,8 @@ it('find by username returns success with null data for non-existent user', func
         ]);
 });
 
-it('find by email returns user when found', function () {
-    $authUser = User::factory()->create(); // Create authenticated user
+it('returns the user when finding by email and the user exists', function () {
+    $authUser = User::factory()->create(); 
     
     $user = User::factory()->create([
         'username' => 'emailuser',
@@ -227,7 +218,7 @@ it('find by email returns user when found', function () {
     expect($response->json('data.attributes.username'))->toBe('emailuser');
 });
 
-it('find by email returns success with null data for non-existent email', function () {
+it('returns success with null data when finding by email for a non-existent address', function () {
     $authUser = User::factory()->create();
     
     $response = $this->actingAs($authUser)->getJson('/api/user/email/nonexistent@example.com');
@@ -239,7 +230,7 @@ it('find by email returns success with null data for non-existent email', functi
         ]);
 });
 
-it('user resource structure includes all required fields', function () {
+it('includes all required fields in the user resource structure', function () {
     $user = User::factory()->create([
         'name' => 'Resource Test User',
         'username' => 'resourceuser',
@@ -251,7 +242,6 @@ it('user resource structure includes all required fields', function () {
     $response->assertStatus(200);
     $data = $response->json('data');
     
-    // Verify resource structure
     expect($data)->toHaveKeys(['type', 'user_id', 'attributes']);
     expect($data['type'])->toBe('user');
     expect($data['user_id'])->toBe($user->id);
@@ -262,10 +252,8 @@ it('user resource structure includes all required fields', function () {
         'preferred_language',
         'created_at_dates', 
         'updated_at_dates'
-        // Note: email and has2FA not included when viewing other users
     ]);
     
-    // Verify nested structures
     expect($data['attributes']['created_at_dates'])->toHaveKeys(['created_at_human', 'created_at']);
     expect($data['attributes']['updated_at_dates'])->toHaveKeys(['updated_at_human', 'updated_at']);
 });

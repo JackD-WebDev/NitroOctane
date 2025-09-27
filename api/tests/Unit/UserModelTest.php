@@ -1,0 +1,22 @@
+<?php
+
+use App\Models\User;
+use Tests\TestCase;
+
+uses(TestCase::class);
+
+it('returns email for mail route when email is set', function () {
+    $user = User::factory()->create(['email' => 'test@example.com']);
+
+    expect($user->routeNotificationForMail())->toBe('test@example.com');
+});
+
+it('handles object driver gracefully and still returns email', function () {
+    $user = User::factory()->create(['email' => 'object@example.com']);
+
+    // Pass an object as driver (older signature weirdness) and assert it still returns email
+    $dummy = new class {
+    };
+
+    expect($user->routeNotificationForMail($dummy))->toBe('object@example.com');
+});

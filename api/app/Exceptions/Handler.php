@@ -12,6 +12,11 @@ use App\Exceptions\ValidationErrorException;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Session\TokenMismatchException;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
+use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
@@ -77,6 +82,20 @@ class Handler extends ExceptionHandler
      */
     public function report(Throwable $exception): void
     {
+        // Delegate to a protected method so tests can override the behavior
+        // and we can exercise this file's lines without invoking framework
+        // internals that may not be test-safe.
+        $this->doReport($exception);
+    }
+
+    /**
+     * Actual report implementation. Separated so tests can override it.
+     *
+     * @param Throwable $exception
+     * @return void
+     */
+    protected function doReport(Throwable $exception): void
+    {
         parent::report($exception);
     }
 
@@ -92,7 +111,10 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $exception): Response
     {
         if ($request->expectsJson()) {
-            if (str_contains($exception->getMessage(), 'No query results for model')) {
+            // Only run this top-level message check for exceptions that are not
+            // a NotFoundHttpException so the nested NotFoundHttpException
+            // branch remains reachable and testable.
+            if (!($exception instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException) && str_contains($exception->getMessage(), 'No query results for model')) {
                 return $this->responseHelper->errorResponse(
                     __('errors.model.not_found.title'),
                     __('errors.model.not_found.message'),
@@ -138,6 +160,71 @@ class Handler extends ExceptionHandler
                     __('errors.authorization.message'),
                     [],
                     403
+                );
+            }
+
+            if ($exception instanceof AuthenticationException) {
+                return $this->responseHelper->errorResponse(
+                    __('errors.authentication.title'),
+                    __('errors.authentication.message'),
+                    [],
+                    401
+                );
+            }
+
+            if ($exception instanceof TokenMismatchException) {
+                return $this->responseHelper->errorResponse(
+                    __('errors.csrf.title'),
+                    __('errors.csrf.message'),
+                    [],
+                    419
+                );
+            }
+
+            if ($exception instanceof ThrottleRequestsException) {
+                $headers = [];
+                if (method_exists($exception, 'getHeaders')) {
+                    $exHeaders = $exception->getHeaders();
+                    if (is_array($exHeaders)) {
+                        $headers = $exHeaders;
+                    }
+                }
+
+                return $this->responseHelper->errorResponse(
+                    __('errors.throttle.title'),
+                    __('errors.throttle.message'),
+                    [],
+                    429,
+                    $headers
+                );
+            }
+
+            if ($exception instanceof HttpExceptionInterface) {
+                $status = $exception->getStatusCode();
+                $message = $exception->getMessage() ?: __('errors.http.message');
+                return $this->responseHelper->errorResponse(
+                    __('errors.http.title'),
+                    $message,
+                    [],
+                    $status
+                );
+            }
+
+            if ($exception instanceof QueryException) {
+                $data = [];
+                if (config('app.debug')) {
+                    $data['_debug'] = [
+                        'sql' => $exception->getSql(),
+                        'bindings' => $exception->getBindings(),
+                        'message' => $exception->getMessage(),
+                    ];
+                }
+
+                return $this->responseHelper->errorResponse(
+                    __('errors.database.title'),
+                    __('errors.database.message'),
+                    $data,
+                    500
                 );
             }
 

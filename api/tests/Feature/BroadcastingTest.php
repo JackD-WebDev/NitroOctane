@@ -11,10 +11,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 
 it('broadcasts events when password is reset', function () {
-    Event::fake();
-    Mail::fake();
-    Notification::fake(); // Prevent password change notifications
-    
+    Event::fake();    
     $user = User::factory()->create([
         'name' => 'TestUser_1',
         'username' => 'testuser1',
@@ -38,7 +35,6 @@ it('broadcasts events when password is reset', function () {
             'message' => 'Your password has been reset.',
         ]);
 
-    // Assert that the events were broadcasted
     $this->assertEventBroadcasted(PasswordChanged::class, function (PasswordChanged $event) use ($user) {
         return $event->user->id === $user->id;
     });

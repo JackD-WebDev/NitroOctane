@@ -84,16 +84,24 @@ class ResponseHelper
      * @return JsonResponse The error response.
      */
     public function errorResponse(
-        ?string $title = null, 
+        ?string $title = null,
         ?string $message = null,
-        array $errors = [], 
-        int $code = Response::HTTP_INTERNAL_SERVER_ERROR
-        
+        array $errors = [],
+        int $code = Response::HTTP_INTERNAL_SERVER_ERROR,
+        array $headers = []
     ): JsonResponse
     {
         $title = $title ?? __('error.generic.title');
         $message = $message ?? __('errors.generic.message');
-        
+        // If the caller included a reserved '_debug' key inside the errors array,
+        // lift it to the top-level so createResponse can conditionally include it
+        // when app.debug is enabled.
+        $debug = null;
+        if (array_key_exists('_debug', $errors)) {
+            $debug = $errors['_debug'];
+            unset($errors['_debug']);
+        }
+
         $responseData = [
             'errors' => [
                 'title' => strtoupper($title),
@@ -101,7 +109,11 @@ class ResponseHelper
             ]
         ];
 
-        return $this->createResponse($responseData, $message, false, $code);
+        if ($debug !== null) {
+            $responseData['_debug'] = $debug;
+        }
+
+        return $this->createResponse($responseData, $message, false, $code, $headers);
     }
 
     /**
@@ -138,17 +150,37 @@ class ResponseHelper
      * @param int $code The HTTP status code.
      * @return JsonResponse The JSON response.
      */
-    private function createResponse(array $data, ?string $message, bool $success, int $code): JsonResponse
+    private function createResponse(array $data, ?string $message, bool $success, int $code, array $headers = []): JsonResponse
     {
         $response = [
             'success' => $success,
             'message' => strtoupper($message),
         ];
 
+        // If debug details were included in the data under the reserved key '_debug',
+        // surface them as top-level 'debug' only when app.debug is enabled.
+        if (!empty($data) && array_key_exists('_debug', $data)) {
+            $debug = $data['_debug'];
+            unset($data['_debug']);
+        } else {
+            $debug = null;
+        }
+
         if (!empty($data)) {
             $response = array_merge($response, $data);
         }
 
-        return response()->json($response, $code);
+        if (config('app.debug') && $debug !== null) {
+            $response['debug'] = $debug;
+        }
+
+        $resp = response()->json($response, $code);
+
+        // Attach any provided headers (e.g., Retry-After for rate-limit responses)
+        foreach ($headers as $k => $v) {
+            $resp->headers->set($k, $v);
+        }
+
+        return $resp;
     }
 }

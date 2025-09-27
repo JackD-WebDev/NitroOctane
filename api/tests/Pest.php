@@ -2,6 +2,7 @@
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Concerns\InteractsWithBroadcasting;
+use Illuminate\Support\Facades\Mail;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,3 +50,11 @@ function something()
 {
     // ..
 }
+
+beforeEach(function () {
+    Mail::fake();
+});
+
+beforeEach(function () {
+    Illuminate\Support\Facades\Notification::fake();
+});

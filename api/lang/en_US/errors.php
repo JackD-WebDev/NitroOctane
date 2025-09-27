@@ -42,5 +42,26 @@ return [
 	'malformed_data' => 'The data provided is malformed.',
 	'validation' => 'Validation error',
 	'validation_error' => 'The data provided did not pass validation.'
+	,
+	'authentication' => [
+		'title' => 'UNAUTHENTICATED',
+		'message' => 'Authentication required.'
+	],
+	'csrf' => [
+		'title' => 'PAGE EXPIRED',
+		'message' => 'Your session has expired. Please refresh and try again.'
+	],
+	'throttle' => [
+		'title' => 'TOO MANY REQUESTS',
+		'message' => 'You have made too many requests. Please try again later.'
+	],
+	'http' => [
+		'title' => 'HTTP ERROR',
+		'message' => 'An HTTP error occurred.'
+	],
+	'database' => [
+		'title' => 'DATABASE ERROR',
+		'message' => 'A server error occurred. Please try again later.'
+	]
 
 ];

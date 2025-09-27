@@ -3,8 +3,57 @@
 namespace Tests;
 
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Queue;
+
 
 abstract class TestCase extends BaseTestCase
 {
-    //
+    use RefreshDatabase;
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        config(['mail.default' => env('MAIL_MAILER', 'array')]);
+        config(['queue.default' => env('QUEUE_CONNECTION', 'sync')]);
+
+        Mail::fake();
+        Notification::fake();
+        Queue::fake();
+    }
+
+    /**
+     * Ensure the given route URI has the 'web' middleware so the session store
+     * is available when tests exercise named throttle limiters that rely on
+     * session()->get('login.id'). This mutates the in-memory route action only
+     * for the duration of the test process.
+     *
+     * @param string $uri Route URI to patch (e.g. '/api/two-factor-challenge')
+     * @return void
+     */
+    protected function enableRouteSession(string $uri): void
+    {
+        $routes = \Illuminate\Support\Facades\Route::getRoutes();
+
+        foreach ($routes as $route) {
+            $routeUri = $route->uri();
+            if ($routeUri === ltrim($uri, '/') || $routeUri === $uri) {
+                $action = $route->getAction();
+                $middlewares = $action['middleware'] ?? [];
+                $middlewares = is_array($middlewares) ? $middlewares : explode(',', $middlewares);
+                // Attach the session start middleware directly so tests can
+                // access session() without enabling the full 'web' group
+                // (which includes CSRF protection and may interfere with
+                // test requests).
+                $startSession = \Illuminate\Session\Middleware\StartSession::class;
+                if (!in_array($startSession, $middlewares, true)) {
+                    $middlewares[] = $startSession;
+                    $action['middleware'] = $middlewares;
+                    $route->setAction($action);
+                }
+            }
+        }
+    }
 }

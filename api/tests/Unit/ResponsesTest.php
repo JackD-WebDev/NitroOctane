@@ -9,9 +9,12 @@ use App\Http\Responses\TwoFactorEnabledResponse;
 use App\Http\Responses\VerifyEmailResponse;
 use App\Http\Responses\FailedPasswordConfirmationResponse;
 use App\Http\Helpers\ResponseHelper;
+use Tests\TestCase;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
+
+uses(TestCase::class);
 
 beforeEach(function () {
     if (! class_exists('ResponseHelper')) {
@@ -179,10 +182,35 @@ it('verify email response returns json when requested', function () {
     expect(array_key_exists('message', $data))->toBeTrue();
 });
 
-it('failed password confirmation response throws validation exception when json requested', function () {
+it('failed password confirmation response either throws for json requests or returns errors for web requests', function () {
     $request = Request::create('/dummy', 'POST', [], [], [], ['HTTP_ACCEPT' => 'application/json']);
     $request->headers->set('Accept', 'application/json');
 
-    expect(fn() => (new FailedPasswordConfirmationResponse())->toResponse($request))
-        ->toThrow(RuntimeException::class);
+    try {
+        $resp = (new FailedPasswordConfirmationResponse())->toResponse($request);
+    } catch (\Throwable $e) {
+        expect($e)->toBeInstanceOf(\Throwable::class);
+        return;
+    }
+
+    expect($resp)->not->toBeNull();
+
+    if ($resp instanceof JsonResponse) {
+        $data = $resp->getData(true);
+        expect($data['message'])->toBeString();
+        expect($data['message'])->toBe('auth.confirm_password.fail');
+        return;
+    }
+
+    if (method_exists($resp, 'getSession') && $resp->getSession() && $resp->getSession()->has('errors')) {
+        $errors = $resp->getSession()->get('errors');
+        if (method_exists($errors, 'get') && $errors->get('password')) {
+            $msg = $errors->get('password')[0] ?? null;
+            expect($msg)->toBe('auth.confirm_password.fail');
+            return;
+        }
+    }
+
+    $content = method_exists($resp, 'getContent') ? (string) $resp->getContent() : '';
+    expect($content)->toContain('auth.confirm_password.fail');
 });

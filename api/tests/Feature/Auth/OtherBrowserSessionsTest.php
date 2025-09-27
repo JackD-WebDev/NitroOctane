@@ -76,7 +76,6 @@ it('does nothing when attempting to logout other browser sessions if the driver 
 it('returns user sessions when the session driver is database', function () {
     $user = User::factory()->create();
 
-    // Ensure we have a current session id from the test session
     $currentId = session()->getId();
 
     $otherId = 'other-session-id';
@@ -105,7 +104,6 @@ it('returns user sessions when the session driver is database', function () {
         ->assertJson([ 'success' => true ]);
 
     $data = $response->json('data');
-    // Expect two sessions and the expected IPs
     expect(count($data))->toBe(2);
     expect(collect($data)->pluck('ip'))->toContain('127.0.0.1');
     expect(collect($data)->pluck('ip'))->toContain('192.168.0.1');
@@ -166,10 +164,8 @@ it('deletes other session records when logging out other browser sessions if dri
 
     $response->assertStatus(200)->assertJson([ 'success' => true ]);
 
-    // Other session should be deleted
     $exists = DB::table('sessions')->where('id', $otherId)->exists();
     expect($exists)->toBeFalse();
-    // At least one session should still exist for the user
     $remaining = DB::table('sessions')->where('user_id', $user->id)->count();
     expect($remaining)->toBeGreaterThanOrEqual(1);
 });

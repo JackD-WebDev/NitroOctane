@@ -13,21 +13,21 @@ return [
 	*/
 
 	'generic' => [
-		'title' => 'PANLOKAL NA ERROR NG SERVER',
+		'title' => 'Panloob na Error ng Server',
 		'message' => 'May nangyaring pagkakamali. Pakisubukang muli mamaya.'
 	],
 	'model' => [
 		'not_found' => [
-			'title' => 'HINDI NATAGPUAN ANG RECURSO',
+			'title' => 'Hindi Natagpuan ang Recurso',
 			'message' => 'Ang hiniling na recurso ay hindi natagpuan.'
 		],
 		'not_defined' => [
-			'title' => 'HINDI NAKA-DEFINA ANG MODELO',
+			'title' => 'Hindi Naka-define ang Modelo',
 			'message' => 'Ang tinukoy na modelo ay hindi tama ang pagkakadefine.'
 		]
 	],
 	'authorization' => [
-		'title' => 'HINDI AWTORISADO',
+		'title' => 'Hindi Awtorisado',
 		'message' => 'Wala kang pahintulot na gawin ang aksyong ito.'
 	],
 	'malformed_resource_response' => 'Ang data array ay dapat maglaman ng mga susi na "data", "links", at "meta".',
@@ -42,23 +42,23 @@ return [
 	'validation' => 'Error sa pag-validate',
 	'validation_error' => 'Ang mga ibinigay na data ay hindi pumasa sa pag-validate.',
 	'authentication' => [
-		'title' => 'HINDI NA-AUTHENTICATE',
+		'title' => 'Hindi Na-authenticate',
 		'message' => 'Kinakailangan ang authentication.'
 	],
 	'csrf' => [
-		'title' => 'NAG-EXPIRY ANG PAHINA',
+		'title' => 'Nag-expiry ang Pahina',
 		'message' => 'Nag-expire ang iyong session. Pakirefresh at subukan muli.'
 	],
 	'throttle' => [
-		'title' => 'MASYADONG MARAMING REQUEST',
+		'title' => 'Masyadong Maraming Request',
 		'message' => 'Masyado kang maraming gumawa ng request. Pakisubukan muli mamaya.'
 	],
 	'http' => [
-		'title' => 'HTTP ERROR',
+		'title' => 'HTTP Error',
 		'message' => 'Nagkaroon ng HTTP error.'
 	],
 	'database' => [
-		'title' => 'DATABASE ERROR',
+		'title' => 'Database Error',
 		'message' => 'Nagkaroon ng server error. Pakisubukan muli mamaya.'
 	]
 

@@ -37,7 +37,6 @@ it('resets the password with a valid token', function () {
 
     Event::fake();
 
-    // Simulate generating a token by sending the notification and capturing the token from the notification
     $this->postJson('/api/forgot-password', ['email' => 'reset-token@example.com']);
 
     Notification::assertSentTo($user, QueuedResetPassword::class, function ($notif) use ($user, &$token) {
@@ -45,24 +44,20 @@ it('resets the password with a valid token', function () {
         return true;
     });
 
-    // If token not captured, fail early to avoid false positives
     expect(isset($token))->toBeTrue();
 
     $response = $this->postJson('/api/reset-password', [
         'email' => 'reset-token@example.com',
         'token' => $token,
-        // application requires 12+ characters for passwords in tests
         'password' => 'NewPassword123!',
         'password_confirmation' => 'NewPassword123!',
     ]);
 
     $response->assertStatus(200);
 
-    // message text varies by locale; ensure it mentions "reset"
     $body = $response->json();
     $this->assertStringContainsStringIgnoringCase('reset', $body['message'] ?? '');
 
-    // Ensure PasswordChanged and SessionLoggedOut events were broadcast
     Event::assertDispatched(PasswordChanged::class, function ($e) use ($user) {
         return $e->user->id === $user->id;
     });

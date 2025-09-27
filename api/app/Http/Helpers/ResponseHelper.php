@@ -93,9 +93,6 @@ class ResponseHelper
     {
         $title = $title ?? __('error.generic.title');
         $message = $message ?? __('errors.generic.message');
-        // If the caller included a reserved '_debug' key inside the errors array,
-        // lift it to the top-level so createResponse can conditionally include it
-        // when app.debug is enabled.
         $debug = null;
         if (array_key_exists('_debug', $errors)) {
             $debug = $errors['_debug'];
@@ -157,8 +154,6 @@ class ResponseHelper
             'message' => strtoupper($message),
         ];
 
-        // If debug details were included in the data under the reserved key '_debug',
-        // surface them as top-level 'debug' only when app.debug is enabled.
         if (!empty($data) && array_key_exists('_debug', $data)) {
             $debug = $data['_debug'];
             unset($data['_debug']);
@@ -176,7 +171,6 @@ class ResponseHelper
 
         $resp = response()->json($response, $code);
 
-        // Attach any provided headers (e.g., Retry-After for rate-limit responses)
         foreach ($headers as $k => $v) {
             $resp->headers->set($k, $v);
         }

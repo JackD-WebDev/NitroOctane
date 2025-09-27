@@ -13,21 +13,21 @@ return [
 	*/
 
 	'generic' => [
-		'title' => 'ERROR INTERNO DEL SERVIDOR',
+		'title' => 'Error Interno del Servidor',
 		'message' => 'Algo salió mal. Por favor, inténtelo de nuevo más tarde.'
 	],
 	'model' => [
 		'not_found' => [
-			'title' => 'RECURSO NO ENCONTRADO',
+			'title' => 'Recurso No Encontrado',
 			'message' => 'El recurso solicitado no fue encontrado.'
 		],
 		'not_defined' => [
-			'title' => 'MODELO NO DEFINIDO',
+			'title' => 'Modelo No Definido',
 			'message' => 'El modelo especificado no está correctamente definido.'
 		]
 	],
 	'authorization' => [
-		'title' => 'NO AUTORIZADO',
+		'title' => 'No Autorizado',
 		'message' => 'No está autorizado para realizar esta acción.'
 	],
 	'malformed_resource_response' => 'El array de datos debe contener las claves "data", "links" y "meta".',
@@ -42,23 +42,23 @@ return [
 	'validation' => 'Error de validación',
 	'validation_error' => 'Los datos proporcionados no pasaron la validación.',
 	'authentication' => [
-		'title' => 'NO AUTENTICADO',
+		'title' => 'No Autenticado',
 		'message' => 'Autenticación requerida.'
 	],
 	'csrf' => [
-		'title' => 'PÁGINA EXPIRADA',
+		'title' => 'Página Expirada',
 		'message' => 'Su sesión ha expirado. Por favor, actualice e inténtelo de nuevo.'
 	],
 	'throttle' => [
-		'title' => 'DEMASIADAS PETICIONES',
+		'title' => 'Demasiadas Peticiones',
 		'message' => 'Ha realizado demasiadas peticiones. Por favor, inténtelo de nuevo más tarde.'
 	],
 	'http' => [
-		'title' => 'ERROR HTTP',
+		'title' => 'Error HTTP',
 		'message' => 'Ocurrió un error HTTP.'
 	],
 	'database' => [
-		'title' => 'ERROR DE BASE DE DATOS',
+		'title' => 'Error de Base de Datos',
 		'message' => 'Ocurrió un error en el servidor. Por favor, inténtelo de nuevo más tarde.'
 	]
 

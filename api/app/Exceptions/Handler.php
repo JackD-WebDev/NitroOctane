@@ -82,9 +82,6 @@ class Handler extends ExceptionHandler
      */
     public function report(Throwable $exception): void
     {
-        // Delegate to a protected method so tests can override the behavior
-        // and we can exercise this file's lines without invoking framework
-        // internals that may not be test-safe.
         $this->doReport($exception);
     }
 
@@ -111,9 +108,6 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $exception): Response
     {
         if ($request->expectsJson()) {
-            // Only run this top-level message check for exceptions that are not
-            // a NotFoundHttpException so the nested NotFoundHttpException
-            // branch remains reachable and testable.
             if (!($exception instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException) && str_contains($exception->getMessage(), 'No query results for model')) {
                 return $this->responseHelper->errorResponse(
                     __('errors.model.not_found.title'),

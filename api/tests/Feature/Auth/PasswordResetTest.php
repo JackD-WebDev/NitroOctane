@@ -5,7 +5,10 @@ namespace Tests\Feature\Auth;
 use Tests\TestCase;
 use App\Models\User;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Event;
 use App\Notifications\QueuedResetPassword;
+use App\Events\PasswordChanged;
+use App\Events\SessionLoggedOut;
 
 beforeEach(function () {
     Notification::fake();
@@ -32,6 +35,8 @@ it('returns validation error for unknown email', function () {
 it('resets the password with a valid token', function () {
     $user = User::factory()->create(['email' => 'reset-token@example.com']);
 
+    Event::fake();
+
     // Simulate generating a token by sending the notification and capturing the token from the notification
     $this->postJson('/api/forgot-password', ['email' => 'reset-token@example.com']);
 
@@ -56,4 +61,13 @@ it('resets the password with a valid token', function () {
     // message text varies by locale; ensure it mentions "reset"
     $body = $response->json();
     $this->assertStringContainsStringIgnoringCase('reset', $body['message'] ?? '');
+
+    // Ensure PasswordChanged and SessionLoggedOut events were broadcast
+    Event::assertDispatched(PasswordChanged::class, function ($e) use ($user) {
+        return $e->user->id === $user->id;
+    });
+
+    Event::assertDispatched(SessionLoggedOut::class, function ($e) use ($user) {
+        return $e->user->id === $user->id;
+    });
 });

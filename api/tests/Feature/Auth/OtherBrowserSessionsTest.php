@@ -11,7 +11,6 @@ beforeEach(function () {
     Config::set('session.table', 'sessions');
     
     $this->withMiddleware();
-    // Ensure the route has the web middleware so session() is available
     $this->enableRouteSession('/api/sessions');
 });
 

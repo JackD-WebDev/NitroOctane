@@ -9,7 +9,6 @@ uses(TestCase::class);
 it('returns service unavailable when health table not healthy', function () {
     $helper = new ResponseHelper();
 
-    // Simulate missing or non-1 value
     DB::shouldReceive('table->value')->with('health')->andReturn(0);
 
     $resp = $helper->healthCheckResponse();

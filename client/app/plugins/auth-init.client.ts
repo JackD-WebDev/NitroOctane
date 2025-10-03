@@ -1,5 +1,5 @@
 export default defineNuxtPlugin(async () => {
-  if (import.meta.client) {
+  if (import.meta.client && import.meta.env.MODE !== 'test') {
     const authStore = useAuthStore();
     try {
       await authStore.fetchUser(false);

@@ -6,8 +6,15 @@ export default defineNuxtConfig({
     compatibilityVersion: 4
   },
   modules: [
-    '@pinia/nuxt',
-    '@pinia-plugin-persistedstate/nuxt',
+    ...(process.env.VITEST || process.env.NODE_ENV === 'test'
+      ? []
+      : (['@pinia/nuxt'] as const)),
+    ...(process.env.VITEST || process.env.NODE_ENV === 'test'
+      ? []
+      : (['@pinia-plugin-persistedstate/nuxt'] as const)),
+    ...(process.env.VITEST || process.env.NODE_ENV === 'test'
+      ? []
+      : (['nuxt-laravel-echo'] as const)),
     '@vueuse/nuxt',
     '@nuxt/test-utils/module',
     '@nuxt/image',
@@ -18,8 +25,7 @@ export default defineNuxtConfig({
     '@formkit/nuxt',
     'nuxt-purgecss',
     '@nuxt/scripts',
-    '@nuxtjs/i18n',
-    'nuxt-laravel-echo'
+    '@nuxtjs/i18n'
   ],
   image: {},
   eslint: {},

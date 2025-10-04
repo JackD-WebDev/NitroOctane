@@ -12,6 +12,7 @@ This repository combines a production-ready, Docker-first developer experience w
 - **[Nuxt 3](https://nuxt.com/)** frontend using the **[Nitro](https://nitro.unjs.io/)** server as a BFF (server-side endpoints live in `client/server/api`)
 - **[Zod](https://zod.dev/)** schemas on the Nitro server for request validation and type-safety
 - Styling with **[Sass](https://sass-lang.com/)** and a simple CSS reset
+- Form handling and validation helpers via **[FormKit](https://formkit.com/)** (see `client/formkit.config.mts`)
 - A **[JSON:API](https://jsonapi.org/)** inspired response format used by the Laravel API
 - Dockerized architecture with **[Nginx](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/)** as a reverse proxy and per-service Dockerfiles in `dockerfiles/`.
 - Internationalization support (i18n) with Nuxt + **[@nuxtjs/i18n](https://i18n.nuxtjs.org/)** and translation files in `client/locales/`
@@ -89,6 +90,7 @@ New user registrations record the route language and send it to the backend to s
 - Nuxt config: `client/nuxt.config.ts`
 - Laravel API routes: `api/routes/api.php`
 - Styling: `client/assets/styles/`
+- FormKit config: `client/formkit.config.mts`
 
 ## License
 

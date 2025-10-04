@@ -1,6 +1,6 @@
-# 🚀 NitroOctane (Updated README)
+# 🚀 NitroOctane
 
-A maintained starter template for building web applications with a Laravel Octane backend and a Nuxt 3 (Nitro) frontend acting as a Backend-for-Frontend (BFF).
+An opinionated starter template for building web applications with a Laravel Octane backend and a Nuxt 3 (Nitro) frontend acting as a Backend-for-Frontend (BFF).
 
 This repository combines a production-ready, Docker-first developer experience with batteries-included features like authentication, validation, i18n, and testing.
 

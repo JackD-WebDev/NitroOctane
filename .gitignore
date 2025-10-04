@@ -1,5 +1,7 @@
 .prettierrc
 .prettierignore
+.github
+.vscode
 client/node_modules
 client/*.log*
 client/.nuxt

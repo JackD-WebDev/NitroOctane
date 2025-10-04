@@ -108,16 +108,23 @@ describe('Auth', () => {
     });
 
     it('shows network error for unknown error', async () => {
+      authStoreMock.register.mockClear();
       authStoreMock.register.mockRejectedValueOnce('some error');
-      await wrapper.find('input[name="firstname"]').setValue('Alice');
-      await wrapper.find('input[name="lastname"]').setValue('Smith');
-      await wrapper.find('input[name="username"]').setValue('alicesmith');
-      await wrapper.find('input[name="email"]').setValue('alice@example.com');
-      await wrapper.find('input[name="password"]').setValue('Password123!');
-      await wrapper
+
+      const testWrapper = await mountSuspended(Register);
+      await flushPromises();
+
+      await testWrapper.find('input[name="firstname"]').setValue('Alice');
+      await testWrapper.find('input[name="lastname"]').setValue('Smith');
+      await testWrapper.find('input[name="username"]').setValue('alicesmith');
+      await testWrapper
+        .find('input[name="email"]')
+        .setValue('alice@example.com');
+      await testWrapper.find('input[name="password"]').setValue('Password123!');
+      await testWrapper
         .find('input[name="confirmPassword"]')
         .setValue('Password123!');
-      await wrapper.find('form').trigger('submit.prevent');
+      await testWrapper.find('form').trigger('submit.prevent');
       await flushPromises();
       expect(authStoreMock.register).toHaveBeenCalled();
     });

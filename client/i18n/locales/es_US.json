@@ -30,6 +30,7 @@
     "title": "Diseño"
   },
   "login": {
+    "forgot_password": "¿Olvidaste tu contraseña?",
     "remember_me": "Recordarme",
     "network_error": "Ocurrió un error de red. Por favor, inténtalo de nuevo.",
     "forgot_password_hint": "Introduce tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña.",

@@ -63,6 +63,7 @@
     "password": "Password",
     "submit": "Register",
     "username": "Username",
+    "validation_failed": "Please correct the errors below.",
     "validation": {
       "email_invalid": "Please enter a valid email address.",
       "email_max": "Email cannot exceed 320 characters.",

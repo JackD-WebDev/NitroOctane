@@ -56,7 +56,7 @@ const submitHandler = async (formData: Register) => {
     await registerSchemaWithConfirm.parseAsync(formData);
   } catch (error: unknown) {
     if (error instanceof ZodError) {
-      const errs = error.errors || [];
+      const errs = error.issues ?? [];
       Object.keys(fieldErrors).forEach((k) => (fieldErrors[k] = ''));
       let hadFieldError = false;
       for (const issue of errs) {
@@ -113,6 +113,7 @@ onUnmounted(() => {
         name="firstname"
         :label="t('register.firstname').toUpperCase()"
         :placeholder="t('register.firstname')"
+        validation="required"
         @input="() => clearFieldError('firstname')"
       />
       <div v-if="fieldErrors.firstname" class="text-small-uppercase-error">
@@ -129,6 +130,7 @@ onUnmounted(() => {
         name="lastname"
         :label="t('register.lastname').toUpperCase()"
         :placeholder="t('register.lastname')"
+        validation="required"
         @input="() => clearFieldError('lastname')"
       />
       <div v-if="fieldErrors.lastname" class="text-small-uppercase-error">
@@ -140,6 +142,7 @@ onUnmounted(() => {
         name="username"
         :label="t('register.username').toUpperCase()"
         :placeholder="t('register.username')"
+        validation="required"
         :class="{
           'input-error': uniqueChecks.username.value.unique === false
         }"
@@ -185,6 +188,7 @@ onUnmounted(() => {
         name="email"
         :label="t('register.email').toUpperCase()"
         :placeholder="t('register.email')"
+        validation="required|email"
         :class="{
           'input-error': uniqueChecks.email.value.unique === false
         }"
@@ -227,6 +231,7 @@ onUnmounted(() => {
         name="password"
         :label="t('register.password').toUpperCase()"
         :placeholder="t('register.password')"
+        validation="required"
         @input="() => clearFieldError('password')"
       />
       <div v-if="fieldErrors.password" class="text-small-uppercase-error">
@@ -237,6 +242,7 @@ onUnmounted(() => {
         name="confirmPassword"
         :label="t('register.confirm_password').toUpperCase()"
         :placeholder="t('register.confirm_password')"
+        validation="required"
         @input="() => clearFieldError('confirmPassword')"
       />
       <div

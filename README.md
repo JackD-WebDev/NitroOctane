@@ -1,6 +1,6 @@
 # 🚀 NitroOctane
 
-An opinionated starter template for building web applications with a Laravel Octane backend and a Nuxt 3 (Nitro) frontend acting as a Backend-for-Frontend (BFF).
+An opinionated starter template for building web applications with a Laravel 12 (Octane) backend and a Nuxt 4 (Nitro) frontend acting as a Backend-for-Frontend (BFF).
 
 This repository combines a production-ready, Docker-first developer experience with batteries-included features like authentication, validation, i18n, and testing.
 
@@ -9,7 +9,7 @@ This repository combines a production-ready, Docker-first developer experience w
 - Production-ready, **[Docker](https://docs.docker.com/)**-first architecture
 - **[Laravel Octane](https://laravel.com/docs/12.x/octane)** backend (high-performance PHP server)
 - Authentication with **[Laravel Fortify](https://laravel.com/docs/12.x/fortify)** and API session/cookie handling via **[Laravel Sanctum](https://laravel.com/docs/12.x/sanctum)**
-- **[Nuxt 3](https://nuxt.com/)** frontend using the **[Nitro](https://nitro.unjs.io/)** server as a BFF (server-side endpoints live in `client/server/api`)
+- **[Nuxt 4](https://nuxt.com/)** frontend using the **[Nitro](https://nitro.unjs.io/)** server as a BFF (server-side endpoints live in `client/server/api`)
 - **[Zod](https://zod.dev/)** schemas on the Nitro server for request validation and type-safety
 - Styling with **[Sass](https://sass-lang.com/)** and a simple CSS reset
 - Form handling and validation helpers via **[FormKit](https://formkit.com/)** (see `client/formkit.config.mts`)

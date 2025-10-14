@@ -31,6 +31,7 @@
   },
   "login": {
     "remember_me": "Se souvenir de moi",
+    "forgot_password": "Mot de passe oublié ?",
     "network_error": "Une erreur réseau s'est produite. Veuillez réessayer.",
     "forgot_password_hint": "Entrez votre adresse courriel et nous vous enverrons un lien pour réinitialiser votre mot de passe.",
     "send_reset_link": "Envoyer le lien de réinitialisation",

@@ -31,6 +31,7 @@
   },
   "login": {
     "remember_me": "Tandaan mo ako",
+    "forgot_password": "Nakalimutan ang password?",
     "network_error": "Nagkaroon ng error sa network. Pakisubukang muli.",
     "forgot_password_hint": "Ilagay ang iyong email address at padadalhan ka namin ng link para i-reset ang iyong password.",
     "send_reset_link": "Ipadala ang Reset Link",

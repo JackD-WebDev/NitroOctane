@@ -1,39 +1,40 @@
 export default defineNuxtConfig({
-  compatibilityDate: '2024-04-03',
+  compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
   css: ['@/assets/styles/main.scss'],
-  future: {
-    compatibilityVersion: 4
-  },
   modules: [
-    ...(process.env.VITEST || process.env.NODE_ENV === 'test'
-      ? []
-      : (['@pinia/nuxt'] as const)),
-    ...(process.env.VITEST || process.env.NODE_ENV === 'test'
-      ? []
-      : (['@pinia-plugin-persistedstate/nuxt'] as const)),
-    ...(process.env.VITEST || process.env.NODE_ENV === 'test'
-      ? []
-      : (['nuxt-laravel-echo'] as const)),
-    '@vueuse/nuxt',
-    '@nuxt/test-utils/module',
-    '@nuxt/image',
+    '@pinia/nuxt',
+    'nuxt-laravel-echo',
+    '@pinia-plugin-persistedstate/nuxt',
     '@nuxt/eslint',
-    'magic-regexp/nuxt',
-    '@vite-pwa/nuxt',
-    'nuxt-lodash',
-    '@formkit/nuxt',
-    'nuxt-purgecss',
+    '@nuxt/image',
+    '@nuxt/test-utils/module',
     '@nuxt/scripts',
-    '@nuxtjs/i18n'
+    '@formkit/nuxt',
+    '@nuxtjs/i18n',
+    '@vite-pwa/nuxt',
+    '@vueuse/nuxt',
+    'magic-regexp/nuxt',
+    // 'nuxt-zod-i18n', // Temporarily disabled - incompatible with Zod v4
+    '@nuxt/scripts'
   ],
   image: {},
   eslint: {},
+  pwa: {
+    manifest: {
+      name: 'NitroOctane',
+      short_name: 'NitroOctane',
+      description: 'NitroOctane',
+      theme_color: '#5f0',
+      lang: 'en'
+    }
+  },
   formkit: {
     autoImport: true,
     configFile: '~/formkit.config.mts'
   },
   i18n: {
+    vueI18n: './i18n.config.mts',
     strategy: 'prefix_except_default',
     defaultLocale: 'en_US',
     langDir: 'locales',
@@ -53,17 +54,7 @@ export default defineNuxtConfig({
         file: 'fr_US.json'
       },
       { code: 'tl_US', iso: 'tl-US', name: 'Tagalog (US)', file: 'tl_US.json' }
-    ],
-    vueI18n: './i18n.config.ts'
-  },
-  pwa: {
-    manifest: {
-      name: 'NitroOctane',
-      short_name: 'NitroOctane',
-      description: 'NitroOctane',
-      theme_color: '#5f0',
-      lang: 'en'
-    }
+    ]
   },
   echo: {
     broadcaster: 'reverb',
@@ -112,7 +103,6 @@ export default defineNuxtConfig({
       fullAppTitle: process.env.NUXT_PUBLIC_FULL_APP_NAME || 'NitroOctane',
       clientUrl: process.env.NUXT_CLIENT_URL || 'http://localhost',
       appDomain: process.env.NUXT_PUBLIC_DOMAIN || 'localhost',
-      // Reverb / Echo runtime public settings
       reverbKey:
         process.env.NUXT_PUBLIC_REVERB_APP_KEY ||
         process.env.NUXT_PUBLIC_REVERB_KEY ||

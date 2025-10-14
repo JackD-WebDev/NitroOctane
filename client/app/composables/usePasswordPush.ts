@@ -19,18 +19,14 @@ export const usePasswordPush = () => {
     });
     channel.listen('.nitro:email_verified', async () => {
       try {
-        // Small delay to ensure server has fully processed the verification
         await new Promise((resolve) => setTimeout(resolve, 500));
 
-        // Refresh user data to get the updated email_verified_at timestamp
         await authStore.fetchUser(true);
 
-        // Navigate to account page
         const localizedNavigate = useLocalizedNavigate();
         await localizedNavigate('/account');
       } catch (error) {
         console.error('Error handling email verification:', error);
-        // Fallback to manual page reload if something goes wrong
         window.location.href = '/account';
       }
     });

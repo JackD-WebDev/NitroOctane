@@ -25,21 +25,13 @@ import type {
   LoginResponseSchema
 } from './user';
 
-declare module '@pinia/testing';
-
 export const NitroEchoSchema = z.object({
-  private: z
-    .function()
-    .args(z.string())
-    .returns(
-      z.object({
-        listen: z
-          .function()
-          .args(z.string(), z.function().args(z.array(z.unknown())))
-          .returns(z.void())
-      })
-    )
-});
+  private: z.any()
+}) as z.ZodType<{
+  private: (channel: string) => {
+    listen: (event: string, callback: (data: unknown) => void) => void;
+  };
+}>;
 
 export const UniqueCheckResponseSchema = z.object({
   unique: z.boolean(),

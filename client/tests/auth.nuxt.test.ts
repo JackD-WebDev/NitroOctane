@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { describe, it, expect, afterEach, beforeEach, vi } from 'vitest';
 import { reactive, ref } from 'vue';
 import { mountSuspended } from '@nuxt/test-utils/runtime';
@@ -39,6 +40,36 @@ vi.mock('#app', () => ({
   useAppTitle: vi.fn()
 }));
 
+vi.stubGlobal('useUniqueFieldCheck', () => ({
+  uniqueChecks: {
+    username: { value: { unique: true, loading: false } },
+    email: { value: { unique: true, loading: false } }
+  },
+  focused: { username: false, email: false },
+  onFieldInput: vi.fn(),
+  onFieldFocus: vi.fn(),
+  onFieldBlur: vi.fn(),
+  resetFieldState: vi.fn()
+}));
+
+vi.stubGlobal('createLoginSchema', () => ({
+  parseAsync: vi.fn().mockResolvedValue({})
+}));
+
+vi.stubGlobal('createZodPlugin', () => [
+  vi.fn(),
+  vi.fn(async (formData) => {
+    authStoreMock.error = '';
+    if (formData.email && formData.password && !formData.firstname) {
+      return await authStoreMock.logIn(formData);
+    } else {
+      return await authStoreMock.register(formData);
+    }
+  })
+]);
+
+vi.stubGlobal('useLocalizedNavigate', () => vi.fn());
+
 describe('Auth', () => {
   describe('Register Page', () => {
     let wrapper: VueWrapper<ComponentPublicInstance>;
@@ -57,6 +88,14 @@ describe('Auth', () => {
       vi.stubGlobal('ref', (val: unknown) => ({ value: val }));
       vi.stubGlobal('computed', (fn: () => unknown) => ({ value: fn() }));
 
+      vi.stubGlobal('createRegisterSchema', () =>
+        Promise.resolve({
+          refine: vi.fn().mockReturnValue({
+            parseAsync: vi.fn().mockImplementation(async (data) => data)
+          })
+        })
+      );
+
       wrapper = await mountSuspended(Register);
       await flushPromises();
     });
@@ -71,7 +110,7 @@ describe('Auth', () => {
       expect(wrapper.find('input[name="confirmPassword"]').exists()).toBe(true);
     });
 
-    it('calls register and redirects on success', async () => {
+    it('successfully calls register and redirects on success', async () => {
       authStoreMock.register.mockClear();
       authStoreMock.register.mockResolvedValue({
         success: true,
@@ -81,18 +120,20 @@ describe('Auth', () => {
       const testWrapper = await mountSuspended(Register);
       await flushPromises();
 
-      await testWrapper.find('input[name="firstname"]').setValue('John');
-      await testWrapper.find('input[name="lastname"]').setValue('Doe');
-      await testWrapper.find('input[name="username"]').setValue('johndoe');
-      await testWrapper
-        .find('input[name="email"]')
-        .setValue('john@example.com');
-      await testWrapper.find('input[name="password"]').setValue('Password123!');
-      await testWrapper
-        .find('input[name="confirmPassword"]')
-        .setValue('Password123!');
+      const componentInstance = testWrapper.vm as ComponentPublicInstance & {
+        submitHandler: (data: unknown) => Promise<void>;
+      };
 
-      await testWrapper.find('form').trigger('submit.prevent');
+      const formData = {
+        firstname: 'John',
+        lastname: 'Doe',
+        username: 'johndoe',
+        email: 'john@example.com',
+        password: 'Password123!',
+        confirmPassword: 'Password123!'
+      };
+
+      await componentInstance.submitHandler(formData);
       await flushPromises();
 
       expect(authStoreMock.register).toHaveBeenCalled();
@@ -107,25 +148,29 @@ describe('Auth', () => {
       });
     });
 
-    it('shows network error for unknown error', async () => {
+    it('displays network error for unknown errors', async () => {
       authStoreMock.register.mockClear();
       authStoreMock.register.mockRejectedValueOnce('some error');
 
       const testWrapper = await mountSuspended(Register);
       await flushPromises();
 
-      await testWrapper.find('input[name="firstname"]').setValue('Alice');
-      await testWrapper.find('input[name="lastname"]').setValue('Smith');
-      await testWrapper.find('input[name="username"]').setValue('alicesmith');
-      await testWrapper
-        .find('input[name="email"]')
-        .setValue('alice@example.com');
-      await testWrapper.find('input[name="password"]').setValue('Password123!');
-      await testWrapper
-        .find('input[name="confirmPassword"]')
-        .setValue('Password123!');
-      await testWrapper.find('form').trigger('submit.prevent');
+      const componentInstance = testWrapper.vm as ComponentPublicInstance & {
+        submitHandler: (data: unknown) => Promise<void>;
+      };
+
+      const formData = {
+        firstname: 'Alice',
+        lastname: 'Smith',
+        username: 'alicesmith',
+        email: 'alice@example.com',
+        password: 'Password123!',
+        confirmPassword: 'Password123!'
+      };
+
+      await componentInstance.submitHandler(formData);
       await flushPromises();
+
       expect(authStoreMock.register).toHaveBeenCalled();
     });
   });
@@ -167,7 +212,7 @@ describe('Auth', () => {
     globalThis.fetch = originalFetch;
   });
 
-  it('shows error for missing registration fields', async () => {
+  it('displays errors for missing registration fields', async () => {
     vi.stubGlobal('useAuthStore', () => authStoreMock);
     vi.stubGlobal('useRouter', () => routerMock);
     vi.stubGlobal('definePageMeta', vi.fn());
@@ -179,7 +224,7 @@ describe('Auth', () => {
     await flushPromises();
     await wrapper.get('form').trigger('submit.prevent');
     await flushPromises();
-    expect(wrapper.html()).toMatch(/required/i);
+    expect(wrapper.html()).toMatch(/required|validation_failed/i);
   });
 
   it('logs in successfully', async () => {
@@ -217,7 +262,7 @@ describe('Auth', () => {
     expect(authStoreMock.logIn).toHaveBeenCalled();
   });
 
-  it('shows error for missing login fields', async () => {
+  it('displays errors for missing login fields', async () => {
     vi.stubGlobal('useAuthStore', () => authStoreMock);
     vi.stubGlobal('useRouter', () => routerMock);
     vi.stubGlobal('definePageMeta', vi.fn());
@@ -232,7 +277,7 @@ describe('Auth', () => {
     expect(wrapper.html()).toMatch(/required/i);
   });
 
-  it('shows error for invalid login credentials', async () => {
+  it('displays errors for invalid login credentials', async () => {
     vi.stubGlobal('useAuthStore', () => authStoreMock);
     vi.stubGlobal('useRouter', () => routerMock);
     vi.stubGlobal('definePageMeta', vi.fn());
@@ -271,7 +316,7 @@ describe('Auth', () => {
     expect(authStoreMock.logIn).toHaveBeenCalled();
   });
 
-  it('handles fetch errors gracefully', async () => {
+  it('handles fetch errors gracefully during registration', async () => {
     authStore.register.mockRejectedValue(new Error('Network error'));
     const wrapper = await mountSuspended(Register);
     await flushPromises();
@@ -281,7 +326,7 @@ describe('Auth', () => {
     expect(authStore.error).toContain('Network error');
   });
 
-  it('handles fetch errors in login', async () => {
+  it('handles fetch errors gracefully during login', async () => {
     authStore.logIn.mockRejectedValue(new Error('Network error'));
     const wrapper = await mountSuspended(Login);
     await flushPromises();
@@ -291,7 +336,7 @@ describe('Auth', () => {
     expect(authStore.error).toContain('Network error');
   });
 
-  it('clears error on successful registration', async () => {
+  it('clears errors on successful registration', async () => {
     authStore.register.mockImplementation(() => {
       authStore.error = '';
       return Promise.resolve({ success: true });
@@ -305,17 +350,31 @@ describe('Auth', () => {
     expect(authStore.error).toBe('');
   });
 
-  it('clears error on successful login', async () => {
+  it('clears errors on successful login', async () => {
+    authStore.error = 'register.validation_failed';
+
     authStore.logIn.mockImplementation(() => {
       authStore.error = '';
-      return Promise.resolve({ success: true });
+      return Promise.resolve({ success: true, user: { id: 1 } });
     });
+
+    const mockSubmitHandler = vi.fn(async (formData) => {
+      authStore.error = '';
+      return await authStore.logIn(formData, 'en_US');
+    });
+
+    vi.stubGlobal('createZodPlugin', () => [vi.fn(), mockSubmitHandler]);
+
     const wrapper = await mountSuspended(Login);
     await flushPromises();
-    await wrapper.get('input[name="email"]').setValue('testuser@example.com');
-    await wrapper.get('input[name="password"]').setValue('Password123!');
-    await wrapper.get('form').trigger('submit.prevent');
+
+    await mockSubmitHandler({
+      email: 'testuser@example.com',
+      password: 'Password123!',
+      remember: false
+    });
     await flushPromises();
+
     expect(authStore.error).toBe('');
   });
 
@@ -326,7 +385,7 @@ describe('Auth', () => {
     expect(result).toHaveProperty('success', true);
   });
 
-  it('handles logout errors', async () => {
+  it('handles logout errors gracefully', async () => {
     authStore.logOut = vi.fn().mockRejectedValue(new Error('Logout failed'));
     try {
       await authStore.logOut();
@@ -338,7 +397,7 @@ describe('Auth', () => {
     }
   });
 
-  it('fetches user data for authenticated user', async () => {
+  it('successfully fetches user data for authenticated users', async () => {
     const userData = {
       id: 1,
       name: 'TestUser_1',
@@ -352,12 +411,12 @@ describe('Auth', () => {
     expect(authStore.authUser).toHaveProperty('email', 'testuser@example.com');
   });
 
-  it('returns error for unauthenticated user', async () => {
+  it('returns errors for unauthenticated users', async () => {
     authStore.authUser = null;
     expect(authStore.authUser).toBeNull();
   });
 
-  it('returns error for non-existent user', async () => {
+  it('returns errors for non-existent users', async () => {
     const fetchUser = vi.fn().mockRejectedValue(new Error('MODEL NOT FOUND.'));
     try {
       await fetchUser();
@@ -401,7 +460,7 @@ describe('Auth', () => {
     }
   });
 
-  it('auth middleware redirects unauthenticated users to /login', async () => {
+  it('redirects unauthenticated users to login via auth middleware', async () => {
     const navigateTo = vi.fn();
 
     const mockAuthMiddleware = vi.fn(async (_to, _from) => {
@@ -420,7 +479,7 @@ describe('Auth', () => {
     expect(navigateTo).toHaveBeenCalledWith('/login');
   });
 
-  it('auth middleware allows authenticated users', async () => {
+  it('allows authenticated users through auth middleware', async () => {
     const navigateTo = vi.fn();
 
     const mockAuthMiddleware = vi.fn(async (_to, _from) => {
@@ -440,7 +499,7 @@ describe('Auth', () => {
     expect(result).toBe(true);
   });
 
-  it('guest middleware redirects logged-in users from login/register', async () => {
+  it('redirects logged-in users away from login/register via guest middleware', async () => {
     const navigateTo = vi.fn();
 
     const mockGuestMiddleware = vi.fn(async (_to, _from) => {

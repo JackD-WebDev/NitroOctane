@@ -16,7 +16,7 @@ This repository combines a production-ready, Docker-first developer experience w
 - A **[JSON:API](https://jsonapi.org/)** inspired response format used by the Laravel API
 - Dockerized architecture with **[Nginx](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/)** as a reverse proxy and per-service Dockerfiles in `dockerfiles/`.
 - Internationalization support (i18n) with Nuxt + **[@nuxtjs/i18n](https://i18n.nuxtjs.org/)** and translation files in `client/locales/`
-- Testing setup: **[Pest](https://pestphp.com/docs/introduction)** for backend tests and **[Vitest](https://vitest.dev/guide/)** for frontend tests
+- Testing setup: **[Pest](https://pestphp.com/docs)** for backend tests and **[Vitest](https://vitest.dev/guide/)** for frontend tests
 
 ## Project layout (high level)
 

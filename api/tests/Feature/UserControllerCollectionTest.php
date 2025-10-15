@@ -4,11 +4,11 @@ use App\Models\User;
 
 it('returns all users with the correct structure for the index endpoint', function () {
     $user = User::factory()->create();
-    
+
     User::factory()->count(2)->create();
-    
+
     $response = $this->actingAs($user)->getJson('/api/users');
-    
+
     $response->assertStatus(200)
         ->assertJsonStructure([
             'success',
@@ -24,18 +24,18 @@ it('returns all users with the correct structure for the index endpoint', functi
                             'email_verified_at',
                             'preferred_language',
                             'created_at_dates',
-                            'updated_at_dates'
-                        ]
+                            'updated_at_dates',
+                        ],
                     ],
                     'links',
-                    'meta'
-                ]
+                    'meta',
+                ],
             ],
             'links',
             'meta',
-            'version'
+            'version',
         ]);
-    
+
     $data = $response->json('data');
     expect(count($data))->toBe(3);
 });

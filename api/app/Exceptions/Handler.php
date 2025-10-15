@@ -2,30 +2,28 @@
 
 namespace App\Exceptions;
 
-use Throwable;
 use Exception;
+use Throwable;
 use ResponseHelper;
 use Psr\Log\LogLevel;
 use Illuminate\Http\Request;
-use App\Exceptions\ModelNotDefined;
-use App\Exceptions\ValidationErrorException;
+use Illuminate\Database\QueryException;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Session\TokenMismatchException;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Auth\AuthenticationException;
-use Illuminate\Session\TokenMismatchException;
-use Illuminate\Http\Exceptions\ThrottleRequestsException;
-use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
-use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 class Handler extends ExceptionHandler
 {
     /**
      * Create an instance of the response helper.
      *
-     * @param ResponseHelper $responseHelper The response helper.
+     * @param  ResponseHelper  $responseHelper  The response helper.
      */
     public function __construct(
         protected ResponseHelper $responseHelper
@@ -62,8 +60,6 @@ class Handler extends ExceptionHandler
 
     /**
      * Register the exception handling callbacks for the application.
-     *
-     * @return void
      */
     public function register(): void
     {
@@ -75,8 +71,6 @@ class Handler extends ExceptionHandler
     /**
      * Report or log an exception.
      *
-     * @param Throwable $exception
-     * @return void
      *
      * @throws Exception|Throwable
      */
@@ -87,9 +81,6 @@ class Handler extends ExceptionHandler
 
     /**
      * Actual report implementation. Separated so tests can override it.
-     *
-     * @param Throwable $exception
-     * @return void
      */
     protected function doReport(Throwable $exception): void
     {
@@ -100,15 +91,13 @@ class Handler extends ExceptionHandler
      * Render an exception into an HTTP response.
      *
      * @param  Request  $request
-     * @param Throwable $exception
-     * @return Response
      *
      * @throws Throwable
      */
     public function render($request, Throwable $exception): Response
     {
         if ($request->expectsJson()) {
-            if (!($exception instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException) && str_contains($exception->getMessage(), 'No query results for model')) {
+            if (! ($exception instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException) && str_contains($exception->getMessage(), 'No query results for model')) {
                 return $this->responseHelper->errorResponse(
                     __('errors.model.not_found.title'),
                     __('errors.model.not_found.message'),
@@ -128,7 +117,7 @@ class Handler extends ExceptionHandler
 
             if ($exception instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException) {
                 $previous = $exception->getPrevious();
-                
+
                 if ($previous instanceof ModelNotFoundException) {
                     return $this->responseHelper->errorResponse(
                         __('errors.model.not_found.title'),
@@ -137,7 +126,7 @@ class Handler extends ExceptionHandler
                         404
                     );
                 }
-                
+
                 if (str_contains($exception->getMessage(), 'No query results for model')) {
                     return $this->responseHelper->errorResponse(
                         __('errors.model.not_found.title'),
@@ -196,6 +185,7 @@ class Handler extends ExceptionHandler
             if ($exception instanceof HttpExceptionInterface) {
                 $status = $exception->getStatusCode();
                 $message = $exception->getMessage() ?: __('errors.http.message');
+
                 return $this->responseHelper->errorResponse(
                     __('errors.http.title'),
                     $message,

@@ -5,13 +5,11 @@ namespace Tests\Feature;
 use App\Models\User;
 use App\Events\PasswordChanged;
 use App\Events\SessionLoggedOut;
-use Tests\Concerns\InteractsWithBroadcasting;
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Notification;
+use Tests\Concerns\InteractsWithBroadcasting;
 
 it('broadcasts events when password is reset', function () {
-    Event::fake();    
+    Event::fake();
     $user = User::factory()->create([
         'name' => 'TestUser_1',
         'username' => 'testuser1',

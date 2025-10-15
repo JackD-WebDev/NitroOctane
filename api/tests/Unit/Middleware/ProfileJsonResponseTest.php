@@ -1,19 +1,18 @@
 <?php
 
-use App\Http\Middleware\ProfileJsonResponse;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Tests\TestCase;
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use App\Http\Middleware\ProfileJsonResponse;
 
 uses(TestCase::class);
 
 it('returns unchanged response when debugbar is not bound', function () {
-    // Ensure debugbar is not bound in the container
     if (app()->bound('debugbar')) {
         app()->forgetInstance('debugbar');
     }
 
-    $middleware = new ProfileJsonResponse();
+    $middleware = new ProfileJsonResponse;
 
     $request = Request::create('/test', 'GET', ['_debug' => '1']);
 
@@ -30,8 +29,8 @@ it('returns unchanged response when debugbar is not bound', function () {
 });
 
 it('appends debugbar queries when debugbar enabled and _debug present', function () {
-    // Bind a simple debugbar-like object to the container
-    $debug = new class {
+    $debug = new class
+    {
         public function isEnabled()
         {
             return true;
@@ -41,14 +40,14 @@ it('appends debugbar queries when debugbar enabled and _debug present', function
         {
             return [
                 'queries' => ['SELECT 1', 'SELECT 2'],
-                'messages' => ['a' => 'b']
+                'messages' => ['a' => 'b'],
             ];
         }
     };
 
     app()->instance('debugbar', $debug);
 
-    $middleware = new ProfileJsonResponse();
+    $middleware = new ProfileJsonResponse;
 
     $request = Request::create('/test', 'GET', ['_debug' => '1'], [], [], ['HTTP_ACCEPT' => 'application/json']);
 
@@ -66,7 +65,8 @@ it('appends debugbar queries when debugbar enabled and _debug present', function
 });
 
 it('does not append debugbar when debugbar is disabled', function () {
-    $debug = new class {
+    $debug = new class
+    {
         public function isEnabled()
         {
             return false;
@@ -80,7 +80,7 @@ it('does not append debugbar when debugbar is disabled', function () {
 
     app()->instance('debugbar', $debug);
 
-    $middleware = new ProfileJsonResponse();
+    $middleware = new ProfileJsonResponse;
 
     $request = Request::create('/test', 'GET', ['_debug' => '1']);
 

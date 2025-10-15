@@ -1,15 +1,14 @@
 <?php
 
-use App\Http\Responses\PasswordUpdateResponse;
-use App\Http\Helpers\ResponseHelper;
+use Tests\TestCase;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use Tests\TestCase;
+use App\Http\Helpers\ResponseHelper;
+use App\Http\Responses\PasswordUpdateResponse;
 
 uses(TestCase::class);
 
 beforeEach(function () {
-    // mock the ResponseHelper to avoid depending on its implementation here
     $mock = Mockery::mock(ResponseHelper::class);
     $mock->shouldReceive('requestResponse')->andReturnUsing(function ($data, $message, $success, $code) {
         return new JsonResponse(['success' => $success, 'message' => $message], $code);

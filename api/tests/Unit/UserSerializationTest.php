@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\User;
 use Tests\TestCase;
+use App\Models\User;
 
 uses(TestCase::class);
 
@@ -10,7 +10,7 @@ it('does not include hidden attributes in array/JSON serialization', function ()
         'password' => 'secret',
         'remember_token' => 'tok',
         'two_factor_secret' => 's',
-        'two_factor_recovery_codes' => json_encode(['a','b'])
+        'two_factor_recovery_codes' => json_encode(['a', 'b']),
     ]);
 
     $arr = $user->toArray();

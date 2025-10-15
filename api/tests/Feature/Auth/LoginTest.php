@@ -2,11 +2,7 @@
 
 namespace Tests\Feature\Auth;
 
-use Tests\TestCase;
-use App\Models\User;
-
 it('returns the correct JSON structure after successful login', function () {
-    // register the user through the API to ensure password hashing/config is applied
     $this->postJson('/api/register', [
         'firstname' => 'Test',
         'lastname' => 'User',
@@ -22,10 +18,8 @@ it('returns the correct JSON structure after successful login', function () {
         'password' => 'Password123!',
     ]);
 
-    // The login route may either return JSON (API) or redirect (web). Accept either
     $this->assertTrue(in_array($response->getStatusCode(), [200, 302]));
 
-    // Ensure the user is authenticated after the request
     $this->assertAuthenticated();
 
     $contentType = $response->headers->get('content-type') ?? '';

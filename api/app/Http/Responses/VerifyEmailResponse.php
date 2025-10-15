@@ -4,17 +4,16 @@ namespace App\Http\Responses;
 
 use HttpResponse;
 use ResponseHelper;
+use Illuminate\Http\Request;
 use Laravel\Fortify\Fortify;
-use Illuminate\Http\{Request, Response, JsonResponse};
+use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
 use Laravel\Fortify\Contracts\VerifyEmailResponse as VerifyEmailResponseContract;
-
 
 class VerifyEmailResponse implements VerifyEmailResponseContract
 {
     /**
      * Create an instance of the response helper.
-     *
-     * @param  ResponseHelper  $responseHelper
      */
     public function __construct(
         protected ResponseHelper $responseHelper
@@ -24,7 +23,6 @@ class VerifyEmailResponse implements VerifyEmailResponseContract
      * Create an HTTP response that represents the object.
      *
      * @param  Request  $request
-     * @return JsonResponse|Response
      */
     public function toResponse($request): JsonResponse|Response
     {

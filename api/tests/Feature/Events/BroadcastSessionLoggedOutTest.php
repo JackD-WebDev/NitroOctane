@@ -2,12 +2,12 @@
 
 namespace Tests\Feature\Events;
 
-use App\Events\SessionLoggedOut;
-use Illuminate\Auth\Events\OtherDeviceLogout;
-use App\Listeners\BroadcastSessionLoggedOut;
-use App\Models\User;
 use Tests\TestCase;
+use App\Models\User;
+use App\Events\SessionLoggedOut;
 use Illuminate\Support\Facades\Event;
+use App\Listeners\BroadcastSessionLoggedOut;
+use Illuminate\Auth\Events\OtherDeviceLogout;
 
 it('broadcasts SessionLoggedOut when other device logout occurs', function () {
     Event::fake();
@@ -16,7 +16,7 @@ it('broadcasts SessionLoggedOut when other device logout occurs', function () {
 
     $event = new OtherDeviceLogout('web', $user);
 
-    $listener = new BroadcastSessionLoggedOut();
+    $listener = new BroadcastSessionLoggedOut;
     $listener->handle($event);
 
     $this->assertEventDispatched(SessionLoggedOut::class, function (SessionLoggedOut $e) use ($user) {

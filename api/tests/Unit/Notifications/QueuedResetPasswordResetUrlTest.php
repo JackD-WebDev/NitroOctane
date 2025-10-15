@@ -1,8 +1,8 @@
 <?php
 
-use App\Notifications\QueuedResetPassword;
-use Illuminate\Support\Facades\Config;
 use Tests\TestCase;
+use Illuminate\Support\Facades\Config;
+use App\Notifications\QueuedResetPassword;
 
 uses(TestCase::class);
 
@@ -31,7 +31,7 @@ it('builds resetUrl using provided email when available', function () {
     $method = $ref->getMethod('resetUrl');
     $method->setAccessible(true);
 
-    $url = $method->invoke($notification, new DummyNotifiable());
+    $url = $method->invoke($notification, new DummyNotifiable);
 
     expect($url)->toContain('http://test-frontend.local/reset-password');
     expect($url)->toContain('token='.urlencode($token));
@@ -49,7 +49,7 @@ it('builds resetUrl using notifiable email when none provided', function () {
     $method = $ref->getMethod('resetUrl');
     $method->setAccessible(true);
 
-    $url = $method->invoke($notification, new DummyNotifiable());
+    $url = $method->invoke($notification, new DummyNotifiable);
 
     expect($url)->toContain('http://test-frontend.local/reset-password');
     expect($url)->toContain('token='.urlencode($token));

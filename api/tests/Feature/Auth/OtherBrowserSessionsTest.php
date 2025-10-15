@@ -4,12 +4,11 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Mail;
 
-beforeEach(function () {    
+beforeEach(function () {
     Config::set('session.driver', 'database');
     Config::set('session.table', 'sessions');
-    
+
     $this->withMiddleware();
     $this->enableRouteSession('/api/sessions');
 });
@@ -19,57 +18,57 @@ afterEach(function () {
 });
 
 it('returns an error when retrieving sessions if the session driver is not database', function () {
-    Config::set('session.driver', 'file'); 
-    
+    Config::set('session.driver', 'file');
+
     $user = User::factory()->create();
-    
+
     $response = $this->actingAs($user)->getJson('/api/sessions');
-    
+
     $response->assertStatus(501)
         ->assertJson([
             'success' => false,
             'errors' => [
                 'title' => 'SESSION ERROR',
-            ]
+            ],
         ]);
 });
 
 it('requires a password to logout other browser sessions', function () {
     $user = User::factory()->create();
-    
+
     $response = $this->actingAs($user)->deleteJson('/api/sessions', []);
-    
+
     $response->assertStatus(422)
         ->assertJsonValidationErrors(['password']);
 });
 
 it('fails when attempting to logout other browser sessions with an incorrect password', function () {
     $user = User::factory()->create([
-        'password' => Hash::make('correct-password')
+        'password' => Hash::make('correct-password'),
     ]);
-    
+
     $response = $this->actingAs($user)->deleteJson('/api/sessions', [
-        'password' => 'wrong-password'
+        'password' => 'wrong-password',
     ]);
-    
+
     $response->assertStatus(422)
         ->assertJsonValidationErrors(['password']);
 });
 
 it('does nothing when attempting to logout other browser sessions if the driver is not database', function () {
     Config::set('session.driver', 'file');
-    
+
     $user = User::factory()->create([
-        'password' => Hash::make('correct-password')
+        'password' => Hash::make('correct-password'),
     ]);
-    
+
     $response = $this->actingAs($user)->deleteJson('/api/sessions', [
-        'password' => 'correct-password'
+        'password' => 'correct-password',
     ]);
-    
+
     $response->assertStatus(200)
         ->assertJson([
-            'success' => true
+            'success' => true,
         ]);
 });
 
@@ -101,7 +100,7 @@ it('returns user sessions when the session driver is database', function () {
 
     $response = $this->actingAs($user)->getJson('/api/sessions');
     $response->assertStatus(200)
-        ->assertJson([ 'success' => true ]);
+        ->assertJson(['success' => true]);
 
     $data = $response->json('data');
     expect(count($data))->toBe(2);
@@ -124,7 +123,7 @@ it('returns null lastActive when last_activity is not numeric or zero', function
     ]);
 
     $response = $this->actingAs($user)->getJson('/api/sessions');
-    $response->assertStatus(200)->assertJson([ 'success' => true ]);
+    $response->assertStatus(200)->assertJson(['success' => true]);
 
     $data = $response->json('data');
     $session = collect($data)->first();
@@ -159,10 +158,10 @@ it('deletes other session records when logging out other browser sessions if dri
     ]);
 
     $response = $this->actingAs($user)->deleteJson('/api/sessions', [
-        'password' => 'mypassword'
+        'password' => 'mypassword',
     ]);
 
-    $response->assertStatus(200)->assertJson([ 'success' => true ]);
+    $response->assertStatus(200)->assertJson(['success' => true]);
 
     $exists = DB::table('sessions')->where('id', $otherId)->exists();
     expect($exists)->toBeFalse();

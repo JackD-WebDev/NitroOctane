@@ -2,15 +2,13 @@
 
 use Tests\TestCase;
 use App\Exceptions\Handler;
+use Illuminate\Http\Request;
 use App\Exceptions\ModelNotDefined;
 use App\Exceptions\ValidationErrorException;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Auth\Access\AuthorizationException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 uses(TestCase::class);
 
@@ -21,7 +19,7 @@ beforeEach(function () {
 it('returns model not found json for ModelNotFoundException when expects json', function () {
     $request = Request::create('/api/user/9999', 'GET', [], [], [], ['HTTP_ACCEPT' => 'application/json']);
 
-    $ex = new ModelNotFoundException();
+    $ex = new ModelNotFoundException;
 
     $resp = $this->handler->render($request, $ex);
 
@@ -34,7 +32,7 @@ it('returns model not found json for ModelNotFoundException when expects json', 
 it('returns model not found json for NotFoundHttpException wrapping ModelNotFoundException', function () {
     $request = Request::create('/api/does-not-exist', 'GET', [], [], [], ['HTTP_ACCEPT' => 'application/json']);
 
-    $previous = new ModelNotFoundException();
+    $previous = new ModelNotFoundException;
     $ex = new NotFoundHttpException('Not Found', $previous);
 
     $resp = $this->handler->render($request, $ex);
@@ -113,7 +111,7 @@ it('returns 401 json for AuthenticationException when expects json', function ()
 
 it('returns 419 json for TokenMismatchException when expects json', function () {
     $request = Request::create('/api/form', 'POST', [], [], [], ['HTTP_ACCEPT' => 'application/json']);
-    $ex = new \Illuminate\Session\TokenMismatchException();
+    $ex = new \Illuminate\Session\TokenMismatchException;
     $resp = $this->handler->render($request, $ex);
     expect($resp->getStatusCode())->toBe(419);
 });
@@ -140,7 +138,6 @@ it('when expects json and exception is unmapped, delegates to parent render', fu
 
     $resp = $this->handler->render($request, $ex);
 
-    // parent::render should return a Symfony Response instance
     expect($resp)->toBeInstanceOf(\Symfony\Component\HttpFoundation\Response::class);
 });
 
@@ -205,14 +202,13 @@ it('register and report can be called without errors', function () {
 });
 
 it('report delegates to doReport which can be overridden in tests', function () {
-    // Create a test handler subclass that overrides doReport and bind it
-    $testHandler = new class(app(ResponseHelper::class)) extends \App\Exceptions\Handler {
+    $testHandler = new class(app(ResponseHelper::class)) extends \App\Exceptions\Handler
+    {
         public bool $invoked = false;
 
         protected function doReport(\Throwable $exception): void
         {
             $this->invoked = true;
-            // no-op to avoid framework internals
         }
     };
 
@@ -224,7 +220,8 @@ it('report delegates to doReport which can be overridden in tests', function () 
 });
 
 it('invokes Handler::doReport default chain safely (swallowing TypeError)', function () {
-    $testHandler = new class(app(ResponseHelper::class)) extends \App\Exceptions\Handler {
+    $testHandler = new class(app(ResponseHelper::class)) extends \App\Exceptions\Handler
+    {
         public bool $invoked = false;
 
         public function __construct($responseHelper)
@@ -236,12 +233,13 @@ it('invokes Handler::doReport default chain safely (swallowing TypeError)', func
         {
             $this->invoked = true;
             try {
-                // call the parent's implementation to execute the default reporting
                 parent::doReport($exception);
             } catch (\TypeError $e) {
-                // parent::report may trigger framework internals in unit tests
-                // which can throw a TypeError; swallow it to allow the test to
-                // assert the default path was executed.
+
+                logger()->error('TypeError swallowed in Handler::doReport test', [
+                    'message' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString(),
+                ]);
             }
         }
     };
@@ -301,12 +299,11 @@ it('NotFoundHttpException with short message matches No query results branch', f
 
 it('stateful NotFoundHttpException toggles message to hit nested branch', function () {
     $request = Request::create('/api/stateful-notfound', 'GET', [], [], [], ['HTTP_ACCEPT' => 'application/json']);
-    // This test was removed because overriding Exception::getMessage() is not allowed.
     $this->assertTrue(true);
 });
 
 it('non-json HttpExceptionInterface delegates to parent render', function () {
-    $request = Request::create('/web-method', 'POST'); 
+    $request = Request::create('/web-method', 'POST');
     $ex = new \Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException(['GET'], 'Method not allowed');
 
     $resp = $this->handler->render($request, $ex);

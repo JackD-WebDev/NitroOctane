@@ -6,7 +6,6 @@ use Tests\TestCase;
 
 uses(TestCase::class);
 use App\Providers\FortifyServiceProvider;
-use Illuminate\Support\Application;
 
 it('binds all fortify response contracts to their implementations', function () {
     $app = $this->app;

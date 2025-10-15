@@ -1,23 +1,23 @@
 <?php
 
-use App\Http\Middleware\LocalizationResponse;
+use Tests\TestCase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
-use Tests\TestCase;
+use App\Http\Middleware\LocalizationResponse;
 
 uses(TestCase::class);
 
 it('sets app locale when Accept-Language present and supported', function () {
-    $middleware = new LocalizationResponse();
+    $middleware = new LocalizationResponse;
 
     $req = Request::create('/', 'GET', [], [], [], ['HTTP_ACCEPT_LANGUAGE' => 'es_US']);
 
-    // Ensure es_US is in config locales for the test
     config(['app.locales' => ['en_US', 'es_US']]);
 
     $called = false;
     $next = function ($request) use (&$called) {
         $called = true;
+
         return response('ok');
     };
 
@@ -29,7 +29,7 @@ it('sets app locale when Accept-Language present and supported', function () {
 });
 
 it('does not change locale when unsupported', function () {
-    $middleware = new LocalizationResponse();
+    $middleware = new LocalizationResponse;
 
     $req = Request::create('/', 'GET', [], [], [], ['HTTP_ACCEPT_LANGUAGE' => 'fr_FR']);
 
@@ -38,6 +38,7 @@ it('does not change locale when unsupported', function () {
     $called = false;
     $next = function ($request) use (&$called) {
         $called = true;
+
         return response('ok');
     };
 

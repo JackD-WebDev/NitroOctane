@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Auth;
 
-use Tests\TestCase;
 use App\Models\User;
 
 it('returns an error for unauthenticated user', function () {
@@ -75,7 +74,7 @@ it('returns 404 for non-existent user', function () {
 
 it('returns the user collection with the correct structure from the users endpoint', function () {
     $user = User::factory()->create();
-    User::factory()->count(2)->create(); 
+    User::factory()->count(2)->create();
 
     $response = $this->actingAs($user)->get('/api/users');
 
@@ -88,17 +87,17 @@ it('returns the user collection with the correct structure from the users endpoi
                     'data' => [
                         'type',
                         'user_id',
-                        'attributes'
+                        'attributes',
                     ],
                     'links',
-                    'meta'
-                ]
+                    'meta',
+                ],
             ],
             'links',
             'meta',
-            'version'
+            'version',
         ]);
-    
+
     $data = $response->json();
     expect($data['success'])->toBe(true);
     expect(count($data['data']))->toBeGreaterThan(0);

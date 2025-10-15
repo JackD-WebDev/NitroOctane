@@ -1,8 +1,8 @@
 <?php
 
+use Tests\TestCase;
 use App\Notifications\QueuedResetPassword;
 use Illuminate\Notifications\Messages\MailMessage;
-use Tests\TestCase;
 
 uses(TestCase::class);
 
@@ -12,12 +12,17 @@ it('builds a mail message with frontend reset url', function () {
 
     $notification = new QueuedResetPassword($token, $email);
 
-    $notifiable = new class {
+    $notifiable = new class
+    {
         public function getEmailForPasswordReset()
         {
             return 'fallback@example.com';
         }
-        public function getKey() { return 123; }
+
+        public function getKey()
+        {
+            return 123;
+        }
     };
 
     $mail = $notification->toMail($notifiable);
@@ -36,12 +41,17 @@ it('falls back to notifiable email when none provided', function () {
 
     $notification = new QueuedResetPassword($token, null);
 
-    $notifiable = new class {
+    $notifiable = new class
+    {
         public function getEmailForPasswordReset()
         {
             return 'fallback@example.com';
         }
-        public function getKey() { return 456; }
+
+        public function getKey()
+        {
+            return 456;
+        }
     };
 
     $mail = $notification->toMail($notifiable);
@@ -55,11 +65,13 @@ it('handles notifiable getKey throwing and still logs', function () {
 
     $notification = new QueuedResetPassword($token, 'provided@example.com');
 
-    $notifiable = new class {
+    $notifiable = new class
+    {
         public function getEmailForPasswordReset()
         {
             return 'ok@example.com';
         }
+
         public function getKey()
         {
             throw new \Exception('boom');
@@ -75,5 +87,5 @@ it('handles notifiable getKey throwing and still logs', function () {
 
 it('via returns mail channel', function () {
     $notification = new QueuedResetPassword('x', null);
-    expect($notification->via(new stdClass()))->toBe(['mail']);
+    expect($notification->via(new stdClass))->toBe(['mail']);
 });

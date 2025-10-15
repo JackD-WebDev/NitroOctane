@@ -1,10 +1,10 @@
 <?php
 
-use App\Providers\EventServiceProvider;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Auth\Events\OtherDeviceLogout;
-use Illuminate\Auth\Events\Verified;
 use Tests\TestCase;
+use Illuminate\Auth\Events\Verified;
+use Illuminate\Auth\Events\Registered;
+use App\Providers\EventServiceProvider;
+use Illuminate\Auth\Events\OtherDeviceLogout;
 
 uses(TestCase::class);
 

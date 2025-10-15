@@ -1,9 +1,9 @@
 <?php
 
-use App\Events\PasswordChanged;
-use App\Models\User;
-use Illuminate\Broadcasting\PrivateChannel;
 use Tests\TestCase;
+use App\Models\User;
+use App\Events\PasswordChanged;
+use Illuminate\Broadcasting\PrivateChannel;
 
 uses(TestCase::class);
 

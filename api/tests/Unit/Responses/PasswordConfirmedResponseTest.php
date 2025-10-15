@@ -1,12 +1,11 @@
 <?php
 
-use App\Http\Responses\PasswordConfirmedResponse;
 use Tests\TestCase;
+use App\Http\Responses\PasswordConfirmedResponse;
 
 uses(TestCase::class);
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Validation\ValidationException;
 
 it('returns json when wants json for password confirmed', function () {
     $response = app(PasswordConfirmedResponse::class);

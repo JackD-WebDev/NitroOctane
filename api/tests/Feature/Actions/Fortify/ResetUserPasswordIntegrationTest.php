@@ -1,16 +1,16 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use App\Actions\Fortify\ResetUserPassword;
 use Illuminate\Support\Facades\Notification;
-use Illuminate\Support\Facades\Hash;
 
 it('updates the database and notifies the user using the sqlite in-memory database', function () {
     Notification::fake();
 
     $user = User::factory()->create();
 
-    $action = new ResetUserPassword();
+    $action = new ResetUserPassword;
 
     $action->reset($user, ['password' => 'NewPassword123!', 'password_confirmation' => 'NewPassword123!']);
 

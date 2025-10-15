@@ -2,7 +2,6 @@
 
 use Tests\TestCase;
 use App\Exceptions\Handler;
-use Illuminate\Http\Response;
 
 uses(TestCase::class);
 
@@ -25,14 +24,13 @@ it('register and report can be called without errors', function () {
 });
 
 it('report delegates to doReport which can be overridden in tests', function () {
-    // Create a test handler subclass that overrides doReport and bind it
-    $testHandler = new class(app(\App\Http\Helpers\ResponseHelper::class)) extends \App\Exceptions\Handler {
+    $testHandler = new class(app(\App\Http\Helpers\ResponseHelper::class)) extends \App\Exceptions\Handler
+    {
         public bool $invoked = false;
 
         protected function doReport(\Throwable $exception): void
         {
             $this->invoked = true;
-            // no-op to avoid framework internals
         }
     };
 
@@ -44,7 +42,8 @@ it('report delegates to doReport which can be overridden in tests', function () 
 });
 
 it('invokes Handler::doReport default chain safely (swallowing TypeError)', function () {
-    $testHandler = new class(app(\App\Http\Helpers\ResponseHelper::class)) extends \App\Exceptions\Handler {
+    $testHandler = new class(app(\App\Http\Helpers\ResponseHelper::class)) extends \App\Exceptions\Handler
+    {
         public bool $invoked = false;
 
         public function __construct($responseHelper)
@@ -56,12 +55,9 @@ it('invokes Handler::doReport default chain safely (swallowing TypeError)', func
         {
             $this->invoked = true;
             try {
-                // call the parent's implementation to execute the default reporting
                 parent::doReport($exception);
             } catch (\TypeError $e) {
-                // parent::report may trigger framework internals in unit tests
-                // which can throw a TypeError; swallow it to allow the test to
-                // assert the default path was executed.
+                error_log('Swallowed TypeError in Handler::doReport test: '.$e->getMessage());
             }
         }
     };

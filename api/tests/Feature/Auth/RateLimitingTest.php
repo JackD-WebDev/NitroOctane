@@ -2,8 +2,6 @@
 
 namespace Tests\Feature\Auth;
 
-use Tests\TestCase;
-
 it('throttles repeated login attempts', function () {
     for ($i = 0; $i < 6; $i++) {
         $response = $this->postJson('/api/login', [

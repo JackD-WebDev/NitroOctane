@@ -1,10 +1,10 @@
 <?php
 
-use App\Http\Responses\VerifyEmailResponse;
-use App\Http\Helpers\ResponseHelper;
+use Tests\TestCase;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use Tests\TestCase;
+use App\Http\Helpers\ResponseHelper;
+use App\Http\Responses\VerifyEmailResponse;
 
 uses(TestCase::class);
 

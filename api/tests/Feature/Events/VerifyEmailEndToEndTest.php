@@ -4,9 +4,9 @@ namespace Tests\Feature\Events;
 
 use Tests\TestCase;
 use App\Models\User;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Carbon;
 
 it('verifies a user via the signed verification url', function () {
     Config::set('fortify.features', [\Laravel\Fortify\Features::emailVerification()]);
@@ -28,7 +28,7 @@ it('verifies a user via the signed verification url', function () {
     $path = $parsed['path'] ?? $signed;
     $query = $parsed['query'] ?? '';
 
-    $endpoint = $path . ($query ? '?'.$query : '');
+    $endpoint = $path.($query ? '?'.$query : '');
 
     $this->actingAs($user);
 

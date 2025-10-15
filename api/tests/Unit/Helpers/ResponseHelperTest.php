@@ -1,13 +1,13 @@
 <?php
 
-use App\Http\Helpers\ResponseHelper;
-use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
+use Illuminate\Support\Facades\DB;
+use App\Http\Helpers\ResponseHelper;
 
 uses(TestCase::class);
 
 it('returns service unavailable when health table not healthy', function () {
-    $helper = new ResponseHelper();
+    $helper = new ResponseHelper;
 
     DB::shouldReceive('table->value')->with('health')->andReturn(0);
 
@@ -21,7 +21,7 @@ it('returns service unavailable when health table not healthy', function () {
 it('includes debug when _debug provided and app.debug true', function () {
     config(['app.debug' => true]);
 
-    $helper = new ResponseHelper();
+    $helper = new ResponseHelper;
 
     $resp = $helper->errorResponse('title', 'message', ['_debug' => ['foo' => 'bar']], 500);
 
@@ -31,7 +31,7 @@ it('includes debug when _debug provided and app.debug true', function () {
 });
 
 it('returns ok when health table healthy', function () {
-    $helper = new ResponseHelper();
+    $helper = new ResponseHelper;
 
     DB::shouldReceive('table->value')->with('health')->andReturn(1);
 
@@ -44,18 +44,17 @@ it('returns ok when health table healthy', function () {
 
 it('requestResponse accepts a Model and converts to array', function () {
     $user = \App\Models\User::factory()->create();
-    $helper = new ResponseHelper();
+    $helper = new ResponseHelper;
 
     $resp = $helper->requestResponse($user, 'ok', true, 200);
 
     $data = $resp->getData(true);
     expect($data['success'])->toBeTrue();
-    // The helper flattens a model into top-level keys; ensure username present
     expect($data['username'])->toBe($user->username);
 });
 
 it('attaches provided headers to errorResponse', function () {
-    $helper = new ResponseHelper();
+    $helper = new ResponseHelper;
 
     $resp = $helper->errorResponse('t', 'm', [], 429, ['Retry-After' => '10']);
 
@@ -65,7 +64,7 @@ it('attaches provided headers to errorResponse', function () {
 it('does not include debug when _debug provided and app.debug false', function () {
     config(['app.debug' => false]);
 
-    $helper = new ResponseHelper();
+    $helper = new ResponseHelper;
 
     $resp = $helper->errorResponse('title', 'message', ['_debug' => ['foo' => 'bar']], 500);
 
@@ -74,8 +73,8 @@ it('does not include debug when _debug provided and app.debug false', function (
 });
 
 it('resourceResponse builds response from JsonResource with links and meta', function () {
-    // Create a small JsonResource that returns data, links and meta keys
-    $resource = new class(['name' => 'alice']) extends \Illuminate\Http\Resources\Json\JsonResource {
+    $resource = new class(['name' => 'alice']) extends \Illuminate\Http\Resources\Json\JsonResource
+    {
         public function response($request = null)
         {
             return response()->json([
@@ -86,10 +85,9 @@ it('resourceResponse builds response from JsonResource with links and meta', fun
         }
     };
 
-    // set an app name so the version field is predictable
     config(['app.full_name' => 'NitroOctane']);
 
-    $helper = new ResponseHelper();
+    $helper = new ResponseHelper;
 
     $resp = $helper->resourceResponse($resource, 'ok', true, 200);
 
@@ -102,14 +100,15 @@ it('resourceResponse builds response from JsonResource with links and meta', fun
 });
 
 it('requestResponse accepts object with toArray method', function () {
-    $obj = new class {
+    $obj = new class
+    {
         public function toArray()
         {
             return ['foo' => 'bar'];
         }
     };
 
-    $helper = new ResponseHelper();
+    $helper = new ResponseHelper;
 
     $resp = $helper->requestResponse($obj, 'ok', true, 200);
 
@@ -119,11 +118,11 @@ it('requestResponse accepts object with toArray method', function () {
 });
 
 it('requestResponse casts plain object to array if no toArray', function () {
-    $obj = new \stdClass();
+    $obj = new \stdClass;
     $obj->a = 1;
     $obj->b = 'two';
 
-    $helper = new ResponseHelper();
+    $helper = new ResponseHelper;
 
     $resp = $helper->requestResponse($obj, 'ok', true, 200);
 

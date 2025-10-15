@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Responses\RecoveryCodesGeneratedResponse;
 use Tests\TestCase;
+use App\Http\Responses\RecoveryCodesGeneratedResponse;
 
 uses(TestCase::class);
 use Illuminate\Http\Request;

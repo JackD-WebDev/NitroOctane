@@ -1,10 +1,10 @@
 <?php
 
 use App\Models\User;
-use App\Notifications\QueuedVerifyEmail;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Config;
+use App\Notifications\QueuedVerifyEmail;
+use Illuminate\Support\Facades\Notification;
 
 it('builds verify email mail and includes frontend signed params', function () {
     Mail::fake();
@@ -13,7 +13,7 @@ it('builds verify email mail and includes frontend signed params', function () {
 
     $user = User::factory()->create();
 
-    $notification = new QueuedVerifyEmail();
+    $notification = new QueuedVerifyEmail;
 
     $mailMessage = $notification->toMail($user);
 
@@ -35,7 +35,7 @@ it('sends the queued verify email notification when notified', function () {
 
     $user = User::factory()->create();
 
-    $user->notify(new QueuedVerifyEmail());
+    $user->notify(new QueuedVerifyEmail);
 
     Notification::assertSentTo($user, QueuedVerifyEmail::class, function ($notification, $channels) use ($user) {
         $mailMessage = $notification->toMail($user);

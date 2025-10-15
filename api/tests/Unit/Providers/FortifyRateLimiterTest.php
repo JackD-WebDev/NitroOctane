@@ -4,8 +4,8 @@ namespace Tests\Unit\Providers;
 
 use Tests\TestCase;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\RateLimiter;
 use App\Providers\FortifyServiceProvider;
+use Illuminate\Support\Facades\RateLimiter;
 
 uses(TestCase::class);
 

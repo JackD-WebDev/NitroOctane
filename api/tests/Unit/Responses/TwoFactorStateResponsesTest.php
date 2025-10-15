@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Responses\TwoFactorConfirmedResponse;
 use Tests\TestCase;
 use App\Http\Responses\TwoFactorEnabledResponse;
 use App\Http\Responses\TwoFactorDisabledResponse;
+use App\Http\Responses\TwoFactorConfirmedResponse;
+
 uses(TestCase::class);
 
 use Illuminate\Http\Request;

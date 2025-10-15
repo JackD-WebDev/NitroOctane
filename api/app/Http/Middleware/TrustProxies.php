@@ -2,8 +2,8 @@
 
 namespace App\Http\Middleware;
 
-use Illuminate\Http\Middleware\TrustProxies as Middleware;
 use Illuminate\Http\Request;
+use Illuminate\Http\Middleware\TrustProxies as Middleware;
 
 class TrustProxies extends Middleware
 {
@@ -16,7 +16,7 @@ class TrustProxies extends Middleware
         '127.0.0.1',
         '192.168.0.0/16',
         '172.16.0.0/12',
-        '10.0.0.0/8'
+        '10.0.0.0/8',
     ];
 
     /**

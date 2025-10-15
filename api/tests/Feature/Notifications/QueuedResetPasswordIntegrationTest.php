@@ -1,10 +1,10 @@
 <?php
 
 use App\Models\User;
-use App\Notifications\QueuedResetPassword;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Config;
+use App\Notifications\QueuedResetPassword;
+use Illuminate\Support\Facades\Notification;
 
 it('builds reset mail and includes frontend url when generating toMail', function () {
     Mail::fake();

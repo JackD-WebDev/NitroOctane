@@ -1,16 +1,15 @@
 <?php
 
-use App\Http\Controllers\Users\UserController;
+use Tests\TestCase;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Tests\TestCase;
+use App\Http\Controllers\Users\UserController;
 
 uses(TestCase::class);
 
 it('returns 401 for getMe when unauthenticated', function () {
     $controller = app(UserController::class);
 
-    // Ensure no user is authenticated
     auth()->logout();
 
     $response = $controller->getMe();
@@ -24,7 +23,6 @@ it('returns user payload for getMe when authenticated', function () {
     $user = User::factory()->create();
     $this->actingAs($user);
 
-    // Provide a request in the container so resources can build links/meta
     $req = Request::create('/', 'GET');
     app()->instance('request', $req);
 
@@ -36,7 +34,6 @@ it('returns user payload for getMe when authenticated', function () {
     $data = $response->getData(true);
 
     expect($data['success'])->toBeTrue();
-    // Ensure the returned user_id matches the authenticated user's id
     expect($data['data']['user_id'] ?? null)->toBe($user->id);
 });
 

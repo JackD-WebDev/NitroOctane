@@ -2,19 +2,19 @@
 
 namespace App\Http\Responses;
 
-use HttpResponse;
 use ResponseHelper;
+use Illuminate\Http\Request;
 use Laravel\Fortify\Fortify;
-use Illuminate\Http\{Request, Response, JsonResponse};
+use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
 use Laravel\Fortify\Contracts\ProfileInformationUpdatedResponse as ProfileInformationUpdatedResponseContract;
-
 
 class ProfileInformationUpdatedResponse implements ProfileInformationUpdatedResponseContract
 {
     /**
      * Create an instance of the response helper.
      *
-     * @param ResponseHelper $responseHelper The response helper.
+     * @param  ResponseHelper  $responseHelper  The response helper.
      */
     public function __construct(
         protected ResponseHelper $responseHelper
@@ -24,7 +24,6 @@ class ProfileInformationUpdatedResponse implements ProfileInformationUpdatedResp
      * Create an HTTP response that represents the object.
      *
      * @param  Request  $request
-     * @return JsonResponse|Response
      */
     public function toResponse($request): JsonResponse|Response
     {

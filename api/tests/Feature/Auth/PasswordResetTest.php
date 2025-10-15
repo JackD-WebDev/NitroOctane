@@ -2,13 +2,12 @@
 
 namespace Tests\Feature\Auth;
 
-use Tests\TestCase;
 use App\Models\User;
-use Illuminate\Support\Facades\Notification;
-use Illuminate\Support\Facades\Event;
-use App\Notifications\QueuedResetPassword;
 use App\Events\PasswordChanged;
 use App\Events\SessionLoggedOut;
+use Illuminate\Support\Facades\Event;
+use App\Notifications\QueuedResetPassword;
+use Illuminate\Support\Facades\Notification;
 
 beforeEach(function () {
     Notification::fake();
@@ -39,8 +38,9 @@ it('resets the password with a valid token', function () {
 
     $this->postJson('/api/forgot-password', ['email' => 'reset-token@example.com']);
 
-    Notification::assertSentTo($user, QueuedResetPassword::class, function ($notif) use ($user, &$token) {
+    Notification::assertSentTo($user, QueuedResetPassword::class, function ($notif) use (&$token) {
         $token = $notif->token ?? null;
+
         return true;
     });
 

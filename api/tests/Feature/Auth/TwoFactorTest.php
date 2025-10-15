@@ -1,8 +1,6 @@
 <?php
- 
-namespace Tests\Feature\Auth;
 
-use Tests\TestCase;
+namespace Tests\Feature\Auth;
 
 it('returns 422 or 404 when attempting 2FA without proper setup', function () {
     $response = $this->postJson('/api/two-factor/challenge', [

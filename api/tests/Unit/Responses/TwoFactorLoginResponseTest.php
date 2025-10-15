@@ -1,10 +1,10 @@
 <?php
 
-use App\Http\Responses\TwoFactorLoginResponse;
+use Tests\TestCase;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use Tests\TestCase;
+use App\Http\Responses\TwoFactorLoginResponse;
 
 uses(TestCase::class);
 
@@ -16,9 +16,6 @@ it('redirects when request does not want json', function () {
 
     $req = Request::create('/', 'GET');
 
-    // The implementation performs a redirect (RedirectResponse) which does not match the declared
-    // union return type in some PHP versions; assert that calling the method throws a TypeError
-    // or returns a RedirectResponse depending on runtime. Accept either.
     try {
         $resp = $respHelper->toResponse($req);
         expect(method_exists($resp, 'getStatusCode'))->toBeTrue();

@@ -1,13 +1,11 @@
 <?php
 
-use App\Http\Responses\TwoFactorLoginResponse;
-use App\Http\Responses\FailedTwoFactorLoginResponse;
-use App\Http\Helpers\ResponseHelper;
+use Tests\TestCase;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use App\Http\Responses\TwoFactorLoginResponse;
 use Illuminate\Validation\ValidationException;
-
-use Tests\TestCase;
+use App\Http\Responses\FailedTwoFactorLoginResponse;
 
 uses(TestCase::class);
 
@@ -62,6 +60,6 @@ it('throws validation exception for failed two-factor login when json requested'
     $request = Request::create('/2fa', 'POST', ['recovery_code' => 'wrong'], [], [], ['HTTP_ACCEPT' => 'application/json']);
     $request->headers->set('Accept', 'application/json');
 
-    expect(fn() => (new FailedTwoFactorLoginResponse())->toResponse($request))
+    expect(fn () => (new FailedTwoFactorLoginResponse)->toResponse($request))
         ->toThrow(ValidationException::class);
 });

@@ -1,7 +1,7 @@
 <?php
 
-use App\Mail\PasswordResetEmail;
 use Tests\TestCase;
+use App\Mail\PasswordResetEmail;
 
 uses(TestCase::class);
 

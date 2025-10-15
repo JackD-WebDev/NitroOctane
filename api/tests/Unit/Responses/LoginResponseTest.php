@@ -1,11 +1,10 @@
 <?php
 
-use App\Http\Responses\LoginResponse;
-use App\Http\Helpers\ResponseHelper;
+use Tests\TestCase;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use Tests\TestCase;
+use App\Http\Responses\LoginResponse;
 
 uses(TestCase::class);
 
@@ -47,7 +46,6 @@ it('returns unauthorized for guests when not requesting json', function () {
 
     $result = $resp->toResponse($request);
 
-    // Non-json unauthorized should still be a JsonResponse via ResponseHelper
     expect($result)->toBeInstanceOf(JsonResponse::class);
     expect($result->getStatusCode())->toBe(401);
 });
@@ -64,7 +62,6 @@ it('returns redirect payload when authenticated and not wants json', function ()
 
     expect($result)->toBeInstanceOf(JsonResponse::class);
     $json = $result->getData(true);
-    // When not wantsJson the response still contains redirect_url in the payload
     expect($json['redirect_url'])->toBe(config('app.frontend_url'));
     expect($json['success'])->toBeTrue();
 });
@@ -76,10 +73,8 @@ it('logs remember token when remember is requested', function () {
 
     $resp = app(LoginResponse::class);
 
-    // Create request that will interpret remember as true
     $request = Request::create('/login', 'GET', ['remember' => '1'], [], [], ['HTTP_ACCEPT' => 'application/json']);
 
-    // Fake the logger and assert that an info entry is written
     \Illuminate\Support\Facades\Log::shouldReceive('info')
         ->once()
         ->withArgs(function ($message, $context) use ($user) {

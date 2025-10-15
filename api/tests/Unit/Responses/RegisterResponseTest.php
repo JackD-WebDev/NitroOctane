@@ -1,10 +1,10 @@
 <?php
 
-use App\Http\Responses\RegisterResponse;
+use Tests\TestCase;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use App\Models\User;
-use Tests\TestCase;
+use App\Http\Responses\RegisterResponse;
 
 uses(TestCase::class);
 

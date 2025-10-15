@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Auth;
 
-use Tests\TestCase;
 use App\Models\User;
 
 it('logs out an authenticated user and invalidates session', function () {

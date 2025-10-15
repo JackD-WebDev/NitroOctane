@@ -1,16 +1,16 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Support\Facades\Mail;
 use App\Notifications\QueuedPasswordChanged;
 use Illuminate\Support\Facades\Notification;
-use Illuminate\Support\Facades\Mail;
 
 it('builds password changed mail with correct data', function () {
     Mail::fake();
 
     $user = User::factory()->create();
 
-    $notification = new QueuedPasswordChanged();
+    $notification = new QueuedPasswordChanged;
 
     $mailMessage = $notification->toMail($user);
 
@@ -27,7 +27,7 @@ it('sends the queued password changed notification when notified', function () {
 
     $user = User::factory()->create();
 
-    $user->notify(new QueuedPasswordChanged());
+    $user->notify(new QueuedPasswordChanged);
 
     Notification::assertSentTo($user, QueuedPasswordChanged::class, function ($notification, $channels) use ($user) {
         $mailMessage = $notification->toMail($user);

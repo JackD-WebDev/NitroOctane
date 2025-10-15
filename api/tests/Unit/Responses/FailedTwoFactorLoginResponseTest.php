@@ -1,14 +1,14 @@
 <?php
 
-use App\Http\Responses\FailedTwoFactorLoginResponse;
+use Tests\TestCase;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
-use Tests\TestCase;
+use App\Http\Responses\FailedTwoFactorLoginResponse;
 
 uses(TestCase::class);
 
 it('throws validation exception when wants json and recovery code present', function () {
-    $response = new FailedTwoFactorLoginResponse();
+    $response = new FailedTwoFactorLoginResponse;
 
     $request = Request::create('/', 'POST', ['recovery_code' => '123456']);
     $request->headers->set('Accept', 'application/json');
@@ -17,7 +17,7 @@ it('throws validation exception when wants json and recovery code present', func
 });
 
 it('redirects when not json (or throws RouteNotFoundException)', function () {
-    $response = new FailedTwoFactorLoginResponse();
+    $response = new FailedTwoFactorLoginResponse;
 
     $request = Request::create('/', 'POST', []);
 

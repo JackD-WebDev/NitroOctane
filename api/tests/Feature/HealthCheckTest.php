@@ -9,7 +9,7 @@ it('returns healthy when the health table shows healthy', function () {
     $response = $this->getJson('/api/health');
 
     $response->assertStatus(200)
-        ->assertJson(["success" => true])
+        ->assertJson(['success' => true])
         ->assertJsonStructure(['success', 'message']);
 });
 
@@ -20,6 +20,6 @@ it('returns service unavailable when the health table shows unhealthy', function
     $response = $this->getJson('/api/health');
 
     $response->assertStatus(503)
-        ->assertJson(["success" => false])
+        ->assertJson(['success' => false])
         ->assertJsonStructure(['success', 'message']);
 });

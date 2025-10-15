@@ -1,10 +1,9 @@
 <?php
 
-use App\Http\Responses\LogoutResponse;
-use App\Http\Helpers\ResponseHelper;
+use Tests\TestCase;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use Tests\TestCase;
+use App\Http\Responses\LogoutResponse;
 
 uses(TestCase::class);
 

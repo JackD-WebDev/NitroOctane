@@ -2,8 +2,8 @@
 
 namespace App\Listeners;
 
-use Illuminate\Auth\Events\Verified;
 use App\Events\EmailVerified;
+use Illuminate\Auth\Events\Verified;
 
 class BroadcastEmailVerified
 {

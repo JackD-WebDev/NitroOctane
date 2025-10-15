@@ -2,12 +2,12 @@
 
 use Tests\TestCase;
 use App\Exceptions\Handler;
-use App\Exceptions\ModelNotDefined;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Auth\Access\AuthorizationException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
+use App\Exceptions\ModelNotDefined;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 uses(TestCase::class);
 
@@ -18,7 +18,7 @@ beforeEach(function () {
 it('returns model not found json for ModelNotFoundException when expects json', function () {
     $request = Request::create('/api/user/9999', 'GET', [], [], [], ['HTTP_ACCEPT' => 'application/json']);
 
-    $ex = new ModelNotFoundException();
+    $ex = new ModelNotFoundException;
 
     $resp = $this->handler->render($request, $ex);
 
@@ -31,7 +31,7 @@ it('returns model not found json for ModelNotFoundException when expects json', 
 it('returns model not found json for NotFoundHttpException wrapping ModelNotFoundException', function () {
     $request = Request::create('/api/does-not-exist', 'GET', [], [], [], ['HTTP_ACCEPT' => 'application/json']);
 
-    $previous = new ModelNotFoundException();
+    $previous = new ModelNotFoundException;
     $ex = new NotFoundHttpException('Not Found', $previous);
 
     $resp = $this->handler->render($request, $ex);
@@ -110,7 +110,7 @@ it('returns 401 json for AuthenticationException when expects json', function ()
 
 it('returns 419 json for TokenMismatchException when expects json', function () {
     $request = Request::create('/api/form', 'POST', [], [], [], ['HTTP_ACCEPT' => 'application/json']);
-    $ex = new \Illuminate\Session\TokenMismatchException();
+    $ex = new \Illuminate\Session\TokenMismatchException;
     $resp = $this->handler->render($request, $ex);
     expect($resp->getStatusCode())->toBe(419);
 });
@@ -137,7 +137,6 @@ it('when expects json and exception is unmapped, delegates to parent render', fu
 
     $resp = $this->handler->render($request, $ex);
 
-    // parent::render should return a Symfony Response instance
     expect($resp)->toBeInstanceOf(\Symfony\Component\HttpFoundation\Response::class);
 });
 
@@ -171,7 +170,7 @@ it('falls back to translation when HttpExceptionInterface message is empty', fun
     expect($resp->getStatusCode())->toBe(404);
     $json = $resp->getData(true);
     expect($json['success'])->toBeFalse();
-    expect($json['message'])->toBe(strtoupper(__("errors.http.message")));
+    expect($json['message'])->toBe(strtoupper(__('errors.http.message')));
 });
 
 it('delegates to parent render when request does not expect json', function () {
@@ -210,12 +209,11 @@ it('NotFoundHttpException with short message matches No query results branch', f
 
 it('stateful NotFoundHttpException toggles message to hit nested branch', function () {
     $request = Request::create('/api/stateful-notfound', 'GET', [], [], [], ['HTTP_ACCEPT' => 'application/json']);
-    // This test was removed because overriding Exception::getMessage() is not allowed.
     $this->assertTrue(true);
 });
 
 it('non-json HttpExceptionInterface delegates to parent render', function () {
-    $request = Request::create('/web-method', 'POST'); 
+    $request = Request::create('/web-method', 'POST');
     $ex = new \Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException(['GET'], 'Method not allowed');
 
     $resp = $this->handler->render($request, $ex);

@@ -1,14 +1,14 @@
 <?php
 
-use App\Http\Responses\FailedPasswordConfirmationResponse;
+use Tests\TestCase;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
-use Tests\TestCase;
+use App\Http\Responses\FailedPasswordConfirmationResponse;
 
 uses(TestCase::class);
 
 it('throws ValidationException when wants json', function () {
-    $resp = new FailedPasswordConfirmationResponse();
+    $resp = new FailedPasswordConfirmationResponse;
 
     $this->expectException(ValidationException::class);
 
@@ -18,7 +18,7 @@ it('throws ValidationException when wants json', function () {
 });
 
 it('returns back with errors when not json', function () {
-    $resp = new FailedPasswordConfirmationResponse();
+    $resp = new FailedPasswordConfirmationResponse;
 
     $this->expectException(TypeError::class);
 

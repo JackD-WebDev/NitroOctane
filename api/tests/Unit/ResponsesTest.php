@@ -1,18 +1,16 @@
 <?php
 
-use App\Http\Responses\PasswordUpdateResponse;
-use App\Http\Responses\ProfileInformationUpdatedResponse;
-use App\Http\Responses\SuccessfulPasswordResetLinkRequestResponse;
-use App\Http\Responses\EmailVerificationNotificationSentResponse;
-use App\Http\Responses\PasswordConfirmedResponse;
-use App\Http\Responses\TwoFactorEnabledResponse;
-use App\Http\Responses\VerifyEmailResponse;
-use App\Http\Responses\FailedPasswordConfirmationResponse;
-use App\Http\Helpers\ResponseHelper;
 use Tests\TestCase;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Validation\ValidationException;
+use App\Http\Responses\VerifyEmailResponse;
+use App\Http\Responses\PasswordUpdateResponse;
+use App\Http\Responses\TwoFactorEnabledResponse;
+use App\Http\Responses\PasswordConfirmedResponse;
+use App\Http\Responses\ProfileInformationUpdatedResponse;
+use App\Http\Responses\FailedPasswordConfirmationResponse;
+use App\Http\Responses\EmailVerificationNotificationSentResponse;
+use App\Http\Responses\SuccessfulPasswordResetLinkRequestResponse;
 
 uses(TestCase::class);
 
@@ -187,9 +185,10 @@ it('failed password confirmation response either throws for json requests or ret
     $request->headers->set('Accept', 'application/json');
 
     try {
-        $resp = (new FailedPasswordConfirmationResponse())->toResponse($request);
+        $resp = (new FailedPasswordConfirmationResponse)->toResponse($request);
     } catch (\Throwable $e) {
         expect($e)->toBeInstanceOf(\Throwable::class);
+
         return;
     }
 
@@ -199,6 +198,7 @@ it('failed password confirmation response either throws for json requests or ret
         $data = $resp->getData(true);
         expect($data['message'])->toBeString();
         expect($data['message'])->toBe('auth.confirm_password.fail');
+
         return;
     }
 
@@ -207,6 +207,7 @@ it('failed password confirmation response either throws for json requests or ret
         if (method_exists($errors, 'get') && $errors->get('password')) {
             $msg = $errors->get('password')[0] ?? null;
             expect($msg)->toBe('auth.confirm_password.fail');
+
             return;
         }
     }

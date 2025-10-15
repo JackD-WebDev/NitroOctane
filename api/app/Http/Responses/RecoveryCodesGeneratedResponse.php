@@ -4,26 +4,27 @@ namespace App\Http\Responses;
 
 use HttpResponse;
 use ResponseHelper;
+use Illuminate\Http\Request;
 use Laravel\Fortify\Fortify;
-use Illuminate\Http\{Request, Response, JsonResponse};
+use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
 use Laravel\Fortify\Contracts\RecoveryCodesGeneratedResponse as RecoveryCodesGeneratedResponseContract;
-
 
 class RecoveryCodesGeneratedResponse implements RecoveryCodesGeneratedResponseContract
 {
     /**
      * Create an instance of the response helper.
      *
-     * @param ResponseHelper $responseHelper The response helper.
+     * @param  ResponseHelper  $responseHelper  The response helper.
      */
     public function __construct(
         protected ResponseHelper $responseHelper
     ) {}
-    
+
     /**
      * Create an HTTP response that represents the object.
      *
-     * @param Request $request The request.
+     * @param  Request  $request  The request.
      * @return JsonResponse|Response The response.
      */
     public function toResponse($request): JsonResponse|Response

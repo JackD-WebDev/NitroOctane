@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Auth;
 
-use Tests\TestCase;
 use App\Models\User;
 
 it('returns the correct JSON structure after successful registration', function () {

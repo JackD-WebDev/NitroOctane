@@ -87,11 +87,6 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function routeNotificationForMail($driver = null): ?string
     {
-        // The framework may call routeNotificationFor('mail', $notification)
-        // and pass the Notification instance as the second argument. Older
-        // signatures typed $driver as ?string which caused a TypeError when
-        // a Notification object was provided. Normalize object inputs here
-        // to be defensive and return the user's email.
         if (is_object($driver)) {
             $driver = null;
         }

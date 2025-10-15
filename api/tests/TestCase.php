@@ -2,16 +2,16 @@
 
 namespace Tests;
 
-use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
-
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {
     use RefreshDatabase;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -30,8 +30,7 @@ abstract class TestCase extends BaseTestCase
      * session()->get('login.id'). This mutates the in-memory route action only
      * for the duration of the test process.
      *
-     * @param string $uri Route URI to patch (e.g. '/api/two-factor-challenge')
-     * @return void
+     * @param  string  $uri  Route URI to patch (e.g. '/api/two-factor-challenge')
      */
     protected function enableRouteSession(string $uri): void
     {
@@ -43,12 +42,8 @@ abstract class TestCase extends BaseTestCase
                 $action = $route->getAction();
                 $middlewares = $action['middleware'] ?? [];
                 $middlewares = is_array($middlewares) ? $middlewares : explode(',', $middlewares);
-                // Attach the session start middleware directly so tests can
-                // access session() without enabling the full 'web' group
-                // (which includes CSRF protection and may interfere with
-                // test requests).
                 $startSession = \Illuminate\Session\Middleware\StartSession::class;
-                if (!in_array($startSession, $middlewares, true)) {
+                if (! in_array($startSession, $middlewares, true)) {
                     $middlewares[] = $startSession;
                     $action['middleware'] = $middlewares;
                     $route->setAction($action);

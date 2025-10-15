@@ -2,58 +2,48 @@
 
 namespace App\Providers;
 
-use App\Models\User;
-use Laravel\Fortify\Fortify;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\{
-    Str,
-    ServiceProvider
-};
+use Laravel\Fortify\Fortify;
+use App\Http\Responses\LoginResponse;
+use App\Actions\Fortify\CreateNewUser;
+use App\Http\Responses\LogoutResponse;
+use Illuminate\Support\ServiceProvider;
+use App\Http\Responses\RegisterResponse;
 use Illuminate\Cache\RateLimiting\Limit;
+use App\Actions\Fortify\ResetUserPassword;
+use App\Actions\Fortify\UpdateUserPassword;
+use App\Http\Responses\VerifyEmailResponse;
 use Illuminate\Support\Facades\RateLimiter;
-use App\Actions\Fortify\{
-    CreateNewUser,
-    ResetUserPassword,
-    UpdateUserPassword,
-    UpdateUserProfileInformation
-};
-use App\Http\Responses\{
-    LoginResponse,
-    LogoutResponse,
-    RegisterResponse,
-    VerifyEmailResponse,
-    TwoFactorLoginResponse,
-    PasswordUpdateResponse,
-    PasswordConfirmedResponse,
-    TwoFactorEnabledResponse,
-    TwoFactorDisabledResponse,
-    TwoFactorConfirmedResponse,
-    FailedTwoFactorLoginResponse,
-    RecoveryCodesGeneratedResponse,
-    ProfileInformationUpdatedResponse,
-    FailedPasswordConfirmationResponse,
-    EmailVerificationNotificationSentResponse,
-    SuccessfulPasswordResetLinkRequestResponse
-};
-use Laravel\Fortify\Contracts\{
-    LoginResponse as LoginResponseContract,
-    LogoutResponse as LogoutResponseContract,
-    VerifyEmailResponse as VerifyEmailResponseContract,
-    RegisterResponse as RegisterResponseContract,
-    PasswordUpdateResponse as PasswordUpdateResponseContract,
-    TwoFactorLoginResponse as TwoFactorLoginResponseContract,
-    TwoFactorEnabledResponse as TwoFactorEnabledResponseContract,
-    PasswordConfirmedResponse as PasswordConfirmedResponseContract,
-    TwoFactorDisabledResponse as TwoFactorDisabledResponseContract,
-    TwoFactorConfirmedResponse as TwoFactorConfirmedResponseContract,
-    FailedTwoFactorLoginResponse as FailedTwoFactorLoginResponseContract,
-    RecoveryCodesGeneratedResponse as RecoveryCodesGeneratedResponseContract,
-    ProfileInformationUpdatedResponse as ProfileInformationUpdatedResponseContract,
-    FailedPasswordConfirmationResponse as FailedPasswordConfirmationResponseContract,
-    EmailVerificationNotificationSentResponse as EmailVerificationNotificationSentResponseContract,
-    SuccessfulPasswordResetLinkRequestResponse as SuccessfulPasswordResetLinkRequestResponseContract
-};
+use App\Http\Responses\PasswordUpdateResponse;
+use App\Http\Responses\TwoFactorLoginResponse;
+use App\Http\Responses\TwoFactorEnabledResponse;
+use App\Http\Responses\PasswordConfirmedResponse;
+use App\Http\Responses\TwoFactorDisabledResponse;
+use App\Http\Responses\TwoFactorConfirmedResponse;
+use App\Http\Responses\FailedTwoFactorLoginResponse;
+use App\Actions\Fortify\UpdateUserProfileInformation;
+use App\Http\Responses\RecoveryCodesGeneratedResponse;
+use App\Http\Responses\ProfileInformationUpdatedResponse;
+use App\Http\Responses\FailedPasswordConfirmationResponse;
+use App\Http\Responses\EmailVerificationNotificationSentResponse;
+use App\Http\Responses\SuccessfulPasswordResetLinkRequestResponse;
+use Laravel\Fortify\Contracts\LoginResponse as LoginResponseContract;
+use Laravel\Fortify\Contracts\LogoutResponse as LogoutResponseContract;
+use Laravel\Fortify\Contracts\RegisterResponse as RegisterResponseContract;
+use Laravel\Fortify\Contracts\VerifyEmailResponse as VerifyEmailResponseContract;
+use Laravel\Fortify\Contracts\PasswordUpdateResponse as PasswordUpdateResponseContract;
+use Laravel\Fortify\Contracts\TwoFactorLoginResponse as TwoFactorLoginResponseContract;
+use Laravel\Fortify\Contracts\TwoFactorEnabledResponse as TwoFactorEnabledResponseContract;
+use Laravel\Fortify\Contracts\PasswordConfirmedResponse as PasswordConfirmedResponseContract;
+use Laravel\Fortify\Contracts\TwoFactorDisabledResponse as TwoFactorDisabledResponseContract;
+use Laravel\Fortify\Contracts\TwoFactorConfirmedResponse as TwoFactorConfirmedResponseContract;
+use Laravel\Fortify\Contracts\FailedTwoFactorLoginResponse as FailedTwoFactorLoginResponseContract;
+use Laravel\Fortify\Contracts\RecoveryCodesGeneratedResponse as RecoveryCodesGeneratedResponseContract;
+use Laravel\Fortify\Contracts\ProfileInformationUpdatedResponse as ProfileInformationUpdatedResponseContract;
+use Laravel\Fortify\Contracts\FailedPasswordConfirmationResponse as FailedPasswordConfirmationResponseContract;
+use Laravel\Fortify\Contracts\EmailVerificationNotificationSentResponse as EmailVerificationNotificationSentResponseContract;
+use Laravel\Fortify\Contracts\SuccessfulPasswordResetLinkRequestResponse as SuccessfulPasswordResetLinkRequestResponseContract;
 
 class FortifyServiceProvider extends ServiceProvider
 {

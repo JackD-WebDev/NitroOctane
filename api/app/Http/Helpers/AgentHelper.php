@@ -19,9 +19,6 @@ class AgentHelper
 {
     /**
      * Parse the user agent string and return details.
-     *
-     * @param string|null $userAgent
-     * @return array
      */
     public static function parseUserAgent(?string $userAgent): array
     {
@@ -44,7 +41,6 @@ class AgentHelper
         $browser = 'Unknown';
         $platform = 'Unknown';
 
-        // Platform detection - check specific platforms before generic ones
         if (stripos($userAgent, 'Android') !== false) {
             $platform = 'Android';
         } elseif (stripos($userAgent, 'iPhone') !== false || stripos($userAgent, 'iPad') !== false) {
@@ -57,7 +53,6 @@ class AgentHelper
             $platform = 'Linux';
         }
 
-        // Browser detection - check specific browsers before generic ones
         if (stripos($userAgent, 'Edge') !== false || stripos($userAgent, 'Edg/') !== false) {
             $browser = 'Edge';
         } elseif (stripos($userAgent, 'Chrome') !== false) {
@@ -77,5 +72,3 @@ class AgentHelper
         ];
     }
 }
-
-                                  

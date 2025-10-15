@@ -4,7 +4,9 @@ namespace App\Http\Responses;
 
 use HttpResponse;
 use ResponseHelper;
-use Illuminate\Http\{Request, Response, JsonResponse};
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
 use Laravel\Fortify\Contracts\SuccessfulPasswordResetLinkRequestResponse as SuccessfulPasswordResetLinkRequestResponseContract;
 
 class SuccessfulPasswordResetLinkRequestResponse implements SuccessfulPasswordResetLinkRequestResponseContract
@@ -12,8 +14,7 @@ class SuccessfulPasswordResetLinkRequestResponse implements SuccessfulPasswordRe
     /**
      * Create a new response instance.
      *
-     * @param  ResponseHelper  $responseHelper The response helper
-     * @param  string  $status
+     * @param  ResponseHelper  $responseHelper  The response helper
      * @return void
      */
     public function __construct(
@@ -34,7 +35,6 @@ class SuccessfulPasswordResetLinkRequestResponse implements SuccessfulPasswordRe
      * Create an HTTP response that represents the object.
      *
      * @param  Request  $request
-     * @return Response|JsonResponse
      */
     public function toResponse($request): Response|JsonResponse
     {

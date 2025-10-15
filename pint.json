@@ -5,5 +5,5 @@
       "sort_algorithm": "length"
     }
   },
-  "paths": ["*.php"]
+  "paths": ["api"]
 }

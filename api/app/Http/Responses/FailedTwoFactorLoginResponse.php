@@ -2,8 +2,10 @@
 
 namespace App\Http\Responses;
 
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Http\{Request, Response, JsonResponse};
 use Laravel\Fortify\Contracts\FailedTwoFactorLoginResponse as FailedTwoFactorLoginResponseContract;
 
 class FailedTwoFactorLoginResponse implements FailedTwoFactorLoginResponseContract
@@ -12,7 +14,6 @@ class FailedTwoFactorLoginResponse implements FailedTwoFactorLoginResponseContra
      * Create an HTTP response that represents the object.
      *
      * @param  Request  $request
-     * @return JsonResponse|Response
      */
     public function toResponse($request): JsonResponse|Response
     {

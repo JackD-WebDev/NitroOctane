@@ -23,7 +23,7 @@ This repository combines a production-ready, Docker-first developer experience w
 - `api/` — Laravel application
 
   - `app/` — Models, controllers, middleware, etc.
-  - `routes/` — `api.php`, `web.php`
+  - `routes/` — `api.php`
   - `tests/` — Pest tests
 
 - `client/` — Nuxt 3 application (TypeScript)
